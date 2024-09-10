@@ -1,3 +1,4 @@
+# Path: Software/python/firebase_integration.py
 import os
 import time
 import firebase_admin
@@ -9,11 +10,10 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://waterborne-disease-default-rtdb.firebaseio.com/'
 })
 
-def upload_data_to_firebase(heavy_metals, bacteria, chemicals):
+def upload_data_to_firebase(simulated_data):
     ref = db.reference('sensor_data')
     ref.push({
-        'heavy_metals': heavy_metals,
-        'bacteria': bacteria,
-        'chemicals': chemicals,
+        'data': simulated_data,
         'timestamp': time.time()
+        
     })
