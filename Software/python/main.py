@@ -143,29 +143,21 @@ country_menu = ttk.OptionMenu(root, country_var, "India", "India", "USA")
 country_menu.pack(pady=10)
 
 # Display Labels for different categories of contaminants
-physical_label = tk.Label(root, text="Physical: - mg/L", font=("Helvetica", 8))
+physical_label = tk.Label(root, text="Physical: - mg/L", font=("Helvetica", 12))
 physical_label.pack(pady=5)
 
-chemical_label = tk.Label(root, text="Chemical: - mg/L", font=("Helvetica", 8))
+chemical_label = tk.Label(root, text="Chemical: - mg/L", font=("Helvetica", 12))
 chemical_label.pack(pady=5)
 
-microbiological_label = tk.Label(root, text="Microbiological: - CFU/mL", font=("Helvetica", 8))
+microbiological_label = tk.Label(root, text="Microbiological: - CFU/mL", font=("Helvetica", 12))
 microbiological_label.pack(pady=5)
 
-radiological_label = tk.Label(root, text="Radiological: - µg/L", font=("Helvetica", 8))
+radiological_label = tk.Label(root, text="Radiological: - µg/L", font=("Helvetica", 12))
 radiological_label.pack(pady=5)
 
 # Count down timer for next data update 
-timer_label = tk.Label(root, text="Next data update in: 5 seconds", font=("Helvetica", 8))
+timer_label = tk.Label(root, text="Next data update in 5 seconds", font=("Helvetica", 12))
 timer_label.pack(pady=5)
-
-# Countdown timer function
-def countdown(count):
-    timer_label.config(text=f"Next data update in: {count} seconds")
-    if count > 0:
-        root.after(1000, countdown, count - 1)
-    else:
-        root.after(1000, countdown, 5)
 
 
 tk.Label(root, text="Graphical Representation of Contaminants", font=("Helvetica", 10)).pack(pady=5)
@@ -188,9 +180,6 @@ canvas.get_tk_widget().pack(pady=10)
 
 # Start data update loop
 update_data()
-
-# Start countdown timer
-countdown(5)
 
 # Start the Tkinter event loop
 root.mainloop()
