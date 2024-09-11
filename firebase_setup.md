@@ -60,21 +60,25 @@ This document provides step-by-step instructions to set up Firebase for the Port
 ### 6. Update `.gitignore`
 
 Ensure that your service account key file is not committed to version control by adding it to your `.gitignore` file:
-    ```
+
+```sh
     waterborne-disease-firebase-adminsdk-sf6o3-c28edc54a3.json
-    ```
+```
+
+
 
 ### 7. Upload Data to Firebase
 
 Use the following function in [`Software/python/firebase_integration.py`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2FSaravana%20Kumar%2FDocuments%2FFinal%20Year%20Project%2FSoftware%2FSoftware%2Fpython%2Ffirebase_integration.py%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%229dcf3e36-ddf6-4036-b676-aa3cbdcfef3e%22%5D "c:\Users\Saravana Kumar\Documents\Final Year Project\Software\Software\python\firebase_integration.py") to upload data to Firebase:
-    ```py
+
+```py
     def upload_data_to_firebase(simulated_data):
         ref = db.reference('sensor_data')
         ref.push({
             'data': simulated_data,
             'timestamp': time.time()
         })
-    ```
+```
 
 ### 8. Run the Application
 

@@ -47,7 +47,7 @@ The objective of this project is to develop a portable device that can detect wa
     ```
 
 3. Set up Firebase:
-    - Follow the instructions in [firebase_setup.md](Software/cloud/firebase_setup.md) to configure Firebase.
+    - Follow the instructions in [firebase_setup.md](/firebase_setup.md) to configure Firebase.
 
 ## Usage
 
