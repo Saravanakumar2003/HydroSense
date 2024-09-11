@@ -29,6 +29,7 @@ physical_data = []
 chemical_data = []
 microbiological_data = []
 radiological_data = []
+update_timer = 0
 
 # Maximum number of data points to display on the graph
 MAX_POINTS = 50 
@@ -82,17 +83,51 @@ def check_alerts(data):
 
 # Function to update the graph
 def update_graph():
-    plot.clear()
-    plot.plot([d['Suspended_solids'] for d in physical_data], label="Suspended Solids (mg/L)")
-    plot.plot([d['Arsenic'] for d in chemical_data], label="Arsenic (mg/L)")
-    plot.plot([d['Bacteria'] for d in microbiological_data], label="Bacteria (CFU/mL)")
-    plot.plot([d['Cesium'] for d in radiological_data], label="Cesium (µg/L)")
+    plot1.clear()
+    plot2.clear()
+    plot3.clear()
+    plot4.clear()
+    
+    # Plot the data for physical contaminants
+    plot1.plot([d['Suspended_solids'] for d in physical_data], label="Suspended Solids (mg/L)")
+    plot1.plot([d['TDS'] for d in physical_data], label="TDS (mg/L)")
+    plot1.plot([d['Turbidity'] for d in physical_data], label="Turbidity (NTU)")
+    
+    # Plot 2 the data for chemical contaminants
+    plot2.plot([d['Arsenic'] for d in chemical_data], label="Arsenic (mg/L)")
+    plot2.plot([d['Aluminum'] for d in chemical_data], label="Aluminum (mg/L)")
+    plot2.plot([d['Cadmium'] for d in chemical_data], label="Cadmium (mg/L)")
+    plot2.plot([d['Fluoride'] for d in chemical_data], label="Fluoride (mg/L)")
+    
+    # Plot 3 the data for microbiological contaminants
+    plot3.plot([d['Bacteria'] for d in microbiological_data], label="Bacteria (CFU/mL)")
+    plot3.plot([d['Viruses'] for d in microbiological_data], label="Viruses (CFU/mL)")
+    
+    # Plot 4 the data for radiological contaminants
+    plot4.plot([d['Cesium'] for d in radiological_data], label="Cesium (µg/L)")
+    plot4.plot([d['Uranium'] for d in radiological_data], label="Uranium (µg/L)")
+    
 
-    plot.legend()
-    plot.set_title("Water Quality Trends")
-    plot.set_xlabel("Time")
-    plot.set_ylabel("Concentration")
-    plot.grid(True)
+    plot1.legend(fontsize='small')
+    plot2.legend(fontsize='small')
+    plot3.legend(fontsize='small')
+    plot4.legend(fontsize='small')
+    
+    plot1.set_title("Physical Contaminants", fontsize='small')
+    plot2.set_title("Chemical Contaminants", fontsize='small')
+    plot3.set_title("Microbiological Contaminants", fontsize='small')
+    plot4.set_title("Radiological Contaminants", fontsize='small')
+    
+    plot1.set_xlabel("Count", fontsize='small')
+    plot2.set_xlabel("Count", fontsize='small')
+    plot3.set_xlabel("Count", fontsize='small')
+    plot4.set_xlabel("Count", fontsize='small')
+    
+    plot1.set_ylabel("Concentration (mg/L)", fontsize='small')
+    plot2.set_ylabel("Concentration (mg/L)", fontsize='small')
+    plot3.set_ylabel("Concentration (CFU/mL)", fontsize='small')
+    plot4.set_ylabel("Concentration (µg/L)", fontsize='small')
+    
     
     canvas.draw()
 
@@ -103,37 +138,59 @@ root.title("Waterborne Disease Detector")
 # Add a dropdown to select the country
 country_var = tk.StringVar(root)
 country_var.set("India")  # Default country
-country_menu = ttk.OptionMenu(root, country_var, "India", "India", "USA", "UK", "Pakistan", "Canada")
+tk.Label(root, text="Select Country:").pack(pady=5)
+country_menu = ttk.OptionMenu(root, country_var, "India", "India", "USA")
 country_menu.pack(pady=10)
 
 # Display Labels for different categories of contaminants
-physical_label = tk.Label(root, text="Physical: - mg/L", font=("Helvetica", 16))
-physical_label.pack(pady=10)
+physical_label = tk.Label(root, text="Physical: - mg/L", font=("Helvetica", 8))
+physical_label.pack(pady=5)
 
-chemical_label = tk.Label(root, text="Chemical: - mg/L", font=("Helvetica", 16))
-chemical_label.pack(pady=10)
+chemical_label = tk.Label(root, text="Chemical: - mg/L", font=("Helvetica", 8))
+chemical_label.pack(pady=5)
 
-microbiological_label = tk.Label(root, text="Microbiological: - CFU/mL", font=("Helvetica", 16))
-microbiological_label.pack(pady=10)
+microbiological_label = tk.Label(root, text="Microbiological: - CFU/mL", font=("Helvetica", 8))
+microbiological_label.pack(pady=5)
 
-radiological_label = tk.Label(root, text="Radiological: - µg/L", font=("Helvetica", 16))
-radiological_label.pack(pady=10)
+radiological_label = tk.Label(root, text="Radiological: - µg/L", font=("Helvetica", 8))
+radiological_label.pack(pady=5)
 
-# Time to update the data
-time_label = tk.Label(root, text="Data will update every 5 seconds", font=("Helvetica", 12))
-time_label.pack(pady=10)
+# Count down timer for next data update 
+timer_label = tk.Label(root, text="Next data update in: 5 seconds", font=("Helvetica", 8))
+timer_label.pack(pady=5)
+
+# Countdown timer function
+def countdown(count):
+    timer_label.config(text=f"Next data update in: {count} seconds")
+    if count > 0:
+        root.after(1000, countdown, count - 1)
+    else:
+        root.after(1000, countdown, 5)
+
+
+tk.Label(root, text="Graphical Representation of Contaminants", font=("Helvetica", 10)).pack(pady=5)
 
 # Create the figure and plot
-fig = Figure(figsize=(5, 4), dpi=100)
-plot = fig.add_subplot(1, 1, 1)
+fig = Figure(figsize=(10, 8), dpi=100)
+plot1 = fig.add_subplot(2, 2, 1)
+plot2 = fig.add_subplot(2, 2, 2)
+plot3 = fig.add_subplot(2, 2, 3)
+plot4 = fig.add_subplot(2, 2, 4)
 
+
+# Adjust layout to prevent overlap and add padding
+fig.tight_layout(pad=5)
+    
 # Display the plot in the main window
 canvas = FigureCanvasTkAgg(fig, master=root)
 canvas.draw()
-canvas.get_tk_widget().pack(pady=20)
+canvas.get_tk_widget().pack(pady=10)
 
 # Start data update loop
 update_data()
+
+# Start countdown timer
+countdown(5)
 
 # Start the Tkinter event loop
 root.mainloop()
