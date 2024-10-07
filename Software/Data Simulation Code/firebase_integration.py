@@ -1,6 +1,6 @@
 # Path: firebase_integration.py
-import os
-import time
+import pytz
+from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, firestore, db
 
@@ -20,15 +20,21 @@ def upload_data_to_firestore(sensor_id, simulated_data, data_count):
     # Use the data count to create a unique document ID
     document_id = f"data_{data_count}"
 
+    # Get the current time in Indian Standard Time (IST)
+    ist = pytz.timezone('Asia/Kolkata')
+    current_time = datetime.now(ist)
+    date_str = current_time.strftime('%Y-%m-%d')
+    time_str = current_time.strftime('%H:%M:%S')
+
     # Upload the new data to Firestore with the specific ID
     ref.document(document_id).set({
         'Physical': simulated_data['Physical'],
         'Chemical': simulated_data['Chemical'],
         'Microbiological': simulated_data['Microbiological'],
         'Radiological': simulated_data['Radiological'],
-        'timestamp': time.time()
+        'date': date_str,
+        'time': time_str
     })
-
 def update_data_count(sensor_id, data_count):
     # Reference to the Realtime Database path
     ref = db.reference(f'sensor_counts/{sensor_id}')
