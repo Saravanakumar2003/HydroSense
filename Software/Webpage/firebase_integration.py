@@ -7,7 +7,7 @@ from firebase_admin import credentials, firestore, db
 # Initialize Firebase Admin SDK
 
 secret_file_path = '/etc/secrets/FIREBASE_CREDENTIALS'
-cred = credentials.Certificate('secret_file_path')
+cred = credentials.Certificate(secret_file_path)
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://waterborne-disease-default-rtdb.firebaseio.com/'
 })
