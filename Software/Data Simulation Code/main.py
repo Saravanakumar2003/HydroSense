@@ -43,6 +43,9 @@ def generate_data():
 root = tk.Tk()
 root.title("Data Generation")
 
+# Size of the app
+root.geometry("300x150")
+
 # Create label and entry for sensor ID
 sensor_id_label = ttk.Label(root, text="Enter Sensor ID:")
 sensor_id_label.pack(pady=5)
