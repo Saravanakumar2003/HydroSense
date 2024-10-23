@@ -1,0 +1,18 @@
+# Flask for the web application
+Flask==2.0.1
+
+# Firebase Admin SDK for Firebase integration
+firebase-admin==5.0.3
+
+# Pyrebase for Firebase integration (if used)
+pyrebase4==4.5.0
+
+# Tkinter for the GUI (usually included with Python, but listed for completeness)
+# Note: Tkinter is part of the standard library for Python, so it doesn't need to be installed separately.
+
+# Additional dependencies for web application
+Jinja2==3.0.1
+Werkzeug==2.0.1
+
+# Additional dependencies for data simulation (if any)
+pytz==2021.1
