@@ -16,3 +16,6 @@ Werkzeug==2.0.1
 
 # Additional dependencies for data simulation (if any)
 pytz==2021.1
+
+# Gunicorn for serving the Flask application
+gunicorn==20.1.0
