@@ -40,8 +40,9 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services">Features</a></li>
             <li class="nav-item"><a class="nav-link" href="#showcase">Screenshots</a></li>
+            <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
             <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           </ul>
@@ -396,17 +397,36 @@
     <section id="team">
       <h2>Team Members</h2>
       <p>We are a team of 3 Engineers in 4th year ECE.</p>
-      <div class="team-member">
-        <h3>Saravanakumar R</h3>
-        <p>Software Developer</p>
-      </div>
-      <div class="team-member">
-        <h3>Yogeshwaran K</h3>
-        <p>UI/UX Designer</p>
-      </div>
-      <div class="team-member">
-        <h3>Kommana Dilip Kumar</h3>
-        <p>Documentation & Support</p>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <img src="{{ url_for('static', filename='img/team/Saravana.jpg') }}" class="card-img-top" alt="Saravanakumar R">
+              <div class="card-body">
+                <h3 class="card-title">Saravanakumar R</h3>
+                <p class="card-text">Software Developer</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="{{ url_for('static', filename='img/team/Yogi.jpg') }}" class="card-img-top" alt="Yogeshwaran K">
+              <div class="card-body">
+                <h3 class="card-title">Yogeshwaran K</h3>
+                <p class="card-text">UI/UX Designer</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="{{ url_for('static', filename='img/team/dilip.jpg') }}" class="card-img-top" alt="Kommana Dilip Kumar">
+              <div class="card-body">
+                <h3 class="card-title">Kommana Dilip Kumar</h3>
+                <p class="card-text">Documentation & Support</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -414,6 +434,13 @@
     <section id="contact">
       <h2>Contact Us</h2>
       <p>Reach out to our team for support and inquiries about Hydro Sense.</p>
+      <div class="container">
+        <div class="row justify-content-center mt-10">
+          <div class="col-md-8 mt-10">
+            <iframe src="https://forms.gle/dBnUhiFwr5cijoCJ9" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+          </div>
+        </div>
+      </div>
     </section>
 
     <footer>

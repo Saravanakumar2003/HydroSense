@@ -197,3 +197,16 @@ html, body{
   max-width: 50%;
   height: auto;
 }
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-img-top {
+  height: 300px;
+  object-fit: fit;
+}
+
+.container {
+  margin-top: 30px;
+}
