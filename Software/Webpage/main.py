@@ -8,6 +8,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
+@app.route('/terms_of_service')
+def terms_of_service():
+    return render_template('terms_of_service.html')
+
 @app.route('/generate_data', methods=['POST'])
 def generate_data():
     sensor_id = request.form.get('sensor_id')
