@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Hydro Sense</title>
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/logo.png') }}"
+      type="image/x-icon"
+    />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -49,9 +55,11 @@
         </div>
       </nav>
     </header>
+    
+    
 
     <!-- Home Section -->
-    <section id="home">
+    <section id="home" class="home">
       <h1>Welcome to Hydro Sense</h1>
       <p>
         A portable water contamination detection device designed to provide
@@ -274,13 +282,13 @@
     <!-- Video Section -->
     <section id="video" class="my-5">
       <div class="container">
-        <h2 class="text-center">Watch Our Introduction Video</h2>
+        <h2 class="text-center">Watch Our Demo Video</h2>
         <div class="row justify-content-center">
           <div class="col-md-8">
             <div class="embed-responsive embed-responsive-16by9">
               <video class="embed-responsive-item" controls>
                 <source
-                  src="{{ url_for('static', filename='videos/intro.mp4') }}"
+                  src="{{ url_for('static', filename='video/Demo.mp4') }}"
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -419,7 +427,7 @@
           </div>
           <div class="col-md-4">
             <div class="card">
-              <img src="{{ url_for('static', filename='img/team/dilip.jpg') }}" class="card-img-top" alt="Kommana Dilip Kumar">
+              <img src="{{ url_for('static', filename='img/team/Dilip.jpg') }}" class="card-img-top" alt="Kommana Dilip Kumar">
               <div class="card-body">
                 <h3 class="card-title">Kommana Dilip Kumar</h3>
                 <p class="card-text">Documentation & Support</p>

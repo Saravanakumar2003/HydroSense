@@ -28,11 +28,11 @@ section {
 }
 header {
   background-color: white;
-  padding: 1rem 0;
   text-align: center;
-  /* width: 100%;
+  width: 100%;
   position: fixed;
-  top: 0; */
+  top: 0;
+  z-index: 1000;
 }
 
 nav ul {
@@ -209,4 +209,8 @@ html, body{
 
 .container {
   margin-top: 30px;
+}
+
+.home{
+  margin-top: 80px;
 }
