@@ -26,15 +26,26 @@
   <body>
     <!-- Navbar -->
     <header>
-      <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#showcase">Screenshots</a></li>
-          <li><a href="#team">Team</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img
+          src="{{ url_for('static', filename='img/logo.png') }}"
+          alt="Hydro Sense Logo"
+          class="logo"
+        />
+        <a class="navbar-brand" href="#">Hydro Sense</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#showcase">Screenshots</a></li>
+            <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          </ul>
+        </div>
       </nav>
     </header>
 
@@ -102,7 +113,7 @@
       <p>View the Hydro Sense app in action.</p>
       <div class="container">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/1.png') }}"
@@ -113,11 +124,11 @@
                 data-src="{{ url_for('static', filename='img/1.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 1</p>
+                <p class="card-text">Login Page</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/2.png') }}"
@@ -128,11 +139,11 @@
                 data-src="{{ url_for('static', filename='img/2.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 2</p>
+                <p class="card-text">Signup Page</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/3.png') }}"
@@ -143,11 +154,11 @@
                 data-src="{{ url_for('static', filename='img/3.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 3</p>
+                <p class="card-text">Device Details Collection</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/4.png') }}"
@@ -158,11 +169,11 @@
                 data-src="{{ url_for('static', filename='img/4.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 4</p>
+                <p class="card-text">Home Page (No Data)</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/5.png') }}"
@@ -173,11 +184,11 @@
                 data-src="{{ url_for('static', filename='img/4.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 5</p>
+                <p class="card-text">Home Page (With Data)</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/6.png') }}"
@@ -188,11 +199,11 @@
                 data-src="{{ url_for('static', filename='img/4.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 6</p>
+                <p class="card-text">Home Page (Cont..)</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/8.png') }}"
@@ -203,11 +214,11 @@
                 data-src="{{ url_for('static', filename='img/4.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 4</p>
+                <p class="card-text">Settings Page</p>
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <div class="card">
               <img
                 src="{{ url_for('static', filename='img/9.png') }}"
@@ -218,7 +229,7 @@
                 data-src="{{ url_for('static', filename='img/4.png') }}"
               />
               <div class="card-body">
-                <p class="card-text">Caption for Image 4</p>
+                <p class="card-text">Each contaminants page</p>
               </div>
             </div>
           </div>
@@ -288,17 +299,17 @@
             <p>Get the Hydro Sense app for your preferred platform.</p>
             <div class="download-buttons">
               <a
-                href="https://drive.google.com/uc?export=download&id=1-8zZZeKWG2c5jRdfnVZ8WXzHRv8k9bAE"
+                href="https://github.com/Saravanakumar2003/Final-Year-Project/releases/download/v1.0.1/HydroSense-1_0_1-windows.exe"
                 class="btn btn-primary"
                 >Download for Windows</a
               >
               <a
-                href="https://drive.google.com/uc?export=download&id=1XI-LIDqtihqLvLJVAZWvqiQmarow90u1"
+                href="https://github.com/Saravanakumar2003/Final-Year-Project/releases/download/v1.0.1/HydroSense-1_0_1.apk"
                 class="btn btn-primary"
                 >Download for Android</a
               >
               <a
-                href="https://drive.google.com/uc?export=download&id=1zpXbY83FiDmgxE7aWC1mCNm9q2XCxfpf"
+                href="https://github.com/Saravanakumar2003/Final-Year-Project/releases/download/v1.0.1/HydroSense-1_0_4-macos.zip"
                 class="btn btn-primary"
                 >Download for MacOS</a
               >
