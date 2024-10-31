@@ -39,24 +39,40 @@
           class="logo"
         />
         <a class="navbar-brand" href="#">Hydro Sense</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="#services">Features</a></li>
-            <li class="nav-item"><a class="nav-link" href="#showcase">Screenshots</a></li>
-            <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#services">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#showcase">Screenshots</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#download">Download</a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
           </ul>
         </div>
       </nav>
     </header>
-    
-    
 
     <!-- Home Section -->
     <section id="home" class="home">
@@ -80,31 +96,58 @@
           instant alerts.
         </li>
         <li>
+          <strong>Contaminant Detection:</strong> Detects 11 key contaminants
+          with high accuracy.
+        </li>
+        <li>
           <strong>User-Friendly Design:</strong> Sleek and portable, suitable
           for various users.
+        </li>
+        <li>
+          <strong>Cloud-Based Storage:</strong> Secure data storage and
+          accessibility.
+        </li>
+        <li>
+          <strong>Multi-Platform Support:</strong> Available on Windows, MacOS,
+          and Android.
         </li>
       </ul>
     </section>
 
     <!-- Services Section -->
     <section id="services">
-      <h2>Key Features</h2>
+      <h2>Software Key Features</h2>
       <ul>
         <li>
-          <strong>Real-Time Alerts:</strong> Immediate notifications for unsafe
-          contamination levels.
-        </li>
-        <li>
-          <strong>Advanced Sensor Technology:</strong> Detects heavy metals,
-          bacteria, and chemicals.
+          <strong>Easy Installation:</strong> Simple setup and user-friendly
+          interface.
         </li>
         <li>
           <strong>Data Logging & Analysis:</strong> Cloud-based storage and
           analysis.
         </li>
         <li>
-          <strong>Mobile App Integration:</strong> Real-time data, trends, and
-          alerts.
+          <strong>Report Generation:</strong> Download a complete report of each
+          test.
+        </li>
+        <li>
+          <strong>Trend Analysis:</strong> See trends graph of each contaminant
+          with 5, 10, 50 tests.
+        </li>
+        <li>
+          <strong>Graph Sharing:</strong> Download and share trends graph.
+        </li>
+        <li>
+          <strong>Threshold Alerts:</strong> Alert if the value goes beyond the
+          threshold with country specified.
+        </li>
+        <li>
+          <strong>Real-Time Alerts:</strong> Immediate notifications for unsafe
+          contamination levels.
+        </li>
+        <li>
+          <strong>Customizable Settings:</strong> Personalize alerts and
+          monitoring.
         </li>
         <li>
           <strong>Continuous Updates:</strong> Regular updates for enhanced
@@ -114,6 +157,60 @@
           <strong>Comprehensive Support:</strong> Full support for optimal
           performance.
         </li>
+        <li>
+          <strong>Contaminant Detection:</strong> See a total of 11 contaminants
+          which includes:
+          <table class="table table-bordered mt-3">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Contaminants</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Physical</td>
+                <td>
+                  <ul>
+                    <li>Suspended Solids</li>
+                    <li>TDS (Total Dissolved Solids)</li>
+                    <li>Turbidity</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>Chemical</td>
+                <td>
+                  <ul>
+                    <li>Arsenic</li>
+                    <li>Aluminium</li>
+                    <li>Cadmium</li>
+                    <li>Fluoride</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>Biological</td>
+                <td>
+                  <ul>
+                    <li>Bacteria</li>
+                    <li>Viruses</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>Radiological</td>
+                <td>
+                  <ul>
+                    <li>Cesium</li>
+                    <li>Uranium</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li></li>
       </ul>
     </section>
 
@@ -286,7 +383,11 @@
         <div class="row justify-content-center">
           <div class="col-md-8">
             <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/3dN2HjRxj_I" allowfullscreen></iframe>
+              <iframe
+                class="embed-responsive-item"
+                src="https://www.youtube.com/embed/3dN2HjRxj_I"
+                allowfullscreen
+              ></iframe>
             </div>
           </div>
         </div>
@@ -403,7 +504,11 @@
         <div class="row">
           <div class="col-md-4">
             <div class="card">
-              <img src="{{ url_for('static', filename='img/team/Saravana.jpg') }}" class="card-img-top" alt="Saravanakumar R">
+              <img
+                src="{{ url_for('static', filename='img/team/Saravana.jpg') }}"
+                class="card-img-top"
+                alt="Saravanakumar R"
+              />
               <div class="card-body">
                 <h3 class="card-title">Saravanakumar R</h3>
                 <p class="card-text">Software Developer</p>
@@ -412,7 +517,11 @@
           </div>
           <div class="col-md-4">
             <div class="card">
-              <img src="{{ url_for('static', filename='img/team/Yogi.jpg') }}" class="card-img-top" alt="Yogeshwaran K">
+              <img
+                src="{{ url_for('static', filename='img/team/Yogi.jpg') }}"
+                class="card-img-top"
+                alt="Yogeshwaran K"
+              />
               <div class="card-body">
                 <h3 class="card-title">Yogeshwaran K</h3>
                 <p class="card-text">UI/UX Designer</p>
@@ -421,7 +530,11 @@
           </div>
           <div class="col-md-4">
             <div class="card">
-              <img src="{{ url_for('static', filename='img/team/Dilip.jpg') }}" class="card-img-top" alt="Kommana Dilip Kumar">
+              <img
+                src="{{ url_for('static', filename='img/team/Dilip.jpg') }}"
+                class="card-img-top"
+                alt="Kommana Dilip Kumar"
+              />
               <div class="card-body">
                 <h3 class="card-title">Kommana Dilip Kumar</h3>
                 <p class="card-text">Documentation & Support</p>
@@ -439,7 +552,15 @@
       <div class="container">
         <div class="row justify-content-center mt-10">
           <div class="col-md-8 mt-10">
-            <iframe src="https://forms.gle/dBnUhiFwr5cijoCJ9" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <iframe
+              src="https://forms.gle/dBnUhiFwr5cijoCJ9"
+              width="100%"
+              height="500"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              >Loading…</iframe
+            >
           </div>
         </div>
       </div>
