@@ -1,10 +1,8 @@
-# Portable Water-Borne Disease Detector
-
-![Final-Year-Project](https://socialify.git.ci/Saravanakumar2003/Final-Year-Project/image?language=1&owner=1&name=1&stargazers=1&theme=Light)
+# Portable Water Conatmination Detection Device
 
 ## Table of Contents
 
-- [Portable Water-Borne Disease Detector](#portable-water-borne-disease-detector)
+- [Portable Water Conatmination Detection Device](#portable-water-conatmination-detection-device)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Objective](#objective)
