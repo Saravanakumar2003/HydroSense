@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: #f4f4f4;
+  }
+
+  h1 {
+    color: #333;
+  }
+
+  .data {
+    margin-top: 10px;
+    font-size: 1.5em;
+    color: #555;
+  }
+
+  .refresh-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+  .ai_button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+  .container {
+    padding: auto;
+    margin: 10px;
+    border: 1px solid #333;
+  }
+
+  .gauge-container {
+    border: 1px solid #333;
+    width: 200px;
+    height: 100px;
+    margin: 20px auto;
+    color: #fff;
+    position: relative;
+    border-radius: 100px 100px 0 0;
+    background: conic-gradient(green 0% 100%);
+  }
+
+  .indicator {
+    width: 5px;
+    height: 90px;
+    background: black;
+    position: absolute;
+    left: 50%;
+    transform-origin: bottom;
+    transform: rotate(0deg);
+  }
+
+  .gauge-labels {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .gauge-labels span {
+    font-size: 1em;
+    font-weight: 500;
+  }
+
+  .ph-scale {
+    border: 1px solid #333;
+    padding: 5px 5px 5px 5px;
+    background-color: aqua;
+    margin: 0 auto;
+    max-width: 400px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .ph-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+    font-size: 0.8em;
+  }
+
+  input[type="range"] {
+    width: 80%;
+  }
+
+  .chart-container {
+    width: 80%;
+    margin: 20px auto;
+  }
+
+  .charts {
+    border: 1px solid #333;
+    margin-top: 10px;
+    margin: 10px;
+  }
+  
+  .ai{
+    border: 1px solid #333;
+    font-size: 1.5em;
+    font-weight: 500;
+    border: 1px solid #333;
+    margin-top: 10px;
+    margin: 10px;
+  }
+
+  .ai_text{
+    color: rebeccapurple;
+    text-align: center;
+    font-weight: 300;
+    margin: 10px;
+  }
