@@ -1,4 +1,4 @@
-const aiAPI = "http://127.0.0.1:5000/predict";
+const aiAPI = "https://hydrosense.pythonanywhere.com/predict";
 const huggingFaceAPI = "https://api-inference.huggingface.co/models/google/gemma-2-2b-it";
 const huggingFaceKey = "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";
 

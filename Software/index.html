@@ -17,6 +17,18 @@
   <hr />
   <div class="data" id="sensorData">Fetching data...</div>
 
+  <div class="ai">
+    <div class="ai_text">AI Analysis Verdict</div>
+    <hr />
+    <div id="aiOutput">Loading AI Prediction...</div>
+  </div>
+
+  <button class="refresh-button" onclick="fetchSensorData()">Refresh Data</button>
+  <button class="refresh-button" onclick="location.reload()">Refresh Page</button>
+  <br />
+  <button class="ai_button" onclick="ai_report()">Generate AI Report</button>
+  <button class="ai_button" onclick="downloadPDF()">Download Data as PDF</button>
+
   <div class="container">
     <div class="gauge-container">
       <div class="indicator" id="turbidityIndicator"></div>
@@ -52,18 +64,6 @@
       <button class="download-button" onclick="downloadChartImage('tempChart')">Download Temperature Chart</button>
     </div>
   </div>
-
-  <div class="ai">
-    <div class="ai_text">AI Analysis Verdict</div>
-    <hr />
-    <div id="aiOutput">Loading AI Prediction...</div>
-  </div>
-
-  <button class="refresh-button" onclick="fetchSensorData()">Refresh Data</button>
-  <button class="refresh-button" onclick="location.reload()">Refresh Page</button>
-  <br />
-  <button class="ai_button" onclick="ai_report()">Generate AI Report</button>
-  <button class="ai_button" onclick="downloadPDF()">Download Data as PDF</button>
 
   <script src="./js/charts.js"></script>
   <script src="./js/sensor.js"></script>

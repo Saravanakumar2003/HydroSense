@@ -2,7 +2,7 @@ let latestPH = null;
 let latestTemp = null;
 let latestTurbidity = null;
 
-const vegaIP = "http://192.168.4.1";
+const vegaIP = "http://192.168.4.1:80";
 
 function updateGauge(value) {
   let angle = (value / 100) * 180 - 90;
