@@ -3,6 +3,7 @@ let latestTemp = null;
 let latestTurbidity = null;
 
 const vegaIP = "http://192.168.4.1:80";
+const wifiStatusEndpoint = `${vegaIP}/wifi-status`;
 
 function updateGauge(value) {
   let angle = (value / 100) * 180 - 90;
@@ -71,3 +72,65 @@ fetchSensorData();
 setInterval(() => {
   fetchSensorData();
 }, 60000);
+
+
+
+  /* ------------ Wifi status ----------------- */
+
+  //   #include <WiFiNINA.h>
+  // #include <WiFiServer.h>
+
+  // WiFiServer server(80);
+
+  // void setup() {
+  //   // Initialize Wi-Fi and start server
+  //   WiFi.begin(ssid, password);
+  //   server.begin();
+  // }
+
+  // void loop() {
+  //   WiFiClient client = server.available();
+  //   if (client) {
+  //     // Check Wi-Fi status and signal strength
+  //     int status = WiFi.status();
+  //     int rssi = WiFi.RSSI();
+  //     // Send JSON response
+  //     client.println("{\"status\": " + String(status) + ", \"signal_strength\": " + String(rssi) + "}");
+  //     client.stop();
+  //   }
+  // }
+
+
+  function updateWiFiStatus(status, signalStrength) {
+    const wifiStatus = document.getElementById('wifiStatus');
+    const bars = document.querySelectorAll('.signal-bars .bar');
+  
+    wifiStatus.textContent = status;
+  
+    bars.forEach((bar, index) => {
+      if (index < signalStrength) {
+        bar.classList.add('active');
+      } else {
+        bar.classList.remove('active');
+      }
+    });
+  }
+  
+  async function fetchWiFiStatus() {
+    try {
+      const response = await fetch(wifiStatusEndpoint);
+      const data = await response.json();
+      const status = data.status === 3 ? 'Connected' : 'Disconnected';
+      const signalStrength = Math.min(Math.max(Math.floor((data.signal_strength + 100) / 20), 0), 5); // Convert dBm to 0-5 scale
+  
+      updateWiFiStatus(status, signalStrength);
+    } catch (error) {
+      console.error('Error fetching Wi-Fi status:', error);
+    }
+  }
+  
+  // Fetch WiFi status every 5 seconds
+  setInterval(fetchWiFiStatus, 5000);
+  
+  // Initial fetch
+  fetchWiFiStatus();

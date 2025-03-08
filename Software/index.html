@@ -4,71 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HydroSense Dashboard</title>
+  <title>HydroSense</title>
   <link rel="stylesheet" type="text/css" href="./css/main.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+  <link rel="icon" href="./assets/img/icon.png" type="image/x-icon" />
 </head>
 
 <body>
-  <h1>HydroSense Dashboard</h1>
-  <hr />
-  <div class="data" id="sensorData">Fetching data...</div>
+  <h1>HydroSense</h1>
 
-  <div class="ai">
-    <div class="ai_text">AI Analysis Verdict</div>
-    <hr />
-    <div id="aiOutput">Loading AI Prediction...</div>
-  </div>
-
-  <button class="refresh-button" onclick="fetchSensorData()">Refresh Data</button>
-  <button class="refresh-button" onclick="location.reload()">Refresh Page</button>
-  <br />
-  <button class="ai_button" onclick="ai_report()">Generate AI Report</button>
-  <button class="ai_button" onclick="downloadPDF()">Download Data as PDF</button>
-
-  <div class="container">
-    <div class="gauge-container">
-      <div class="indicator" id="turbidityIndicator"></div>
-      <div class="gauge-labels">
-        <span>0%</span>
-        <span>100%</span>
-      </div>
-      <p>Turbidity: <span id="tdValue">100</span></p>
-    </div>
-
-    <div class="ph-scale">
-      <input type="range" id="phSlider" min="0" max="14" step="0.1" value="7" disabled>
-      <div class="ph-labels">
-        <span>0</span>
-        <span>7</span>
-        <span>14</span>
-      </div>
-      <p>pH Value: <span id="phValue">7.0</span></p>
-    </div>
-  </div>
-
-  <div class="charts">
-    <div class="chart-container">
-      <canvas id="phChart"></canvas>
-      <button class="download-button" onclick="downloadChartImage('phChart')">Download pH Chart</button>
-    </div>
-    <div class="chart-container">
-      <canvas id="turbidityChart"></canvas>
-      <button class="download-button" onclick="downloadChartImage('turbidityChart')">Download Turbidity Chart</button>
-    </div>
-    <div class="chart-container">
-      <canvas id="tempChart"></canvas>
-      <button class="download-button" onclick="downloadChartImage('tempChart')">Download Temperature Chart</button>
-    </div>
-  </div>
-
-  <script src="./js/charts.js"></script>
-  <script src="./js/sensor.js"></script>
-  <script src="./js/ai.js"></script>
-  <script src="./js/main.js"></script>
+  <button onclick="window.location.href='./dashboard.html'">Dashboard</button>
 </body>
 
 </html>

@@ -142,3 +142,26 @@ body {
       flex: 1 1 100%;
     }
   }
+
+  /* ------------ Wifi status ----------------- */
+
+  .wifi-status {
+    margin-top: 20px;
+  }
+  
+  .signal-bars {
+    display: flex;
+    align-items: flex-end;
+    height: 20px;
+  }
+  
+  .signal-bars .bar {
+    width: 5px;
+    height: 5px;
+    margin: 0 2px;
+    background-color: gray;
+  }
+  
+  .signal-bars .bar.active {
+    background-color: green;
+  }
