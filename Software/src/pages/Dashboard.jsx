@@ -4,8 +4,9 @@ import { logoutInitiate } from '../redux/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import Dash from '../components/Dashboard/Dashboard';
 
-const Home = () => {
+const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -27,12 +28,8 @@ const Home = () => {
 
   return (
     <div>
-      <ToastContainer position="bottom-right" />
-      <h2 style={{ textAlign: "center", fontWeight: "bold", marginTop: "30px" }}>
-        Welcome to our Homepage
-      </h2>
-      <br />
-      <button
+      <Dash />
+      {/* <button
         className='btn btn-danger'
         onClick={handleAuth}
         style={{
@@ -42,9 +39,9 @@ const Home = () => {
         }}
       >
         Log Out
-      </button>
+      </button> */}
     </div>
   );
 };
 
-export default Home;
+export default Dashboard;
