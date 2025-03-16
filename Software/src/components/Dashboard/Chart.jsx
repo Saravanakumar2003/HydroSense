@@ -20,17 +20,17 @@ const Dashboard = () => {
             tooltip: { trigger: 'axis' },
             legend: { 
                 data: ['pH', 'TDS', 'Water Temp', 'Turbidity'], 
-                bottom: 0 
+                bottom: 0,
+                textStyle: { color: '#fff' }
             },
             xAxis: { type: 'category', name: 'Count', data: [], boundaryGap: false },
             yAxis: { 
                 type: 'value', 
                 name: 'Sensor Value', 
                 min: 0, 
-                max: 60
+                max: 50
             },
             series: [
-                // { name: 'pH', type: 'line', data: [], smooth: true, itemStyle: { color: '#2E93fA' }, markLine: { data: [{ yAxis: 7.5, lineStyle: { color: '#2E93fA' } }] } },
                 { name: 'pH', type: 'line', data: [], smooth: true, itemStyle: { color: '#2E93fA' }},
                 { name: 'TDS', type: 'line', data: [], smooth: true, itemStyle: { color: '#66DA26' }},
                 { name: 'Water Temp', type: 'line', data: [], smooth: true, itemStyle: { color: '#FF9800' }},
@@ -42,7 +42,7 @@ const Dashboard = () => {
         chartInstance.current.setOption(option);
 
         const updateChart = () => {
-            count++;  // Increment count instead of using time
+            count++;
             let ph = getRandom(6.5, 8.5);
             let tds = getRandom(10, 50);
             let temp = getRandom(20, 35);
@@ -61,13 +61,20 @@ const Dashboard = () => {
 
         const interval = setInterval(updateChart, 5000);
 
+        const handleResize = () => {
+            chartInstance.current.resize();
+        };
+
+        window.addEventListener('resize', handleResize);
+
         return () => {
             clearInterval(interval);
+            window.removeEventListener('resize', handleResize);
             chartInstance.current.dispose();
         };
     }, []);
 
-    return <div ref={chartRef} style={{ width: "100%", height: "500px" }} />;
+    return <div ref={chartRef} style={{ width: "100%", height: "450px" }} />;
 };
 
 export default Dashboard;

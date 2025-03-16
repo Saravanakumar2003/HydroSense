@@ -1,9 +1,34 @@
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import "../assets/css/Dashboard.css";
 import "../assets/js/Dashboard"  
 import Chart from "./Chart";
 import Battery from "./Battery";
+import SensorGauge from "./Meter";
 
 const Dash = () => {
+    const [isRightAreaOpen, setIsRightAreaOpen] = useState(false);
+
+    const toggleRightArea = () => {
+        setIsRightAreaOpen(!isRightAreaOpen);
+    };
+
+    const [ph, setPh] = useState(30);
+    const [turbidity, setTurbidity] = useState(60);
+    const [tds, setTds] = useState(90);
+    const [temp, setTemp] = useState(50);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setPh(Math.round(Math.random() * 100));
+        setTurbidity(Math.round(Math.random() * 100));
+        setTds(Math.round(Math.random() * 100));
+        setTemp(Math.round(Math.random() * 100));
+      }, 5000);
+  
+      return () => clearInterval(interval);
+    }, []);
+
     return (
         <div>
             <div class="app-container">
@@ -60,6 +85,15 @@ const Dash = () => {
                         </li>
                         <li class="nav-list-item">
                             <a class="nav-list-link" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                            </svg>
+                                Profile
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a class="nav-list-link" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
                                 Settings
                             </a>
@@ -68,13 +102,21 @@ const Dash = () => {
                 </div>
                 <div class="app-main">
                     <div class="main-header-line">
-                        <h1>HydroSense Dashboard</h1>
-                        <div class="action-buttons">
-                            <button class="open-right-area">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                        <div className="action-buttons">
+                            <h1>HydroSense Dashboard</h1>
+                            <button className="open-right-area" onClick={toggleRightArea}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
-                            <button class="menu-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+                            <button className="menu-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+                            </button>
+                        </div>
+                        <div className="action-buttons">
+                            <button>
+                                Start Monitoring
+                            </button>
+                            <button>
+                                Stop Monitoring
                             </button>
                         </div>
                     </div>
@@ -82,57 +124,44 @@ const Dash = () => {
                         <div class="chart-container-wrapper">
                             <div class="chart-container">
                                 <div class="chart-info-wrapper">
-                                    <h2>Applications</h2>
-                                    <span>20.5 K</span>
+                                    <h2>pH Value</h2>
+                                    <span>{ph}</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <svg viewBox="0 0 36 36" class="circular-chart pink">
-                                        <path class="circle-bg" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <path class="circle" stroke-dasharray="30, 100" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <text x="18" y="20.35" class="percentage">30%</text>
-                                    </svg>
+                                    <SensorGauge value={ph} label="pH Value" />
                                 </div>
                             </div>
                         </div>
                         <div class="chart-container-wrapper">
                             <div class="chart-container">
                                 <div class="chart-info-wrapper">
-                                    <h2>Shortlisted</h2>
-                                    <span>5.5 K</span>
+                                    <h2>Turbidity Value</h2>
+                                    <span>{turbidity} NTU</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <svg viewBox="0 0 36 36" class="circular-chart blue">
-                                        <path class="circle-bg" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <path class="circle" stroke-dasharray="60, 100" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <text x="18" y="20.35" class="percentage">60%</text>
-                                    </svg>
+                                    <SensorGauge value={turbidity} label="pH Value" />
                                 </div>
                             </div>
                         </div>
                         <div class="chart-container-wrapper">
                             <div class="chart-container">
                                 <div class="chart-info-wrapper">
-                                    <h2>On-hold</h2>
-                                    <span>10.5 K</span>
+                                    <h2>TDS Value</h2>
+                                    <span>{tds} ppm</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <svg viewBox="0 0 36 36" class="circular-chart orange">
-                                        <path class="circle-bg" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <path class="circle" stroke-dasharray="90, 100" d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                                        <text x="18" y="20.35" class="percentage">90%</text>
-                                    </svg>
+                                    <SensorGauge value={tds} label="pH Value" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container-wrapper">
+                            <div class="chart-container">
+                                <div class="chart-info-wrapper">
+                                    <h2>Temperature Value</h2>
+                                    <span>{temp} K</span>
+                                </div>
+                                <div class="chart-svg">
+                                    <SensorGauge value={temp} label="pH Value" />
                                 </div>
                             </div>
                         </div>
@@ -144,16 +173,16 @@ const Dash = () => {
                                     <h2>Sensor Data</h2>
                                     <span>Last 30 days</span>
                                 </div>
-                    {/* Sensor Data Starts */}
-                    <Chart />
-                    {/* Sensor Data Ends */}
+                                {/* Sensor Data Starts */}
+                                <Chart />
+                                {/* Sensor Data Ends */}
                             </div>
                         </div>
                         <div class="chart-container-wrapper small">
                             <div class="chart-container">
                                 <div class="chart-container-header">
-                                    <h2>Acquisitions</h2>
-                                    <span href="#">This month</span>
+                                    <h2>Test Details</h2>
+                                    <span href="#">D-0001</span>
                                 </div>
                                 <div class="acquisitions-bar">
                                     <span class="bar-progress rejected"></span>
@@ -163,23 +192,23 @@ const Dash = () => {
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color applications"></span>
-                                    <span class="progress-type">Applications</span>
-                                    <span class="progress-amount">64%</span>
+                                    <span class="progress-type">Total Test Conducted</span>
+                                    <span class="progress-amount">5</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color shortlisted"></span>
-                                    <span class="progress-type">Shortlisted</span>
-                                    <span class="progress-amount">18%</span>
+                                    <span class="progress-type">Last Tested</span>
+                                    <span class="progress-amount">16/03/2025</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color on-hold"></span>
-                                    <span class="progress-type">On-hold</span>
-                                    <span class="progress-amount">10%</span>
+                                    <span class="progress-type">Test Location</span>
+                                    <span class="progress-amount">Chennai</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color rejected"></span>
-                                    <span class="progress-type">Rejected</span>
-                                    <span class="progress-amount">8%</span>
+                                    <span class="progress-type">Water Quality</span>
+                                    <span class="progress-amount">Good</span>
                                 </div>
                             </div>
                             <div class="chart-container applicants">
@@ -206,7 +235,7 @@ const Dash = () => {
                     <div class="app-right-content">
                         <div class="app-right-section">
                             <div class="app-right-section-header">
-                                <h2>Messages</h2>
+                                <h2>Announcements</h2>
                                 <span class="notification-active">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                                 </span>
@@ -235,7 +264,7 @@ const Dash = () => {
                         </div>
                         <div class="app-right-section">
                             <div class="app-right-section-header">
-                                <h2>Activity</h2>
+                                <h2>Alerts</h2>
                                 <span class="notification-active">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
                                 </span>
@@ -263,30 +292,6 @@ const Dash = () => {
                                 </span>
                                 <div class="activity-text-wrapper">
                                     <p class="activity-text">Your teammate, <strong>Wade Wilson</strong> has closed the job post of <strong>IOS Developer</strong></p>
-                                </div>
-                            </div>
-                            <div class="activity-line">
-                                <span class="activity-icon applicant">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">There are <strong>4 new applications</strong> for <strong>Front-End Developer</strong></p>
-                                </div>
-                            </div>
-                            <div class="activity-line">
-                                <span class="activity-icon applicant">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">There are <strong>2 new applications</strong> for <strong>Design Lead</strong></p>
-                                </div>
-                            </div>
-                            <div class="activity-line">
-                                <span class="activity-icon close">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">Your teammate, <strong>Wade Wilson</strong> has closed the job post of <strong>Back-End Developer</strong></p>
                                 </div>
                             </div>
                             <div class="activity-line">

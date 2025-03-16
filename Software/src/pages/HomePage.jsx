@@ -1,6 +1,6 @@
 import React from 'react';
 import '../components/assets/css/Home.css'
-import '../components/assets/css/Imput.css'
+import '../components/assets/css/Input.css'
 
 const HomePage = () => {
   return (
