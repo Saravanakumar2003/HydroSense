@@ -4,7 +4,10 @@ import "../assets/css/Dashboard.css";
 import "../assets/js/Dashboard"  
 import Chart from "./Chart";
 import Battery from "./Battery";
-import SensorGauge from "./Meter";
+import TemperatureMeter from './Meter/Temperature';
+import TurbidityMeter from './Meter/Turbidity';
+import TDSMeter from './Meter/TDS';
+import PHMeter from './Meter/pH';
 
 const Dash = () => {
     const [isRightAreaOpen, setIsRightAreaOpen] = useState(false);
@@ -20,10 +23,10 @@ const Dash = () => {
   
     useEffect(() => {
       const interval = setInterval(() => {
-        setPh(Math.round(Math.random() * 100));
+        setPh(Math.round(Math.random() * 10));
         setTurbidity(Math.round(Math.random() * 100));
         setTds(Math.round(Math.random() * 100));
-        setTemp(Math.round(Math.random() * 100));
+        setTemp(Math.round(Math.random() * 35));
       }, 5000);
   
       return () => clearInterval(interval);
@@ -79,6 +82,25 @@ const Dash = () => {
                         </li>
                         <li class="nav-list-item">
                             <a class="nav-list-link" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" x2="12" y1="22.08" y2="12" />
+                            </svg>
+                                Artificial Intelligence
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a class="nav-list-link" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                            </svg>
+                                Cloud
+                            </a>
+                        </li>
+
+                        <li class="nav-list-item">
+                            <a class="nav-list-link" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>
                                 Reports
                             </a>
@@ -128,7 +150,7 @@ const Dash = () => {
                                     <span>{ph}</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <SensorGauge value={ph} label="pH Value" />
+                                    <PHMeter ph={ph} maxPH={14} />
                                 </div>
                             </div>
                         </div>
@@ -139,7 +161,7 @@ const Dash = () => {
                                     <span>{turbidity} NTU</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <SensorGauge value={turbidity} label="pH Value" />
+                                    <TurbidityMeter turbidity={turbidity} maxLimit={100} />
                                 </div>
                             </div>
                         </div>
@@ -150,7 +172,7 @@ const Dash = () => {
                                     <span>{tds} ppm</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <SensorGauge value={tds} label="pH Value" />
+                                    <TDSMeter tds={tds} maxLimit={500} />
                                 </div>
                             </div>
                         </div>
@@ -161,7 +183,7 @@ const Dash = () => {
                                     <span>{temp} K</span>
                                 </div>
                                 <div class="chart-svg">
-                                    <SensorGauge value={temp} label="pH Value" />
+                                <TemperatureMeter temperature={temp} maxLimit={35} />
                                 </div>
                             </div>
                         </div>
@@ -235,35 +257,6 @@ const Dash = () => {
                     <div class="app-right-content">
                         <div class="app-right-section">
                             <div class="app-right-section-header">
-                                <h2>Announcements</h2>
-                                <span class="notification-active">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
-                                </span>
-                            </div>
-                            <div class="message-line">
-                                {/* <img src="https://images.unsplash.com/photo-1562159278-1253a58da141?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MzB8fHBvcnRyYWl0JTIwbWFufGVufDB8MHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="profile"></img> */}
-                                    <div class="message-text-wrapper">
-                                        <p class="message-text">Eric Clampton</p>
-                                        <p class="message-subtext">Have you planned any deadline for this?</p>
-                                    </div>
-                            </div>
-                            <div class="message-line">
-                                {/* <img src="https://images.unsplash.com/photo-1604004555489-723a93d6ce74?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80" alt="profile"></img> */}
-                                    <div class="message-text-wrapper">
-                                        <p class="message-text">Jess Flax</p>
-                                        <p class="message-subtext">Can we schedule another meeting for next thursday?</p>
-                                    </div>
-                            </div>
-                            <div class="message-line">
-                                {/* <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80" alt="profile"> </img> */}
-                                    <div class="message-text-wrapper">
-                                        <p class="message-text">Pam Halpert</p>
-                                        <p class="message-subtext">The candidate has been shorlisted.</p>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="app-right-section">
-                            <div class="app-right-section-header">
                                 <h2>Alerts</h2>
                                 <span class="notification-active">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
@@ -274,8 +267,23 @@ const Dash = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
                                 </span>
                                 <div class="activity-text-wrapper">
-                                    <p class="activity-text">Your plan is expires in <strong>3 days.</strong></p>
-                                    <a class="activity-link" href="#">Renew Now</a>
+                                    <p class="activity-text">This is a test alert message, <strong>Alert!!</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-right-section">
+                            <div class="app-right-section-header">
+                                <h2>Announcements</h2>
+                                <span class="notification-active">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                                </span>
+                            </div>
+                            <div class="activity-line">
+                                <span class="activity-icon applicant">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
+                                </span>
+                                <div class="activity-text-wrapper">
+                                    <p class="activity-text">Exciting News! The first beta version of Hydro Sense is now live! Experience real-time water quality monitoring with AI-powered insights.</p>
                                 </div>
                             </div>
                             <div class="activity-line">
@@ -283,24 +291,15 @@ const Dash = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
                                 </span>
                                 <div class="activity-text-wrapper">
-                                    <p class="activity-text">There are <strong>3 new applications</strong> for <strong>UI Developer</strong></p>
+                                    <p class="activity-text">Join the Revolution! We are looking for early adopters to test Hydro Sense and provide valuable insights.</p>
                                 </div>
                             </div>
                             <div class="activity-line">
-                                <span class="activity-icon close">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
+                                <span class="activity-icon applicant">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-plus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
                                 </span>
                                 <div class="activity-text-wrapper">
-                                    <p class="activity-text">Your teammate, <strong>Wade Wilson</strong> has closed the job post of <strong>IOS Developer</strong></p>
-                                </div>
-                            </div>
-                            <div class="activity-line">
-                                <span class="activity-icon draft">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-minus"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="9" y1="15" x2="15" y2="15" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">You have drafted a job post for <strong>HR Specialist</strong></p>
-                                    <a href="#" class="activity-link">Complete Now</a>
+                                    <p class="activity-text">Smarter. Faster. More Accurate. Hydro Sense has been upgraded with a new AI-powered water quality prediction model using Support Vector Machine (SVM). </p>
                                 </div>
                             </div>
                         </div>

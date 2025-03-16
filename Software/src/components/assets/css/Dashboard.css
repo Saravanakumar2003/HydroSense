@@ -23,7 +23,7 @@
 	 --draft-bg: #fed8b3;
 	 --draft-icon: #e9780e;
 }
- body {
+ body, html {
 	 font-family: 'Poppins', sans-serif;
 	 background-color: #050e2d;
 }
@@ -459,7 +459,7 @@
  .app-right-section-header {
 	 display: flex;
 	 justify-content: space-between;
-	 align-items: center;
+	 align-items: left;
 	 padding: 0 16px;
 	 margin-top: 16px;
 }
@@ -483,6 +483,9 @@
 	 top: -1px;
 	 right: -1px;
 	 box-shadow: 0 0 0 2px var(--app-bg-dark);
+}
+.app-right-section p{
+    text-align: justify;
 }
  .message-line {
 	 display: flex;
@@ -733,3 +736,201 @@
     right: 0;
     opacity: 1;
 }
+
+
+
+/* ------------------------------------- */
+
+.small-meter {
+    font-family: Helvetica, sans-serif;
+    width: 30px;
+    position: relative;
+  }
+  
+  .small-meter .small-glass {
+    background: #e5e5e5;
+    border-radius: 10px;
+    display: block;
+    height: 80px;
+    width: 15px;
+    margin: 0 auto 5px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #bdbdbd;
+  }
+  
+  .small-meter .small-amount {
+    display: block;
+    width: 15px;
+    position: absolute;
+    bottom: 0;
+    transition: height 0.5s ease-in-out;
+  }
+  
+  .small-meter strong {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+  
+  .small-bulb {
+    background: #e5e5e5;
+    border-radius: 50%;
+    display: block;
+    height: 12px;
+    width: 12px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .small-bulb .small-red-circle {
+    border-radius: 50%;
+    display: block;
+    height: 12px;
+    width: 12px;
+  }
+  
+  .small-bulb .small-filler {
+    border-radius: 50%;
+    display: block;
+    height: 6px;
+    width: 6px;
+    position: absolute;
+    top: -3px;
+    left: 3px;
+    z-index: 2;
+  }
+  
+  /* Turbidity Meter */
+  .turbidity-meter {
+    font-family: Helvetica, sans-serif;
+    width: 30px;
+    position: relative;
+  }
+  
+  .turbidity-meter .water-drop {
+    background: #e5e5e5;
+    border-radius: 50% 50% 40% 40%;
+    display: block;
+    height: 80px;
+    width: 30px;
+    margin: 0 auto 5px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .turbidity-meter .turbidity-level {
+    border-radius: 50% 50% 40% 40%;
+    display: block;
+    width: 30px;
+    position: absolute;
+    bottom: 0;
+    transition: height 0.5s ease-in-out;
+  }
+  
+  .turbidity-meter strong {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+  
+  .turbidity-base {
+    background: #e5e5e5;
+    border-radius: 50%;
+    display: block;
+    height: 12px;
+    width: 12px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .turbidity-base .base-circle {
+    border-radius: 50%;
+    display: block;
+    height: 12px;
+    width: 12px;
+  }
+  
+  .turbidity-base .filler {
+    border-radius: 50%;
+    display: block;
+    height: 6px;
+    width: 6px;
+    position: absolute;
+    top: -3px;
+    left: 3px;
+    z-index: 2;
+  }
+  
+  /* TDS Meter */
+  .tds-meter {
+    font-family: Helvetica, sans-serif;
+    width: 30px;
+    position: relative;
+  }
+  
+  .tds-meter .strip-container {
+    background: #e5e5e5;
+    border-radius: 10px;
+    display: block;
+    height: 80px;
+    width: 15px;
+    margin: 0 auto 5px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #bdbdbd;
+  }
+  
+  .tds-meter .tds-level {
+    display: block;
+    width: 15px;
+    position: absolute;
+    bottom: 0;
+    transition: height 0.5s ease-in-out;
+  }
+  
+  .tds-meter strong {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+  
+  .tds-tip {
+    background: #e5e5e5;
+    border-radius: 5px;
+    display: block;
+    height: 12px;
+    width: 25px;
+    margin: 0 auto;
+    position: relative;
+    top: -4px;
+  }
+  
+  /* pH Test Tube */
+  .ph-test-tube {
+    width: 30px;
+    height: 100px;
+    border: 2px solid #ccc;
+    border-radius: 10px 10px 5px 5px;
+    position: relative;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+  
+  .ph-liquid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transition: height 0.5s ease-in-out, background 0.5s ease-in-out;
+  }
+  
+  .ph-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+  
