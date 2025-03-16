@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../assets/css/Dashboard.css";
-import "../assets/js/Dashboard"  
 import Chart from "./Chart";
 import Battery from "./Battery";
 import TemperatureMeter from './Meter/Temperature';
@@ -10,12 +9,6 @@ import TDSMeter from './Meter/TDS';
 import PHMeter from './Meter/pH';
 
 const Dash = () => {
-    const [isRightAreaOpen, setIsRightAreaOpen] = useState(false);
-
-    const toggleRightArea = () => {
-        setIsRightAreaOpen(!isRightAreaOpen);
-    };
-
     const [ph, setPh] = useState(30);
     const [turbidity, setTurbidity] = useState(60);
     const [tds, setTds] = useState(90);
@@ -32,6 +25,25 @@ const Dash = () => {
       return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        const openRightArea = () => document.querySelector('.app-right').classList.add('show');
+        const closeRightArea = () => document.querySelector('.app-right').classList.remove('show');
+        const openMenu = () => document.querySelector('.app-left').classList.add('show');
+        const closeMenu = () => document.querySelector('.app-left').classList.remove('show');
+
+        document.querySelector('.open-right-area').addEventListener('click', openRightArea);
+        document.querySelector('.close-right').addEventListener('click', closeRightArea);
+        document.querySelector('.menu-button').addEventListener('click', openMenu);
+        document.querySelector('.close-menu').addEventListener('click', closeMenu);
+
+        return () => {
+            document.querySelector('.open-right-area').removeEventListener('click', openRightArea);
+            document.querySelector('.close-right').removeEventListener('click', closeRightArea);
+            document.querySelector('.menu-button').removeEventListener('click', openMenu);
+            document.querySelector('.close-menu').removeEventListener('click', closeMenu);
+        };
+    }, []);
+
     return (
         <div>
             <div class="app-container">
@@ -39,11 +51,8 @@ const Dash = () => {
                     <button class="close-menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </button>
-                    <div class="app-logo">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2">
-                            <line x1="18" y1="20" x2="18" y2="10" />
-                            <line x1="12" y1="20" x2="12" y2="4" />
-                            <line x1="6" y1="20" x2="6" y2="14" />       </svg>
+                    <div className="app-logo">
+                        <img src={require("../assets/img/icon.png")} alt="logo" />
                         <span>HydroSense</span>
                     </div>
                     <ul class="nav-list">
@@ -125,8 +134,8 @@ const Dash = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>HydroSense Dashboard</h1>
-                            <button className="open-right-area" onClick={toggleRightArea}>
+                            <h1>Default Dashboard</h1>
+                            <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
                             <button className="menu-button">
@@ -144,10 +153,12 @@ const Dash = () => {
                     </div>
                     <div class="chart-row three">
                         <div class="chart-container-wrapper">
-                            <div class="chart-container">
+                            <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>pH Value</h2>
                                     <span>{ph}</span>
+                                    <br /><br />
+                                    <h2><strong>Limits:</strong> 6-8</h2>
                                 </div>
                                 <div class="chart-svg">
                                     <PHMeter ph={ph} maxPH={14} />
@@ -155,10 +166,12 @@ const Dash = () => {
                             </div>
                         </div>
                         <div class="chart-container-wrapper">
-                            <div class="chart-container">
+                            <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>Turbidity Value</h2>
                                     <span>{turbidity} NTU</span>
+                                    <br /><br />
+                                    <h2><strong>Limits:</strong> 80-100</h2>
                                 </div>
                                 <div class="chart-svg">
                                     <TurbidityMeter turbidity={turbidity} maxLimit={100} />
@@ -166,10 +179,12 @@ const Dash = () => {
                             </div>
                         </div>
                         <div class="chart-container-wrapper">
-                            <div class="chart-container">
+                            <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>TDS Value</h2>
                                     <span>{tds} ppm</span>
+                                    <br /><br />
+                                    <h2><strong>Limits:</strong> 0-500</h2>
                                 </div>
                                 <div class="chart-svg">
                                     <TDSMeter tds={tds} maxLimit={500} />
@@ -177,10 +192,12 @@ const Dash = () => {
                             </div>
                         </div>
                         <div class="chart-container-wrapper">
-                            <div class="chart-container">
+                            <div class="chart">
                                 <div class="chart-info-wrapper">
-                                    <h2>Temperature Value</h2>
-                                    <span>{temp} K</span>
+                                    <h2>Temp Value</h2>
+                                    <span>{temp} C</span>
+                                    <br /><br />
+                                    <h2><strong>Limits:</strong> 25 - 30 C</h2>
                                 </div>
                                 <div class="chart-svg">
                                 <TemperatureMeter temperature={temp} maxLimit={35} />
@@ -249,10 +266,10 @@ const Dash = () => {
                     </button>
                     <div class="profile-box">
                         <div class="profile-photo-wrapper">
-                            {/* <img src="https://images.unsplash.com/photo-1551292831-023188e78222?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTE0fHxwb3J0cmFpdHxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="profile"></img> */}
+                            <img src="https://avatars.githubusercontent.com/u/100985347?v=4" alt="profile"></img>
                         </div>
-                        <p class="profile-text">Julia Pellegrini</p>
-                        <p class="profile-subtext">Recruiting Manager</p>
+                        <p class="profile-text">Saravanakumar R</p>
+                        <p class="profile-subtext">Velammal Engineering College</p>
                     </div>
                     <div class="app-right-content">
                         <div class="app-right-section">

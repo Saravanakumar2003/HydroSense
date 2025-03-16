@@ -74,7 +74,7 @@ const Dashboard = () => {
         };
     }, []);
 
-    return <div ref={chartRef} style={{ width: "100%", height: "450px" }} />;
+    return <div ref={chartRef} style={{ width: "100%", height: "440px" }} />;
 };
 
 export default Dashboard;
