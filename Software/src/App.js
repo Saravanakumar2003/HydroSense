@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { auth } from './firebase';
 import { setUser } from './redux/actions';
+import FullPageChart from './pages/FullPageChart';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/chart" component={FullPageChart} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/verify-email" component={VerifyEmail} />

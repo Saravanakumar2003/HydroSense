@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
-import Chart from "../components/Dashboard/Chart";
-import Battery from "../components/Dashboard/Battery";
-import TemperatureMeter from '../components/Dashboard/Meter/Temperature';
-import TurbidityMeter from '../components/Dashboard/Meter/Turbidity';
-import TDSMeter from '../components/Dashboard/Meter/TDS';
-import PHMeter from '../components/Dashboard/Meter/pH';
+import FullChart from "../components/Dashboard/FullChart";
 
 const Dash = () => {
     const [ph, setPh] = useState(30);
@@ -58,10 +53,10 @@ const Dash = () => {
                     </div>
                     <ul class="nav-list">
                         <li class="nav-list-item active">
-                            <a class="nav-list-link" href="#">
+                            <Link className="nav-list-link" to="/dashboard">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18" /></svg>
                                 Dashboard
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-list-item">
                             <Link className="nav-list-link" to="/chart">
@@ -135,7 +130,7 @@ const Dash = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Default Dashboard</h1>
+                            <h1>Chart View</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -143,122 +138,7 @@ const Dash = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
-                        <div className="action-buttons">
-                            <button className='buttons'>
-                                Start Monitoring
-                            </button>
-                            <button className='buttons'>
-                                Stop Monitoring
-                            </button>
-                        </div>
-                    </div>
-                    <div class="chart-row three">
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>pH Value</h2>
-                                    <span>{ph}</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 6-8</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <PHMeter ph={ph} maxPH={14} />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>Turbidity Value</h2>
-                                    <span>{turbidity} NTU</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 80-100</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <TurbidityMeter turbidity={turbidity} maxLimit={100} />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>TDS Value</h2>
-                                    <span>{tds} ppm</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 0-500</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <TDSMeter tds={tds} maxLimit={500} />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>Temp Value</h2>
-                                    <span>{temp} C</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 25 - 30 C</h2>
-                                </div>
-                                <div class="chart-svg">
-                                <TemperatureMeter temperature={temp} maxLimit={35} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-row two">
-                        <div class="chart-container-wrapper big">
-                            <div class="chart-container">
-                                <div class="chart-container-header">
-                                    <h2>Sensor Data</h2>
-                                    <span>Last 30 days</span>
-                                </div>
-                                {/* Sensor Data Starts */}
-                                <Chart />
-                                {/* Sensor Data Ends */}
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper small">
-                            <div class="chart-container">
-                                <div class="chart-container-header">
-                                    <h2>Test Details</h2>
-                                    <span href="#">D-0001</span>
-                                </div>
-                                <div class="acquisitions-bar">
-                                    <span class="bar-progress rejected"></span>
-                                    <span class="bar-progress on-hold"></span>
-                                    <span class="bar-progress shortlisted"></span>
-                                    <span class="bar-progress applications"></span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color applications"></span>
-                                    <span class="progress-type">Total Test Conducted</span>
-                                    <span class="progress-amount">5</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color shortlisted"></span>
-                                    <span class="progress-type">Last Tested</span>
-                                    <span class="progress-amount">16/03/2025</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color on-hold"></span>
-                                    <span class="progress-type">Test Location</span>
-                                    <span class="progress-amount">Chennai</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color rejected"></span>
-                                    <span class="progress-type">Water Quality</span>
-                                    <span class="progress-amount">Good</span>
-                                </div>
-                            </div>
-                            <div class="chart-container applicants">
-                                <div class="chart-container-header">
-                                    <h2>Battery Level</h2>
-                                    <span>3000 MaH</span>
-                                </div>
-                                <Battery />
-                            </div>
-                        </div>
+                        <FullChart />
                     </div>
                 </div>
                 <div class="app-right">

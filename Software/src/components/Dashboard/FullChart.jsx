@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-const Dashboard = () => {
+const FullChart = () => {
     const chartRef = useRef(null);
     let chartInstance = useRef(null);
     const dataLimit = 30;
@@ -28,13 +28,61 @@ const Dashboard = () => {
                 type: 'value', 
                 name: 'Sensor Value', 
                 min: 0, 
-                max: 50
+                max: 100
             },
             series: [
-                { name: 'pH', type: 'line', data: [], smooth: true, itemStyle: { color: '#2E93fA' }},
-                { name: 'TDS', type: 'line', data: [], smooth: true, itemStyle: { color: '#66DA26' }},
-                { name: 'Water Temp', type: 'line', data: [], smooth: true, itemStyle: { color: '#FF9800' }},
-                { name: 'Turbidity', type: 'line', data: [], smooth: true, itemStyle: { color: '#D7263D' }},
+                { 
+                    name: 'pH', 
+                    type: 'line', 
+                    data: [], 
+                    smooth: true, 
+                    itemStyle: { color: '#2E93fA' },
+                    markLine: {
+                        data: [
+                            { yAxis: 8, name: 'Max Limit' }
+                        ],
+                        lineStyle: { color: '#2E93fA' }
+                    }
+                },
+                { 
+                    name: 'TDS', 
+                    type: 'line', 
+                    data: [], 
+                    smooth: true, 
+                    itemStyle: { color: '#66DA26' },
+                    markLine: {
+                        data: [
+                            { yAxis: 50, name: 'Max Limit' }
+                        ],
+                        lineStyle: { color: '#66DA26' }
+                    }
+                },
+                { 
+                    name: 'Water Temp', 
+                    type: 'line', 
+                    data: [], 
+                    smooth: true, 
+                    itemStyle: { color: '#FF9800' },
+                    markLine: {
+                        data: [
+                            { yAxis: 30, name: 'Max Limit' }
+                        ],
+                        lineStyle: { color: '#FF9800' }
+                    }
+                },
+                { 
+                    name: 'Turbidity', 
+                    type: 'line', 
+                    data: [], 
+                    smooth: true, 
+                    itemStyle: { color: '#D7263D' },
+                    markLine: {
+                        data: [
+                            { yAxis: 100, name: 'Max Limit' }
+                        ],
+                        lineStyle: { color: '#D7263D' }
+                    }
+                },
             ],
             animationDuration: 1000
         };
@@ -74,7 +122,7 @@ const Dashboard = () => {
         };
     }, []);
 
-    return <div ref={chartRef} style={{ width: "100%", height: "450px" }} />;
+    return <div ref={chartRef} style={{ width: "100%", height: "700px" }} />;
 };
 
-export default Dashboard;
+export default FullChart;
