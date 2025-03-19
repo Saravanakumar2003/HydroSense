@@ -20,7 +20,7 @@ const FullChart = () => {
             tooltip: { trigger: 'axis' },
             legend: { 
                 data: ['pH', 'TDS', 'Water Temp', 'Turbidity'], 
-                bottom: 0,
+                top: 0,
                 textStyle: { color: '#fff' }
             },
             xAxis: { type: 'category', name: 'Count', data: [], boundaryGap: false },
@@ -84,7 +84,32 @@ const FullChart = () => {
                     }
                 },
             ],
-            animationDuration: 1000
+            animationDuration: 1000,
+            dataZoom: [
+                { 
+                    type: 'inside', 
+                    start: 0, 
+                    end: 100 
+                },
+                { 
+                    start: 0, 
+                    end: 100, 
+                    handleIcon: 'M0,0 v9.7h5 v-9.7h-5 Z', 
+                    handleSize: '110%', 
+                    handleStyle: { color: '#fff' }, 
+                    textStyle: { color: '#fff' } 
+                }
+            ],
+            toolbox: {
+                feature: {
+                    saveAsImage: { title: 'Save as Image' },
+                    restore: { title: 'Restore' },
+                    dataZoom: { title: { zoom: 'Zoom', back: 'Reset Zoom' } }
+                },
+                iconStyle: {
+                    borderColor: '#fff'
+                }
+            }
         };
 
         chartInstance.current.setOption(option);
