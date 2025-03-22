@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
 import Chart from "../components/Dashboard/Chart";
 import Battery from "../components/Dashboard/Battery";
@@ -8,23 +9,11 @@ import TemperatureMeter from '../components/Dashboard/Meter/Temperature';
 import TurbidityMeter from '../components/Dashboard/Meter/Turbidity';
 import TDSMeter from '../components/Dashboard/Meter/TDS';
 import PHMeter from '../components/Dashboard/Meter/pH';
+import { SensorDataContext } from '../components/SensorDataContext';
 
 const Dash = () => {
-    const [ph, setPh] = useState(30);
-    const [turbidity, setTurbidity] = useState(60);
-    const [tds, setTds] = useState(90);
-    const [temp, setTemp] = useState(50);
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setPh(Math.round(Math.random() * 10));
-        setTurbidity(Math.round(Math.random() * 100));
-        setTds(Math.round(Math.random() * 100));
-        setTemp(Math.round(Math.random() * 35));
-      }, 5000);
-  
-      return () => clearInterval(interval);
-    }, []);
+    const { phValue, turbidity, tdsValue, temperature } = useContext(SensorDataContext);
+    const location = useLocation();
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -56,14 +45,14 @@ const Dash = () => {
                         <img src={require("../components/assets/img/icon.png")} alt="logo" />
                         <span>HydroSense</span>
                     </div>
-                    <ul class="nav-list">
-                        <li class="nav-list-item active">
-                            <a class="nav-list-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18" /></svg>
+                    <ul className="nav-list">
+                        <li className={`nav-list-item ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18" /></svg>
                                 Dashboard
-                            </a>
+                            </Link>
                         </li>
-                        <li className="nav-list-item">
+                        <li className={`nav-list-item ${location.pathname === '/chart' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/chart">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
                                     <line x1="12" x2="12" y1="20" y2="10" />
@@ -157,12 +146,12 @@ const Dash = () => {
                             <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>pH Value</h2>
-                                    <span>{ph}</span>
+                                    <span>{phValue}</span>
                                     <br /><br />
                                     <h2><strong>Limits:</strong> 6-8</h2>
                                 </div>
                                 <div class="chart-svg">
-                                    <PHMeter ph={ph} maxPH={14} />
+                                    <PHMeter ph={phValue} maxPH={14} />
                                 </div>
                             </div>
                         </div>
@@ -183,12 +172,12 @@ const Dash = () => {
                             <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>TDS Value</h2>
-                                    <span>{tds} ppm</span>
+                                    <span>{tdsValue} ppm</span>
                                     <br /><br />
                                     <h2><strong>Limits:</strong> 0-500</h2>
                                 </div>
                                 <div class="chart-svg">
-                                    <TDSMeter tds={tds} maxLimit={500} />
+                                    <TDSMeter tds={tdsValue} maxLimit={500} />
                                 </div>
                             </div>
                         </div>
@@ -196,12 +185,12 @@ const Dash = () => {
                             <div class="chart">
                                 <div class="chart-info-wrapper">
                                     <h2>Temp Value</h2>
-                                    <span>{temp} C</span>
+                                    <span>{temperature} C</span>
                                     <br /><br />
                                     <h2><strong>Limits:</strong> 25 - 30 C</h2>
                                 </div>
                                 <div class="chart-svg">
-                                <TemperatureMeter temperature={temp} maxLimit={35} />
+                                <TemperatureMeter temperature={temperature} maxLimit={35} />
                                 </div>
                             </div>
                         </div>

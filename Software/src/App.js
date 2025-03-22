@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { auth } from './firebase';
 import { setUser } from './redux/actions';
 import FullPageChart from './pages/FullPageChart';
+import { SensorDataProvider } from './components/SensorDataContext';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
+    <SensorDataProvider>
     <BrowserRouter>
       <div className="app">
         <Switch>
@@ -41,6 +43,7 @@ const App = () => {
         </Switch>
       </div>
     </BrowserRouter>
+  </SensorDataProvider>
   );
 };
 

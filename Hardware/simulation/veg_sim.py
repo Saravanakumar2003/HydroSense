@@ -1,18 +1,21 @@
 from flask import Flask, jsonify
+from flask_cors import CORS  # Import CORS
 import random
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 def generate_sensor_data():
     return {
-        "pH": round(random.uniform(6.5, 8.5), 2),
-        "Turbidity": round(random.uniform(0, 100), 2),
-        "Temperature": round(random.uniform(20, 35), 2)
+        "phValue": round(random.uniform(6.0, 8.0), 1),  # pH range: 6-8
+        "tdsValue": random.randint(0, 500),             # TDS range: 0-500
+        "turbidity": random.randint(85, 100),           # Turbidity range: 85-100 NTU
+        "temperature": round(random.uniform(15, 35), 1) # Temp range: 15-35°C
     }
 
-@app.route("/")  # Now the root URL shows data directly
-def home():
-    return jsonify(generate_sensor_data())  # Send sensor data immediately
+@app.route("/", methods=["GET"])
+def send_sensor_data():
+    return jsonify(generate_sensor_data())
 
 if __name__ == "__main__":
-    app.run(host="192.168.4.1", port=80, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)
