@@ -2,25 +2,9 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
-import FullChart from "../components/Dashboard/FullChart";
 
-const Dash = () => {
-    const [ph, setPh] = useState(30);
-    const [turbidity, setTurbidity] = useState(60);
-    const [tds, setTds] = useState(90);
-    const [temp, setTemp] = useState(50);
+const AI = () => {
     const location = useLocation();
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setPh(Math.round(Math.random() * 10));
-        setTurbidity(Math.round(Math.random() * 100));
-        setTds(Math.round(Math.random() * 100));
-        setTemp(Math.round(Math.random() * 35));
-      }, 5000);
-  
-      return () => clearInterval(interval);
-    }, []);
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -131,7 +115,7 @@ const Dash = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Chart View</h1>
+                            <h1>Artificial Intelligence</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -139,7 +123,6 @@ const Dash = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
-                        <FullChart />
                     </div>
                 </div>
                 <div class="app-right">
@@ -209,4 +192,4 @@ const Dash = () => {
     )
 }
 
-export default Dash 
+export default AI 

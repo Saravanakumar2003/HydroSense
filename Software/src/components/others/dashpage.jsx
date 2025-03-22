@@ -1,30 +1,10 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
-import Chart from "../components/Dashboard/Chart";
-import Battery from "../components/Dashboard/Battery";
-import TemperatureMeter from '../components/Dashboard/Meter/Temperature';
-import TurbidityMeter from '../components/Dashboard/Meter/Turbidity';
-import TDSMeter from '../components/Dashboard/Meter/TDS';
-import PHMeter from '../components/Dashboard/Meter/pH';
+import { Link, useLocation } from 'react-router-dom';
 
 const Dash = () => {
-    const [ph, setPh] = useState(30);
-    const [turbidity, setTurbidity] = useState(60);
-    const [tds, setTds] = useState(90);
-    const [temp, setTemp] = useState(50);
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setPh(Math.round(Math.random() * 10));
-        setTurbidity(Math.round(Math.random() * 100));
-        setTds(Math.round(Math.random() * 100));
-        setTemp(Math.round(Math.random() * 35));
-      }, 5000);
-  
-      return () => clearInterval(interval);
-    }, []);
+    const location = useLocation();
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -56,14 +36,14 @@ const Dash = () => {
                         <img src={require("../components/assets/img/icon.png")} alt="logo" />
                         <span>HydroSense</span>
                     </div>
-                    <ul class="nav-list">
-                        <li class="nav-list-item active">
+                    <ul className="nav-list">
+                        <li className={`nav-list-item ${location.pathname === '/dashboard' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/dashboard">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-columns"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18" /></svg>
                                 Dashboard
                             </Link>
                         </li>
-                        <li className="nav-list-item">
+                        <li className={`nav-list-item ${location.pathname === '/chart' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/chart">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
                                     <line x1="12" x2="12" y1="20" y2="10" />
@@ -73,62 +53,62 @@ const Dash = () => {
                                 Charts
                             </Link>
                         </li>
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-                                <rect height="16" rx="2" ry="2" width="16" x="4" y="4" />
-                                <rect height="6" width="6" x="9" y="9" />
-                                <line x1="9" x2="9" y1="1" y2="4" />
-                                <line x1="15" x2="15" y1="1" y2="4" />
-                                <line x1="9" x2="9" y1="20" y2="23" />
-                                <line x1="15" x2="15" y1="20" y2="23" />
-                                <line x1="20" x2="23" y1="9" y2="9" />
-                                <line x1="20" x2="23" y1="14" y2="14" />
-                                <line x1="1" x2="4" y1="9" y2="9" />
-                                <line x1="1" x2="4" y1="14" y2="14" />
+                        <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/hardware">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                    <rect height="16" rx="2" ry="2" width="16" x="4" y="4" />
+                                    <rect height="6" width="6" x="9" y="9" />
+                                    <line x1="9" x2="9" y1="1" y2="4" />
+                                    <line x1="15" x2="15" y1="1" y2="4" />
+                                    <line x1="9" x2="9" y1="20" y2="23" />
+                                    <line x1="15" x2="15" y1="20" y2="23" />
+                                    <line x1="20" x2="23" y1="9" y2="9" />
+                                    <line x1="20" x2="23" y1="14" y2="14" />
+                                    <line x1="1" x2="4" y1="9" y2="9" />
+                                    <line x1="1" x2="4" y1="14" y2="14" />
                                 </svg>
                                 Hardware
-                            </a>
+                            </Link>
                         </li>
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                                <line x1="12" x2="12" y1="22.08" y2="12" />
-                            </svg>
+                        <li className={`nav-list-item ${location.pathname === '/ai' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/ai">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                    <line x1="12" x2="12" y1="22.08" y2="12" />
+                                </svg>
                                 Artificial Intelligence
-                            </a>
+                            </Link>
                         </li>
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-                            </svg>
+                        <li className={`nav-list-item ${location.pathname === '/cloud' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/cloud">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                                </svg>
                                 Cloud
-                            </a>
+                            </Link>
                         </li>
 
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
+                        <li className={`nav-list-item ${location.pathname === '/reports' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/reports">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>
                                 Reports
-                            </a>
+                            </Link>
                         </li>
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                            </svg>
+                        <li className={`nav-list-item ${location.pathname === '/profile' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/profile">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
                                 Profile
-                            </a>
+                            </Link>
                         </li>
-                        <li class="nav-list-item">
-                            <a class="nav-list-link" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+                        <li className={`nav-list-item ${location.pathname === '/settings' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/settings">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
                                 Settings
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

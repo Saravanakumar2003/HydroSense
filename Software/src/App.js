@@ -7,7 +7,13 @@ import UserRoute from './components/UserRoute';
 import VerifyEmail from './pages/VerifyEmail';
 import ForgetPassword from './pages/ForgetPassword';
 import Dashboard from './pages/Dashboard';
-import HomePage from './pages/HomePage'; // Import the new HomePage component
+import Hardware from './pages/Hardware';
+import AI from './pages/AI';
+import HomePage from './pages/HomePage'; 
+import Cloud from './pages/Cloud';
+import Reports from './pages/Reports';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { auth } from './firebase';
@@ -40,6 +46,12 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/verify-email" component={VerifyEmail} />
           <Route path="/forget-password" component={ForgetPassword} />
+          <UserRoute path="/hardware" component={Hardware} />
+          <UserRoute path="/ai" component={AI} />
+          <UserRoute path="/cloud" component={Cloud} />
+          <UserRoute path="/reports" component={Reports} />
+          <UserRoute path="/profile" component={Profile} />
+          <UserRoute path="/settings" component={Settings} />
         </Switch>
       </div>
     </BrowserRouter>

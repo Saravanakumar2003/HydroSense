@@ -1,3 +1,4 @@
+// filepath: /Users/saravana-tt0779/Documents/Code/HydroSense/software/src/components/SensorDataContext.jsx
 import React, { createContext, useState, useEffect } from "react";
 
 export const SensorDataContext = createContext();
@@ -9,8 +10,11 @@ export const SensorDataProvider = ({ children }) => {
         temperature: 0,
         turbidity: 0,
     });
+    const [isMonitoring, setIsMonitoring] = useState(false);
 
     useEffect(() => {
+        let interval;
+
         const fetchSensorData = async () => {
             try {
                 const response = await fetch("http://127.0.0.1:5000");
@@ -21,13 +25,15 @@ export const SensorDataProvider = ({ children }) => {
             }
         };
 
-        const interval = setInterval(fetchSensorData, 5000);
+        if (isMonitoring) {
+            interval = setInterval(fetchSensorData, 5000);
+        }
 
         return () => clearInterval(interval);
-    }, []);
+    }, [isMonitoring]);
 
     return (
-        <SensorDataContext.Provider value={sensorData}>
+        <SensorDataContext.Provider value={{ ...sensorData, setIsMonitoring }}>
             {children}
         </SensorDataContext.Provider>
     );
