@@ -165,6 +165,53 @@ const Reports = () => {
                             <button onClick={downloadCSV} className="btn">Download CSV</button>
                         </div>
                     </div>
+                    <div className="report-section">
+                        {[
+                            {
+                                title: "Summary Report",
+                                description: "Provides an overview of water quality metrics over a selected period.",
+                                downloadHandler: downloadPDF,
+                            },
+                            {
+                                title: "Trend Analysis Report",
+                                description: "Analyzes trends in water quality parameters over time.",
+                                downloadHandler: downloadExcel,
+                            },
+                            {
+                                title: "Safe vs Unsafe Periods Report",
+                                description: "Highlights periods of safe and unsafe water quality based on thresholds.",
+                                downloadHandler: downloadCSV,
+                            },
+                            {
+                                title: "Compliance Report",
+                                description: "Checks compliance with Bureau of Indian Standards and WHO standards.",
+                                downloadHandler: downloadPDF,
+                            },
+                            {
+                                title: "Seasonal Impact Report",
+                                description: "Examines the impact of seasonal changes on water quality.",
+                                downloadHandler: downloadExcel,
+                            },
+                            {
+                                title: "Sensor Calibration Report",
+                                description: "Details the calibration status and history of sensors.",
+                                downloadHandler: downloadCSV,
+                            },
+                            {
+                                title: "Prediction Report",
+                                description: "Forecasts future water quality using AI models.",
+                                downloadHandler: downloadPDF,
+                            },
+                        ].map((report, index) => (
+                            <div key={index} className="report-card">
+                                <h2>{report.title}</h2>
+                                <p>{report.description}</p>
+                                <button onClick={report.downloadHandler} className="btn">
+                                    Download {report.title}
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div class="app-right">
                     <button class="close-right">

@@ -115,7 +115,7 @@ const Hardware = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Hardware Components</h1>
+                            <h1>Vega Board Status</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -124,11 +124,59 @@ const Hardware = () => {
                             </button>
                         </div>
                     </div>
+                    <div className="hardware-status-table" style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'center' }}>
+                        <table style={{ margin: '0 auto', borderCollapse: 'collapse', width: '80%' }}>
+                            <thead>
+                                <tr>
+                                    <th style={{ color:'#000', border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Sensor in Board</th>
+                                    <th style={{ color:'#000', border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Status</th>
+                                    <th style={{ color:'#000', border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Gas Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>0.45 ppm</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Temperature Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>25°C</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Pressure Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>1013 hPa</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Humidity Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>45%</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Proximity Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>5 cm</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Ambient Light Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>300 lux</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>IR Sensor</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Detected</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div className="hardware-image-container" style={{ position: 'relative', textAlign: 'center' }}>
                         <img
                             src={require("../components/assets/img/Board_details.png")}
                             alt="Hardware"
-                            style={{ width: '100%', maxWidth: '800px', bottom: '0' }}
+                            style={{ width: '100%', maxWidth: '700px', bottom: '0' }}
                         />
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TurbidityMeter = ({ turbidity, maxLimit = 100 }) => {
+const TurbidityMeter = ({ turbidity, maxLimit = 5 }) => {
   const [currentTurbidity, setCurrentTurbidity] = useState(turbidity);
 
   useEffect(() => {

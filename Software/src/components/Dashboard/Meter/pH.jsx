@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const PHMeterTestTube = ({ ph, maxPH = 14 }) => {
+const PHMeterTestTube = ({ ph, maxPH = 8.5 }) => {
   const [currentPH, setCurrentPH] = useState(ph);
 
   useEffect(() => {

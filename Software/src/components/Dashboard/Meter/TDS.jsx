@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TDSMeter = ({ tds, maxLimit = 1000 }) => {
+const TDSMeter = ({ tds, maxLimit = 500 }) => {
   const [currentTDS, setCurrentTDS] = useState(tds);
 
   useEffect(() => {

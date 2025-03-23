@@ -74,7 +74,7 @@ const FullChart = () => {
                     itemStyle: { color: '#D7263D' },
                     markLine: {
                         data: [
-                            { yAxis: 100, name: 'Max Limit' }
+                            { yAxis: 1, name: 'Max Limit' }
                         ],
                         lineStyle: { color: '#D7263D' }
                     }

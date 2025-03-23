@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TemperatureMeter = ({ temperature, maxLimit = 100 }) => {
+const TemperatureMeter = ({ temperature, maxLimit = 30 }) => {
   const [currentTemp, setCurrentTemp] = useState(temperature);
 
   useEffect(() => {
