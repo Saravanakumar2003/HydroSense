@@ -1,10 +1,86 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
+import jsPDF from 'jspdf';
 
 const AI = () => {
     const location = useLocation();
+    const [aiReport, setAiReport] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const huggingFaceAPI = "https://api-inference.huggingface.co/models/google/gemma-2-2b-it";
+    const huggingFaceKey = "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";
+
+    async function generateAIReport() {
+        setLoading(true);
+        try {
+            // Retrieve sensor data from localStorage
+            const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
+
+            // Format historical data for API
+            const historicalData = storedData.map((entry) => ({
+                timestamp: entry.timestamp,
+                pH: entry.phValue,
+                turbidity: entry.turbidity,
+                temperature: entry.temperature,
+            }));
+
+            // API request to Hugging Face
+            const response = await fetch(huggingFaceAPI, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${huggingFaceKey}`,
+                },
+                body: JSON.stringify({
+                    inputs: `Analyze the following water quality data and provide a detailed report with characteristics, anomalies, and a final verdict on water quality:\n\n${JSON.stringify(historicalData)}`,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const jsonResponse = await response.json();
+            const generatedText = jsonResponse[0]?.generated_text || "No report generated.";
+
+            // Remove the raw water data section
+            let cleanedResponse = generatedText.replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "").trim();
+
+            // Remove excessive newlines and spaces
+            cleanedResponse = cleanedResponse.replace(/\n{2,}/g, "\n\n").trim(); // Convert multiple newlines to double newlines for readability
+
+            // Set the formatted response
+            setAiReport(cleanedResponse);
+        } catch (error) {
+            console.error("Error generating AI report:", error);
+            setAiReport("Failed to generate report. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        doc.text("AI Report", 10, 10);
+        doc.text(aiReport || "No report available.", 10, 20);
+        doc.save("AI_Report.pdf");
+    };
+
+    const shareReport = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "AI Report",
+                    text: aiReport || "No report available.",
+                });
+            } catch (error) {
+                console.error("Error sharing report:", error);
+            }
+        } else {
+            alert("Sharing is not supported on this browser.");
+        }
+    };
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -115,7 +191,7 @@ const AI = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Artificial Intelligence</h1>
+                            <h1>Default Dashboard</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -123,6 +199,76 @@ const AI = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
+                    </div>
+                    <div className="ai-report-section">
+                        <button
+                            className="generate-report-button"
+                            onClick={generateAIReport}
+                            disabled={loading}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: loading ? "#ccc" : "#007bff",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: "5px",
+                                cursor: loading ? "not-allowed" : "pointer",
+                            }}
+                        >
+                            {loading ? "Generating Report..." : "Generate AI Report"}
+                        </button>
+                        {aiReport && (
+                            <div className="ai-report-output" style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#f9f9f9" }}>
+                                <h3>AI Report:</h3>
+                                <div style={{
+                                    whiteSpace: "pre-wrap",
+                                    wordWrap: "break-word",
+                                    backgroundColor: "#f9f9f9",
+                                    padding: "20px",
+                                    borderRadius: "10px",
+                                    border: "1px solid #ddd",
+                                    fontSize: "16px",
+                                    lineHeight: "1.8",
+                                    color: "#333",
+                                    maxHeight: "400px",
+                                    overflowY: "auto"
+                                }}>
+                                    {aiReport
+                                        .replace(/##\s/g, "") // Remove markdown headers
+                                        .replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.toUpperCase()) // Convert bold text to uppercase
+                                        .replace(/\n\n/g, "\n") // Remove extra newlines
+                                        .replace(/^\*\s/gm, "• ") // Replace markdown list items with bullets
+                                    }
+                                </div>
+                                <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+                                    <button
+                                        onClick={downloadPDF}
+                                        style={{
+                                            padding: "10px 20px",
+                                            backgroundColor: "#28a745",
+                                            color: "#fff",
+                                            border: "none",
+                                            borderRadius: "5px",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Download as PDF
+                                    </button>
+                                    <button
+                                        onClick={shareReport}
+                                        style={{
+                                            padding: "10px 20px",
+                                            backgroundColor: "#17a2b8",
+                                            color: "#fff",
+                                            border: "none",
+                                            borderRadius: "5px",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Share
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div class="app-right">
@@ -189,7 +335,7 @@ const AI = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default AI 
+export default AI;

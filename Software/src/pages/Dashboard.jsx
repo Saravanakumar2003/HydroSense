@@ -231,7 +231,7 @@ const Dash = () => {
                         <div class="chart-container-wrapper big">
                             <div class="chart-container">
                                 <div class="chart-container-header">
-                                    <h2>Sensor Data</h2>
+                                    <h2>Real Time Sensor Data</h2>
                                     <span>Last 30 days</span>
                                 </div>
                                 {/* Sensor Data Starts */}
