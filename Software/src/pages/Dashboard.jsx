@@ -12,35 +12,16 @@ import PHMeter from '../components/Dashboard/Meter/pH';
 import { SensorDataContext } from '../components/SensorDataContext';
 
 const Dash = () => {
-    const { phValue, turbidity, tdsValue, temperature } = useContext(SensorDataContext);
-    const { sensorData, setIsMonitoring } = useContext(SensorDataContext);
+    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer } = useContext(SensorDataContext);
     const location = useLocation();
-
-    const [isMonitoring, setMonitoring] = useState(false);
-    const [timer, setTimer] = useState(0);
 
     const handleStartMonitoring = () => {
         setIsMonitoring(true);
-        setMonitoring(true);
-        setTimer(0); // Reset timer when monitoring starts
     };
 
     const handleStopMonitoring = () => {
         setIsMonitoring(false);
-        setMonitoring(false);
     };
-
-    useEffect(() => {
-        let interval;
-        if (isMonitoring) {
-            interval = setInterval(() => {
-                setTimer((prev) => prev + 1);
-            }, 1000);
-        } else {
-            clearInterval(interval);
-        }
-        return () => clearInterval(interval);
-    }, [isMonitoring]);
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');

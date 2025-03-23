@@ -1,16 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import { useContext } from "react";
-import { SensorDataContext } from "../SensorDataContext";
 
 const FullChart = () => {
     const chartRef = useRef(null);
     const chartInstance = useRef(null); // Keep a reference to the chart instance
-    const dataLimit = 30;
-    const countRef = useRef(0); 
-
-    // Get sensor data from context
-    const { phValue, tdsValue, temperature, turbidity } = useContext(SensorDataContext);
+    const dataLimit = 100;
 
     // Initialize the chart (only once)
     useEffect(() => {
@@ -128,30 +122,40 @@ const FullChart = () => {
         };
     }, []); // Empty dependency array ensures this runs only once
 
-    // Update the chart with new data
+    // Load data from localStorage and populate the chart
     useEffect(() => {
         if (!chartInstance.current) return;
 
         const option = chartInstance.current.getOption();
 
-        countRef.current++;
-        console.log("Updating chart with data:", { phValue, tdsValue, temperature, turbidity });
+        // Retrieve data from localStorage
+        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
 
-        // Push real-time data from context
-        option.xAxis[0].data.push(countRef.current.toString());
-        option.series[0].data.push(phValue);
-        option.series[1].data.push(tdsValue);
-        option.series[2].data.push(temperature);
-        option.series[3].data.push(turbidity);
+        if (storedData.length > 0) {
+            const xAxisData = [];
+            const phData = [];
+            const tdsData = [];
+            const tempData = [];
+            const turbidityData = [];
 
-        // Maintain data limit
-        if (option.xAxis[0].data.length > dataLimit) {
-            option.xAxis[0].data.shift();
-            option.series.forEach((series) => series.data.shift());
+            // Populate chart data
+            storedData.forEach((entry) => {
+                xAxisData.push(entry.count.toString());
+                phData.push(entry.phValue);
+                tdsData.push(entry.tdsValue);
+                tempData.push(entry.temperature);
+                turbidityData.push(entry.turbidity);
+            });
+
+            option.xAxis[0].data = xAxisData.slice(-dataLimit); // Limit data to the last `dataLimit` entries
+            option.series[0].data = phData.slice(-dataLimit);
+            option.series[1].data = tdsData.slice(-dataLimit);
+            option.series[2].data = tempData.slice(-dataLimit);
+            option.series[3].data = turbidityData.slice(-dataLimit);
+
+            chartInstance.current.setOption(option);
         }
-
-        chartInstance.current.setOption(option);
-    }, [phValue, tdsValue, temperature, turbidity]); // Update chart when sensor data changes
+    }, []); // Run only once when the component is mounted
 
     return <div ref={chartRef} style={{ width: "100%", height: "700px" }} />;
 };
