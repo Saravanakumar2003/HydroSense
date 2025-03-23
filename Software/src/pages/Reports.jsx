@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import * as XLSX from 'xlsx';
 
 const Reports = () => {
     const location = useLocation();
@@ -24,6 +26,40 @@ const Reports = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
+
+    const downloadPDF = () => {
+        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        const doc = new jsPDF();
+        doc.text("Sensor Data Report", 10, 10);
+        storedData.forEach((data, index) => {
+            doc.text(`${index + 1}. Timestamp: ${data.timestamp}, pH: ${data.phValue}, TDS: ${data.tdsValue}, Temp: ${data.temperature}, Turbidity: ${data.turbidity}`, 10, 20 + index * 10);
+        });
+        doc.save("SensorDataReport.pdf");
+    };
+
+    const downloadExcel = () => {
+        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        const worksheet = XLSX.utils.json_to_sheet(storedData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sensor Data");
+        XLSX.writeFile(workbook, "SensorDataReport.xlsx");
+    };
+
+    const downloadCSV = () => {
+        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        const csvContent = [
+            ["Timestamp", "pH", "TDS", "Temperature", "Turbidity"],
+            ...storedData.map(data => [data.timestamp, data.phValue, data.tdsValue, data.temperature, data.turbidity])
+        ]
+            .map(e => e.join(","))
+            .join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "SensorDataReport.csv";
+        link.click();
+    };
 
     return (
         <div>
@@ -122,6 +158,11 @@ const Reports = () => {
                             <button className="menu-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
+                        </div>
+                        <div className="action-buttons">
+                            <button onClick={downloadPDF} className="btn">Download PDF</button>
+                            <button onClick={downloadExcel} className="btn">Download Excel</button>
+                            <button onClick={downloadCSV} className="btn">Download CSV</button>
                         </div>
                     </div>
                 </div>
