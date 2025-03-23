@@ -12,8 +12,9 @@ import PHMeter from '../components/Dashboard/Meter/pH';
 import { SensorDataContext } from '../components/SensorDataContext';
 
 const Dash = () => {
-    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer } = useContext(SensorDataContext);
+    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer, count, timestamp } = useContext(SensorDataContext);
     const location = useLocation();
+    const [geolocation, setGeolocation] = useState("Fetching...");
 
     const handleStartMonitoring = () => {
         setIsMonitoring(true);
@@ -40,6 +41,23 @@ const Dash = () => {
             document.querySelector('.menu-button').removeEventListener('click', openMenu);
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
+    }, []);
+
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setGeolocation(`Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)}`);
+                },
+                (error) => {
+                    console.error("Error fetching location:", error);
+                    setGeolocation("Location unavailable");
+                }
+            );
+        } else {
+            setGeolocation("Geolocation not supported");
+        }
     }, []);
 
     return (
@@ -254,17 +272,17 @@ const Dash = () => {
                                 <div class="progress-bar-info">
                                     <span class="progress-color applications"></span>
                                     <span class="progress-type">Total Test Conducted</span>
-                                    <span class="progress-amount">5</span>
+                                    <span class="progress-amount">{count}</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color shortlisted"></span>
                                     <span class="progress-type">Last Tested</span>
-                                    <span class="progress-amount">16/03/2025</span>
+                                    <span class="progress-amount">{timestamp ? new Date(timestamp).toLocaleString() : "N/A"}</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color on-hold"></span>
                                     <span class="progress-type">Test Location</span>
-                                    <span class="progress-amount">Chennai</span>
+                                    <span class="progress-amount">{geolocation}</span>
                                 </div>
                                 <div class="progress-bar-info">
                                     <span class="progress-color rejected"></span>
