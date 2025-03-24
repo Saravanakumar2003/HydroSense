@@ -8,7 +8,7 @@ const TemperatureMeter = ({ temperature, maxLimit = 30 }) => {
   }, [temperature]);
 
   // Calculate fill percentage
-  const fillHeight = Math.min((currentTemp / maxLimit) * 100, 100);
+  const fillHeight = ((currentTemp / maxLimit) * 100);
 
   // Determine color based on temperature
   const getColor = (temp) => {

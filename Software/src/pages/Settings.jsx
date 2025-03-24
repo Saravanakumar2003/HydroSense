@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useEffect } from 'react';
+import { auth } from '../firebase'; 
 
 
 const Settings = () => {
@@ -14,6 +15,26 @@ const Settings = () => {
         deviceName: '',
         deviceId: '',
     });
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        // Fetch the current user from Firebase Authentication
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            setUser(currentUser);
+        }
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page to reset the state
+        } catch (error) {
+            console.error('Error logging out:', error);
+            alert('Failed to log out. Please try again.');
+        }
+    };
 
     const handleEnableTestMode = () => {
         setIsMonitoring(false); // Stop monitoring before switching URL
@@ -219,12 +240,24 @@ const Settings = () => {
                     <button class="close-right">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </button>
-                    <div class="profile-box">
-                        <div class="profile-photo-wrapper">
-                            <img src="https://avatars.githubusercontent.com/u/100985347?v=4" alt="profile"></img>
-                        </div>
-                        <p class="profile-text">Saravanakumar R</p>
-                        <p class="profile-subtext">Velammal Engineering College</p>
+                    <div className="profile-box">
+                        {user ? (
+                            <>
+                                <div className="profile-photo-wrapper">
+                                    <img
+                                        src={user.photoURL || 'https://via.placeholder.com/150'}
+                                        alt="profile"
+                                    />
+                                </div>
+                                <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
+                                <p className="profile-subtext">User ID: {user.uid}</p>
+                                <button onClick={handleLogout} className="btn logout-btn">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <p>Loading user data...</p>
+                        )}
                     </div>
                     <div class="app-right-content">
                         <div class="app-right-section">

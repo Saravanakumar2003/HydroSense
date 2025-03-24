@@ -1,10 +1,83 @@
 import React, { useState } from 'react';
+import { auth } from '../firebase'; // Import Firebase auth
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
 
 const Profile = () => {
     const location = useLocation();
+    const [Muser, setMUser] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        displayName: '',
+        photoURL: '',
+    });
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        // Fetch the current user from Firebase Authentication
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            setUser(currentUser);
+        }
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page to reset the state
+        } catch (error) {
+            console.error('Error logging out:', error);
+            alert('Failed to log out. Please try again.');
+        }
+    };
+
+    useEffect(() => {
+        // Fetch the current user from Firebase Authentication
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            setMUser(currentUser);
+            setFormData({
+                displayName: currentUser.displayName || '',
+                photoURL: currentUser.photoURL || '',
+            });
+        }
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = async () => {
+        try {
+            if (auth.currentUser) {
+                await auth.currentUser.updateProfile({
+                    displayName: formData.displayName,
+                    photoURL: formData.photoURL,
+                });
+                setMUser(auth.currentUser); // Update the user state
+                alert('Profile updated successfully!');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            alert('Failed to update profile. Please try again.');
+        }
+        setIsEditing(false);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        setFormData({
+            displayName: user?.displayName || '',
+            photoURL: user?.photoURL || '',
+        });
+    };
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -123,18 +196,75 @@ const Profile = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
+                        <div className="profile-section">
+                            {Muser ? (
+                                <div className="profile-card">
+                                    <img
+                                        src={Muser.photoURL || 'https://via.placeholder.com/150'}
+                                        alt="Profile"
+                                        className="profile-image"
+                                    />
+                                    {isEditing ? (
+                                        <div className="profile-edit-form">
+                                            <label>
+                                                Name:
+                                                <input
+                                                    type="text"
+                                                    name="displayName"
+                                                    value={formData.displayName}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </label>
+                                            <label>
+                                                Photo URL:
+                                                <input
+                                                    type="text"
+                                                    name="photoURL"
+                                                    value={formData.photoURL}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </label>
+                                            <div className="profile-actions">
+                                                <button onClick={handleSave} className="btn">Save</button>
+                                                <button onClick={handleCancel} className="btn">Cancel</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="profile-details">
+                                            <h2>{Muser.displayName || 'No Name Provided'}</h2>
+                                            <p>User ID: {Muser.uid}</p>
+                                            <button onClick={handleEdit} className="btn">Edit Profile</button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>Loading user data...</p>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div class="app-right">
                     <button class="close-right">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </button>
-                    <div class="profile-box">
-                        <div class="profile-photo-wrapper">
-                            <img src="https://avatars.githubusercontent.com/u/100985347?v=4" alt="profile"></img>
-                        </div>
-                        <p class="profile-text">Saravanakumar R</p>
-                        <p class="profile-subtext">Velammal Engineering College</p>
+                    <div className="profile-box">
+                        {user ? (
+                            <>
+                                <div className="profile-photo-wrapper">
+                                    <img
+                                        src={user.photoURL || 'https://via.placeholder.com/150'}
+                                        alt="profile"
+                                    />
+                                </div>
+                                <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
+                                <p className="profile-subtext">User ID: {user.uid}</p>
+                                <button onClick={handleLogout} className="btn logout-btn">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <p>Loading user data...</p>
+                        )}
                     </div>
                     <div class="app-right-content">
                         <div class="app-right-section">
