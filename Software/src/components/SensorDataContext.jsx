@@ -33,10 +33,10 @@ export const SensorDataProvider = ({ children }) => {
 
         const fetchSensorData = async () => {
             try {
-                const response = await fetch("http://127.0.0.1:5000");
+                const url = localStorage.getItem('sensorDataUrl') || 'http://127.0.0.1:5000';
+                const response = await fetch(url);
                 const data = await response.json();
 
-                // Add count and timestamp
                 const updatedData = {
                     ...data,
                     count: sensorData.count + 1,
@@ -45,10 +45,9 @@ export const SensorDataProvider = ({ children }) => {
 
                 setSensorData(updatedData);
 
-                // Store data in local storage
                 if (isMonitoring) {
                     const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-                    storedData.push(updatedData); // Append new data to the array
+                    storedData.push(updatedData);
                     localStorage.setItem("sensorData", JSON.stringify(storedData));
                 }
             } catch (error) {

@@ -1,10 +1,46 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { SensorDataContext } from '../components/SensorDataContext';
+import { useEffect } from 'react';
+
 
 const Settings = () => {
     const location = useLocation();
+    const { setIsMonitoring } = useContext(SensorDataContext);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        wifiGateway: '',
+        deviceName: '',
+        deviceId: '',
+    });
+
+    const handleEnableTestMode = () => {
+        setIsMonitoring(false); // Stop monitoring before switching URL
+        localStorage.setItem('sensorDataUrl', 'https://hydrosense.pythonanywhere.com/');
+        alert('Test mode enabled. URL switched to test endpoint.');
+    };
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Setup Data:', formData);
+        localStorage.setItem('sensorDataUrl', formData.wifiGateway);
+        alert('Device setup completed successfully!');
+        setIsModalOpen(false);
+    };
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -123,7 +159,61 @@ const Settings = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
+                        <div className="action-buttons">
+                            <button className="buttons" onClick={handleEnableTestMode}>
+                                Enable test mode
+                            </button>
+                            <button className="buttons" onClick={handleOpenModal}>
+                                Set-up Vega Board
+                            </button>
+                        </div>
                     </div>
+                    {/* Modal for Vega Board Setup */}
+                    {isModalOpen && (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <h2>Set-up Vega Board</h2>
+                                <form onSubmit={handleSubmit}>
+                                    <label>
+                                        WiFi Gateway Url:
+                                        <input
+                                            type="text"
+                                            name="wifiGateway"
+                                            value={formData.wifiGateway}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </label>
+                                    <label>
+                                        Device Name:
+                                        <input
+                                            type="text"
+                                            name="deviceName"
+                                            value={formData.deviceName}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </label>
+                                    <label>
+                                        Device ID:
+                                        <input
+                                            type="text"
+                                            name="deviceId"
+                                            value={formData.deviceId}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </label>
+                                    <div className="modal-actions">
+                                        <button type="submit" className="btn">Submit</button>
+                                        <button type="button" className="btn" onClick={handleCloseModal}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div class="app-right">
                     <button class="close-right">
