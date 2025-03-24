@@ -33,11 +33,12 @@ const AI = () => {
     const huggingFaceKey = "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";
 
     async function generateAIReport() {
+        setAiReport(null); // Clear the previous report
         setLoading(true);
         try {
             // Retrieve sensor data from localStorage
             const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-
+    
             // Format historical data for API
             const historicalData = storedData.map((entry) => ({
                 timestamp: entry.timestamp,
@@ -45,7 +46,7 @@ const AI = () => {
                 turbidity: entry.turbidity,
                 temperature: entry.temperature,
             }));
-
+    
             // API request to Hugging Face
             const response = await fetch(huggingFaceAPI, {
                 method: "POST",
@@ -57,20 +58,17 @@ const AI = () => {
                     inputs: `Analyze the following water quality data and provide a detailed report with characteristics, anomalies, and a final verdict on water quality:\n\n${JSON.stringify(historicalData)}`,
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const jsonResponse = await response.json();
             const generatedText = jsonResponse[0]?.generated_text || "No report generated.";
-
-            // Remove the raw water data section
-            let cleanedResponse = generatedText.replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "").trim();
-
-            // Remove excessive newlines and spaces
-            cleanedResponse = cleanedResponse.replace(/\n{2,}/g, "\n\n").trim(); // Convert multiple newlines to double newlines for readability
-
+    
+            // Remove the input data section from the response
+            const cleanedResponse = generatedText.replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "").trim();
+    
             // Set the formatted response
             setAiReport(cleanedResponse);
         } catch (error) {
@@ -212,7 +210,7 @@ const AI = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Default Dashboard</h1>
+                            <h1>Artificial Intelligence</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -254,6 +252,7 @@ const AI = () => {
                                     overflowY: "auto"
                                 }}>
                                     {aiReport
+                                        .replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "") // Remove the raw water data section
                                         .replace(/##\s/g, "") // Remove markdown headers
                                         .replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.toUpperCase()) // Convert bold text to uppercase
                                         .replace(/\n\n/g, "\n") // Remove extra newlines

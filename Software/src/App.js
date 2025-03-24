@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from "./pages/Dashboard";
+import HomePage from './pages/HomePage';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserRoute from './components/UserRoute';
@@ -9,7 +9,6 @@ import ForgetPassword from './pages/ForgetPassword';
 import Dashboard from './pages/Dashboard';
 import Hardware from './pages/Hardware';
 import AI from './pages/AI';
-import HomePage from './pages/HomePage'; 
 import Cloud from './pages/Cloud';
 import Reports from './pages/Reports';
 import Profile from './pages/Profile';
@@ -42,12 +41,12 @@ const App = () => {
       <div className="app">
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/chart" component={FullPageChart} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/verify-email" component={VerifyEmail} />
           <Route path="/forget-password" component={ForgetPassword} />
+          <UserRoute path="/dashboard" component={Dashboard} />
+          <UserRoute path="/chart" component={FullPageChart} />
           <UserRoute path="/hardware" component={Hardware} />
           <UserRoute path="/ai" component={AI} />
           <UserRoute path="/cloud" component={Cloud} />

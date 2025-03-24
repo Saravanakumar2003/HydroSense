@@ -16,6 +16,11 @@ const HomePage = () => {
           <div className="navbar-container">
             <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
             <a className="navbar-brand" href="#">Hydro Sense</a>
+            <div className="hamburger" onClick={toggleMenu}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
             <div className={`menu ${isMenuOpen ? "open" : ""}`}>
               <ul className="navbar-nav">
                 <li className="nav-item"><a className="nav-link" href="#home">Home</a></li>
@@ -108,76 +113,19 @@ const HomePage = () => {
             <strong>Comprehensive Support:</strong> Full support for optimal
             performance.
           </li>
-          <li>
-            <strong>Contaminant Detection:</strong> See a total of 11 contaminants
-            which includes:
-          </li>
           <li></li>
         </ul>
       </section>
 
-      <section id="showcase">
-        <h2>Screen Shots</h2>
-        <p>View the Hydro Sense app in action.</p>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Components_Image.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Comp.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Hardware Components</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Hardware_1.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Hardware_1.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Hardware Setup 1</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Hardware_2.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Hardware_2.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Hardware Setup 2</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Hardware_Enclosed_Horizontal.jpg.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Hardware_Enclosed_Horizontal.jpg.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Prototype Horizontal</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Hardware_Enclosed_Sensor.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Hardware_Enclosed_Sensor.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Prototype Sensor</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mt-3">
-              <div class="card">
-                <img src="./assets/img/Hardware_Enclosed_Vertical.jpg" class="card-img-top img-thumbnail" alt="Image 1"
-                  data-toggle="modal" data-target="#imageModal" data-src="./assets/img/Hardware_Enclosed_Vertical.jpg" />
-                <div class="card-body">
-                  <p class="card-text">Prototype Vertical</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section id="gallery" className="image-gallery">
+        <img src="./assets/img/Components_Image.jpg" alt="Gallery Image 1" />
+        <img src="./assets/img/Hardware_1.jpg" alt="Gallery Image 2" />
+        <img src="./assets/img/Hardware_2.jpg" alt="Gallery Image 3" />
+        <img src="./assets/img/Hardware_Enclosed_Horizontal.jpg" alt="Gallery Image 4" />
+        <img src="./assets/img/Hardware_Enclosed_Sensor.jpg" alt="Gallery Image 5" />
+        <img src="./assets/img/Hardware_Enclosed_Vertical.jpg" alt="Gallery Image 6" />
       </section>
+
       <section id="video" class="my-5">
         <div class="container">
           <h2 class="text-center">Watch Our Demo Video</h2>
@@ -264,7 +212,6 @@ const HomePage = () => {
             <Link className='tos' to="/privacy-policy">Privacy Policy</Link>
             <Link className='tos' to="/terms-and-condition"> Terms and Condition </Link>
       </footer>
-      );
     </div>
   );
 };

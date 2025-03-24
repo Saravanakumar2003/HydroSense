@@ -97,7 +97,9 @@ const Login = () => {
                     <button className='btn btn-secondary' type='submit'>
                         <i className='fas fa-sign-in-alt'></i> Sign In
                     </button>
+
                     <p>OR</p>
+                    
                     <div className="social-login">
                         <button className='btn google-btn social-btn' type='button' onClick={handleGoogleSignIn}>
                             <span>
@@ -112,6 +114,8 @@ const Login = () => {
                         </button>
                     </div>
                     <hr />
+                    <p>Don't have an account?</p>
+                    <div className='button_tools'>
                     <Link to="/forget-password">
                         <button className='btn btn-primary' type='button' id='forgot_pswd'> Forgot password?</button>
                     </Link>
@@ -120,6 +124,7 @@ const Login = () => {
                             <i className='fas fa-user-plus'></i> Sign Up New Account
                         </button>
                     </Link>
+                    </div>
                 </form>
             </div>
         </div>
