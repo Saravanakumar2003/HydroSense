@@ -22,7 +22,7 @@ const Register = () => {
 
     useEffect(() => {
         if (currentUser) {
-            history.push("/");
+            history.push("/dashboard");
             toast.success("Registration successful!");
         }
     }, [currentUser, history]);

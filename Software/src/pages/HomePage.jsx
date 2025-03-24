@@ -44,6 +44,13 @@ const HomePage = () => {
           A portable water contamination detection device designed to provide
           real-time monitoring and alerts for key contaminants.
         </p>
+
+        <div className="home_buttons">
+          <a href="#download" class="btn">Download Now</a>
+          <a href="">
+          <Link className="btn" to="/dashboard">Dashboard</Link>
+          </a>
+        </div>
       </section>
 
       <section id="about">

@@ -20,7 +20,7 @@ const Login = () => {
 
     useEffect(() => {
         if (currentUser) {
-            history.push("/");
+            history.push("/dashboard");
             toast.success("Login successful!");
         }
     }, [currentUser, history]);
@@ -99,7 +99,7 @@ const Login = () => {
                     </button>
 
                     <p>OR</p>
-                    
+
                     <div className="social-login">
                         <button className='btn google-btn social-btn' type='button' onClick={handleGoogleSignIn}>
                             <span>

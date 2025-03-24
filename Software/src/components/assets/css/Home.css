@@ -166,14 +166,16 @@ p {
   text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 5px;
-  background-color: #0072ff;
+  background-color: #000;
+  gap: 0.5rem;
+  margin: 1rem;
   color: white;
   font-weight: bold;
   transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: #000;
   transform: scale(1.05);
 }
 
