@@ -3,10 +3,25 @@ import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
 import { auth } from '../firebase'; 
+import { SensorDataContext } from '../components/SensorDataContext';
+import { useContext } from 'react';
 
 const Hardware = () => {
     const location = useLocation();
     const [user, setUser] = useState(null);
+
+    const {
+        ambientLightValue,
+        gasValue,
+        humidityValue,
+        irValue,
+        pressureValue,
+        proximityValue,
+        temperatureValue,
+        timestamp,
+    } = useContext(SensorDataContext);
+
+    const formattedTimestamp = new Date(timestamp).toLocaleString();
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -146,7 +161,7 @@ const Hardware = () => {
                         </div>
                         <div className="action-buttons">
                             <button className="buttons">
-                                Get Hardware Status
+                                Test LED
                             </button>
                             <button className="buttons">
                                 Test Buzzer
@@ -154,6 +169,7 @@ const Hardware = () => {
                         </div>
                     </div>
                     <div className="hardware-status-table" style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'center' }}>
+                        <h3 style={{ color: 'white', marginBottom: '10px' }}>Last Data from: {formattedTimestamp}</h3>
                         <table style={{ margin: '0 auto', borderCollapse: 'collapse', width: '80%' }}>
                             <thead>
                                 <tr>
@@ -166,37 +182,37 @@ const Hardware = () => {
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Gas Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>0.45 ppm</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{gasValue} ppm</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Temperature Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>25°C</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{temperatureValue} °C</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Pressure Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>1013 hPa</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{pressureValue} hPa</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Humidity Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>45%</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{humidityValue}%</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Proximity Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>5 cm</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{proximityValue} cm</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Ambient Light Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>300 lux</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{ambientLightValue} lux</td>
                                 </tr>
                                 <tr>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>IR Sensor</td>
                                     <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Active</td>
-                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>Detected</td>
+                                    <td style={{ color:'white', border: '1px solid #ddd', padding: '8px' }}>{irValue === 1 ? 'Detected' : 'Not Detected'}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -81,6 +81,45 @@ const Dash = () => {
         }
     }, []);
 
+    const saveDataToLocalStorage = () => {
+        const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        const blob = new Blob([JSON.stringify(sensorData, null, 2)], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "sensorData.json";
+        link.click();
+      };
+    
+      const loadDataToLocalStorage = () => {
+        if (localStorage.getItem("sensorData")) {
+          const confirmOverwrite = window.confirm(
+            "There is already data in local storage. Do you want to overwrite it?"
+          );
+          if (!confirmOverwrite) return;
+        }
+    
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "application/json";
+        input.onchange = (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              try {
+                const data = JSON.parse(e.target.result);
+                localStorage.setItem("sensorData", JSON.stringify(data));
+                alert("Data loaded successfully!");
+              } catch (error) {
+                alert("Invalid file format. Please upload a valid JSON file.");
+              }
+            };
+            reader.readAsText(file);
+          }
+        };
+        input.click();
+      };
+
     return (
         <div>
             <div class="app-container">
@@ -198,6 +237,12 @@ const Dash = () => {
                             </button>
                             <button className="buttons" onClick={handleStopMonitoring}>
                                 Stop Monitoring
+                            </button>
+                            <button className="buttons" onClick={loadDataToLocalStorage}>
+                                Load Data
+                            </button>
+                            <button className="buttons" onClick={saveDataToLocalStorage}>
+                                Save Data
                             </button>
                             {isMonitoring && <p
                                 style={{

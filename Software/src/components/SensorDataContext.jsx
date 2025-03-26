@@ -3,14 +3,26 @@ import React, { createContext, useState, useEffect } from "react";
 export const SensorDataContext = createContext();
 
 export const SensorDataProvider = ({ children }) => {
-    const [sensorData, setSensorData] = useState({
-        phValue: 0,
-        tdsValue: 0,
-        temperature: 0,
-        turbidity: 0,
-        count: 0,
-        timestamp: null,
+    const [sensorData, setSensorData] = useState(() => {
+        // Load initial state from localStorage or use default values
+        const storedData = localStorage.getItem("sensorData");
+        return storedData ? JSON.parse(storedData)[JSON.parse(storedData).length - 1] : {
+            phValue: 0,
+            tdsValue: 0,
+            temperature: 0,
+            turbidity: 0,
+            count: 0,
+            timestamp: null,
+            ambientLightValue: 0,
+            humidityValue: 0,
+            pressureValue: 0,
+            gasValue: 0,
+            irValue: 0,
+            proximityValue: 0,
+            temperatureValue: 0,
+        };
     });
+
     const [isMonitoring, setIsMonitoring] = useState(false);
     const [timer, setTimer] = useState(0);
 
@@ -61,6 +73,13 @@ export const SensorDataProvider = ({ children }) => {
 
         return () => clearInterval(fetchInterval);
     }, [isMonitoring, sensorData.count]);
+
+    // Save the latest sensor data to localStorage whenever it changes
+    useEffect(() => {
+        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        storedData.push(sensorData);
+        localStorage.setItem("sensorData", JSON.stringify(storedData));
+    }, [sensorData]);
 
     return (
         <SensorDataContext.Provider value={{ ...sensorData, isMonitoring, setIsMonitoring, timer, setTimer }}>
