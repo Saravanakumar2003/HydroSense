@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
+import { db } from '../firebase'; // Firestore instance
+import { v4 as uuidv4 } from 'uuid';
 
 const Cloud = () => {
     const location = useLocation();
     const [user, setUser] = useState(null);
+    const [backups, setBackups] = useState([]);
+    const [backupName, setBackupName] = useState("");
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -45,6 +49,78 @@ const Cloud = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
+
+    useEffect(() => {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            setUser(currentUser);
+            fetchBackups(currentUser.uid);
+        }
+    }, []);
+
+    const fetchBackups = async (userId) => {
+        const snapshot = await db.collection("backups").where("userId", "==", userId).get();
+        const fetchedBackups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setBackups(fetchedBackups);
+    };
+
+    const handleUploadData = async () => {
+        if (!backupName) {
+            alert("Please provide a name for the backup.");
+            return;
+        }
+
+        const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        if (sensorData.length === 0) {
+            alert("No data available in local storage to upload.");
+            return;
+        }
+
+        try {
+            const backupId = uuidv4();
+            await db.collection("backups").doc(backupId).set({
+                userId: user.uid,
+                name: backupName,
+                data: sensorData,
+                timestamp: new Date().toISOString(),
+            });
+            localStorage.removeItem("sensorData");
+            alert("Data uploaded successfully and local storage cleared.");
+            fetchBackups(user.uid);
+        } catch (error) {
+            console.error("Error uploading data:", error);
+            alert("Failed to upload data. Please try again.");
+        }
+    };
+
+    const handleLoadBackup = async (backup) => {
+        const confirmLoad = window.confirm(
+            `Loading this backup will overwrite your current local storage data. Are you sure?`
+        );
+        if (!confirmLoad) return;
+
+        try {
+            localStorage.setItem("sensorData", JSON.stringify(backup.data));
+            alert("Backup loaded into local storage.");
+        } catch (error) {
+            console.error("Error loading backup:", error);
+            alert("Failed to load backup. Please try again.");
+        }
+    };
+
+    const handleDeleteBackup = async (backupId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this backup?");
+        if (!confirmDelete) return;
+
+        try {
+            await db.collection("backups").doc(backupId).delete();
+            alert("Backup deleted successfully.");
+            fetchBackups(user.uid);
+        } catch (error) {
+            console.error("Error deleting backup:", error);
+            alert("Failed to delete backup. Please try again.");
+        }
+    };
 
     return (
         <div>
@@ -136,7 +212,6 @@ const Cloud = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Cloud</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -144,6 +219,29 @@ const Cloud = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
+                        <h1>Cloud Backups</h1>
+                        <div className="action-buttons">
+                            <input
+                                type="text"
+                                placeholder="Enter backup name"
+                                value={backupName}
+                                onChange={(e) => setBackupName(e.target.value)}
+                                className="backup-name-input"
+                            />
+                            <button onClick={handleUploadData} className="btn">Upload Data</button>
+                            {/* <button className="btn">Auto Upload (Coming Soon)</button> */}
+                        </div>
+                    </div>
+                    <div className="backup-list">
+                        {backups.map((backup) => (
+                            <div key={backup.id} className="backup-item">
+                                <p>
+                                    <strong>{backup.name}</strong> - {new Date(backup.timestamp).toLocaleString()}
+                                </p>
+                                <button onClick={() => handleLoadBackup(backup)} className="btn2">Load This Data</button>
+                                <button onClick={() => handleDeleteBackup(backup.id)} className="btn2">Delete</button>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div class="app-right">

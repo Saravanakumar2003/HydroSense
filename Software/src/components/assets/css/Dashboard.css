@@ -1099,3 +1099,56 @@ html, body {
 .logout-btn:hover {
     background-color: #cc0000;
 }
+
+/* Backup list styling */
+.backup-list {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.backup-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.backup-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.backup-item strong {
+    color: #333;
+}
+
+.backup-item .btn {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.backup-item .btn:hover {
+    background-color: #218838;
+}
+
+.backup-item .btn:nth-child(2) {
+    background-color: #dc3545;
+}
+
+.backup-item .btn:nth-child(2):hover {
+    background-color: #c82333;
+}
