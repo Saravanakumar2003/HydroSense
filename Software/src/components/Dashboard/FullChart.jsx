@@ -4,7 +4,7 @@ import * as echarts from "echarts";
 const FullChart = () => {
     const chartRef = useRef(null);
     const chartInstance = useRef(null); // Keep a reference to the chart instance
-    const dataLimit = 100;
+    const dataLimit = 1000;
 
     // Initialize the chart (only once)
     useEffect(() => {

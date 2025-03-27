@@ -4,7 +4,6 @@ export const SensorDataContext = createContext();
 
 export const SensorDataProvider = ({ children }) => {
     const [sensorData, setSensorData] = useState(() => {
-        // Load initial state from localStorage or use default values
         const storedData = localStorage.getItem("sensorData");
         return storedData ? JSON.parse(storedData)[JSON.parse(storedData).length - 1] : {
             phValue: 0,
@@ -20,11 +19,68 @@ export const SensorDataProvider = ({ children }) => {
             irValue: 0,
             proximityValue: 0,
             temperatureValue: 0,
+            timer: 0,
+            isMonitoring: false,
         };
     });
 
     const [isMonitoring, setIsMonitoring] = useState(false);
     const [timer, setTimer] = useState(0);
+    const [alerts, setAlerts] = useState([]);
+
+    const calculateWaterQuality = () => {
+        const { phValue, turbidity, temperature, tdsValue } = sensorData;
+
+        if (
+            phValue >= 6 && phValue <= 8 &&
+            turbidity <= 5 &&
+            temperature >= 25 && temperature <= 30 &&
+            tdsValue <= 500
+        ) {
+            return "Good";
+        } else if (
+            (phValue >= 5 && phValue < 6) || (phValue > 8 && phValue <= 9) ||
+            (turbidity > 5 && turbidity <= 10) ||
+            (temperature >= 20 && temperature < 25) || (temperature > 30 && temperature <= 35) ||
+            (tdsValue > 500 && tdsValue <= 1000)
+        ) {
+            return "Average";
+        } else if (
+            (phValue >= 4 && phValue < 5) || (phValue > 9 && phValue <= 10) ||
+            (turbidity > 10 && turbidity <= 20) ||
+            (temperature >= 15 && temperature < 20) || (temperature > 35 && temperature <= 40) ||
+            (tdsValue > 1000 && tdsValue <= 1500)
+        ) {
+            return "Needs Attention";
+        } else {
+            return "Bad";
+        }
+    };
+
+    const checkForAlerts = () => {
+        const { phValue, turbidity, temperature, tdsValue } = sensorData;
+        const newAlerts = [];
+
+        if (phValue < 6 || phValue > 8) {
+            newAlerts.push(`pH value out of range: ${phValue}`);
+        }
+        if (turbidity > 5) {
+            newAlerts.push(`Turbidity too high: ${turbidity} NTU`);
+        }
+        if (temperature < 25 || temperature > 30) {
+            newAlerts.push(`Temperature out of range: ${temperature}°C`);
+        }
+        if (tdsValue > 500) {
+            newAlerts.push(`TDS value too high: ${tdsValue} ppm`);
+        }
+
+        if (newAlerts.length > 0) {
+            setAlerts((prevAlerts) => {
+                const updatedAlerts = [...newAlerts, ...prevAlerts];
+                return updatedAlerts.slice(0, 3); // Keep only the last 3 alerts
+            });
+        }
+    };
 
     useEffect(() => {
         let interval;
@@ -42,47 +98,51 @@ export const SensorDataProvider = ({ children }) => {
 
     useEffect(() => {
         let fetchInterval;
-
+    
         const fetchSensorData = async () => {
             try {
                 const url = localStorage.getItem('sensorDataUrl') || 'http://127.0.0.1:5000';
                 const response = await fetch(url);
                 const data = await response.json();
-
+    
                 const updatedData = {
                     ...data,
                     count: sensorData.count + 1,
                     timestamp: new Date().toISOString(),
                 };
-
+    
                 setSensorData(updatedData);
-
+    
                 if (isMonitoring) {
+                    // Store only the latest data in localStorage
                     const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
                     storedData.push(updatedData);
                     localStorage.setItem("sensorData", JSON.stringify(storedData));
                 }
+    
+                checkForAlerts(); // Check for alerts whenever new data is fetched
             } catch (error) {
                 console.error("Error fetching sensor data:", error);
             }
         };
-
+    
         if (isMonitoring) {
-            fetchInterval = setInterval(fetchSensorData, 5000);
+            fetchInterval = setInterval(fetchSensorData, 5000); // Fetch data every 5 seconds
         }
-
+    
         return () => clearInterval(fetchInterval);
     }, [isMonitoring, sensorData.count]);
 
-    // Save the latest sensor data to localStorage whenever it changes
-    useEffect(() => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        storedData.push(sensorData);
-        localStorage.setItem("sensorData", JSON.stringify(storedData));
-    }, [sensorData]);
-
     return (
-        <SensorDataContext.Provider value={{ ...sensorData, isMonitoring, setIsMonitoring, timer, setTimer }}>
+        <SensorDataContext.Provider value={{
+            ...sensorData,
+            isMonitoring,
+            setIsMonitoring,
+            timer,
+            setTimer,
+            alerts,
+            waterQuality: calculateWaterQuality(),
+        }}>
             {children}
         </SensorDataContext.Provider>
     );

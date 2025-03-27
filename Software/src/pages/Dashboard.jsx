@@ -10,10 +10,10 @@ import TurbidityMeter from '../components/Dashboard/Meter/Turbidity';
 import TDSMeter from '../components/Dashboard/Meter/TDS';
 import PHMeter from '../components/Dashboard/Meter/pH';
 import { SensorDataContext } from '../components/SensorDataContext';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 
 const Dash = () => {
-    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer, count, timestamp } = useContext(SensorDataContext);
+    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer, setTimer, count, timestamp, alerts, waterQuality } = useContext(SensorDataContext);
     const location = useLocation();
     const [geolocation, setGeolocation] = useState("Fetching...");
     const [user, setUser] = useState(null);
@@ -83,42 +83,58 @@ const Dash = () => {
 
     const saveDataToLocalStorage = () => {
         const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
+        const updatedData = {
+            ...sensorData[sensorData.length - 1], // Use the latest sensor data
+            timer,
+            isMonitoring,
+        };
+        sensorData.push(updatedData);
+        localStorage.setItem("sensorData", JSON.stringify(sensorData));
+    
         const blob = new Blob([JSON.stringify(sensorData, null, 2)], { type: "application/json" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = "sensorData.json";
         link.click();
-      };
+    };
     
-      const loadDataToLocalStorage = () => {
+    const loadDataToLocalStorage = () => {
         if (localStorage.getItem("sensorData")) {
-          const confirmOverwrite = window.confirm(
-            "There is already data in local storage. Do you want to overwrite it?"
-          );
-          if (!confirmOverwrite) return;
+            const confirmOverwrite = window.confirm(
+                "There is already data in local storage. Do you want to overwrite it?"
+            );
+            if (!confirmOverwrite) return;
         }
     
         const input = document.createElement("input");
         input.type = "file";
         input.accept = "application/json";
         input.onchange = (event) => {
-          const file = event.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              try {
-                const data = JSON.parse(e.target.result);
-                localStorage.setItem("sensorData", JSON.stringify(data));
-                alert("Data loaded successfully!");
-              } catch (error) {
-                alert("Invalid file format. Please upload a valid JSON file.");
-              }
-            };
-            reader.readAsText(file);
-          }
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        localStorage.setItem("sensorData", JSON.stringify(data));
+    
+                        // Restore the latest timer and isMonitoring values
+                        const latestData = data[data.length - 1];
+                        if (latestData) {
+                            setIsMonitoring(latestData.isMonitoring || false);
+                            setTimer(latestData.timer || 0);
+                        }
+    
+                        alert("Data loaded successfully!");
+                    } catch (error) {
+                        alert("Invalid file format. Please upload a valid JSON file.");
+                    }
+                };
+                reader.readAsText(file);
+            }
         };
         input.click();
-      };
+    };
 
     return (
         <div>
@@ -219,6 +235,20 @@ const Dash = () => {
                             </button>
                         </div>
                         <div className="action-buttons">
+                            <button className="buttons" onClick={handleStartMonitoring}>
+                                Start Monitoring
+                            </button>
+                            <button className="buttons" onClick={handleStopMonitoring}>
+                                Stop Monitoring
+                            </button>
+                            <button className="buttons" onClick={loadDataToLocalStorage}>
+                                Load Data
+                            </button>
+                            <button className="buttons" onClick={saveDataToLocalStorage}>
+                                Save Data
+                            </button>
+                        </div>
+                        <div className="action-buttons">
                             <p
                                 style={{
                                     textAlign: 'left',
@@ -232,19 +262,8 @@ const Dash = () => {
                             >
                                 Status: <strong>{isMonitoring ? 'Active' : 'Stopped'}</strong>
                             </p>
-                            <button className="buttons" onClick={handleStartMonitoring}>
-                                Start Monitoring
-                            </button>
-                            <button className="buttons" onClick={handleStopMonitoring}>
-                                Stop Monitoring
-                            </button>
-                            <button className="buttons" onClick={loadDataToLocalStorage}>
-                                Load Data
-                            </button>
-                            <button className="buttons" onClick={saveDataToLocalStorage}>
-                                Save Data
-                            </button>
-                            {isMonitoring && <p
+                            <div>......</div>
+                            <p
                                 style={{
                                     textAlign: 'left',
                                     border: '1px solid #ccc',
@@ -254,7 +273,9 @@ const Dash = () => {
                                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                                     color: 'black',
                                 }}
-                            >Timer: {timer} seconds</p>}
+                            >
+                                Timer: {timer} seconds
+                            </p>
                         </div>
                     </div>
                     <div class="chart-row three">
@@ -353,7 +374,7 @@ const Dash = () => {
                                 <div class="progress-bar-info">
                                     <span class="progress-color rejected"></span>
                                     <span class="progress-type">Water Quality</span>
-                                    <span class="progress-amount">Good</span>
+                                    <span class="progress-amount">{waterQuality}</span>
                                 </div>
                             </div>
                             <div class="chart-container applicants">
@@ -397,14 +418,20 @@ const Dash = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
                                 </span>
                             </div>
-                            <div class="activity-line">
-                                <span class="activity-icon warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">This is a test alert message, <strong>Alert!!</strong></p>
-                                </div>
-                            </div>
+                            {alerts.length > 0 ? (
+                                alerts.map((alert, index) => (
+                                    <div key={index} class="activity-line">
+                                        <span class="activity-icon warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                                        </span>
+                                        <div class="activity-text-wrapper">
+                                            <p class="activity-text">{alert}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No alerts at the moment.</p>
+                            )}
                         </div>
                         <div class="app-right-section">
                             <div class="app-right-section-header">

@@ -5,12 +5,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { auth } from '../firebase';
 import { db } from '../firebase'; // Firestore instance
 import { v4 as uuidv4 } from 'uuid';
+import { SensorDataContext } from '../components/SensorDataContext';
+import { useContext } from 'react';
+
 
 const Cloud = () => {
     const location = useLocation();
     const [user, setUser] = useState(null);
     const [backups, setBackups] = useState([]);
     const [backupName, setBackupName] = useState("");
+    const { alerts } = useContext(SensorDataContext);
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -69,13 +73,13 @@ const Cloud = () => {
             alert("Please provide a name for the backup.");
             return;
         }
-
+    
         const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
         if (sensorData.length === 0) {
             alert("No data available in local storage to upload.");
             return;
         }
-
+    
         try {
             const backupId = uuidv4();
             await db.collection("backups").doc(backupId).set({
@@ -98,7 +102,7 @@ const Cloud = () => {
             `Loading this backup will overwrite your current local storage data. Are you sure?`
         );
         if (!confirmLoad) return;
-
+    
         try {
             localStorage.setItem("sensorData", JSON.stringify(backup.data));
             alert("Backup loaded into local storage.");
@@ -275,14 +279,20 @@ const Cloud = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
                                 </span>
                             </div>
-                            <div class="activity-line">
-                                <span class="activity-icon warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">This is a test alert message, <strong>Alert!!</strong></p>
-                                </div>
-                            </div>
+                            {alerts.length > 0 ? (
+                                alerts.map((alert, index) => (
+                                    <div key={index} class="activity-line">
+                                        <span class="activity-icon warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                                        </span>
+                                        <div class="activity-text-wrapper">
+                                            <p class="activity-text">{alert}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No alerts at the moment.</p>
+                            )}
                         </div>
                         <div class="app-right-section">
                             <div class="app-right-section-header">
