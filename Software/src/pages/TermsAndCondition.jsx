@@ -1,10 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const TermsAndCondition = () => {
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <div className="container">
-            <h3>TERMS OF SERVICES</h3>
+            <header>
+                <nav className="navbar">
+                    <div className="navbar-container">
+                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="hamburger" onClick={toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+                            <ul className="navbar-nav">
+                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <h3 style={{marginTop: '100px'}}>TERMS OF SERVICES</h3>
             <div  >
                 PLEASE READ THIS TERMS OF SERVICE AGREEMENT CAREFULLY, AS IT CONTAINS
                 IMPORTANT INFORMATION REGARDING YOUR LEGAL RIGHTS AND REMEDIES.

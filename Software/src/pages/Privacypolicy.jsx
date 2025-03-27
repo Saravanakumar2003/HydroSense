@@ -1,10 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Privacypolicy = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <div className="container">
-            <h1>Privacy Policy</h1>
+            <header>
+                <nav className="navbar">
+                    <div className="navbar-container">
+                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="hamburger" onClick={toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+                            <ul className="navbar-nav">
+                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <h1 style={{marginTop: '100px'}}>Privacy Policy</h1>
             <p>Last updated: October 30, 2024</p>
             <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
             <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>

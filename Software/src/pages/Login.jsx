@@ -17,6 +17,11 @@ const Login = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const history = useHistory();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
     useEffect(() => {
         if (currentUser) {
@@ -65,6 +70,32 @@ const Login = () => {
 
     return (
         <div>
+            <header>
+                <nav className="navbar">
+                    <div className="navbar-container">
+                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="hamburger" onClick={toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+                            <ul className="navbar-nav">
+                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
             <ToastContainer position="bottom-right" />
             <div id="logreg-forms">
                 <form className='form-signin' onSubmit={handleSubmit}>
@@ -94,9 +125,11 @@ const Login = () => {
                         />
                     </div>
 
-                    <button className='btn btn-secondary' type='submit'>
-                        <i className='fas fa-sign-in-alt'></i> Sign In
-                    </button>
+                    <div className="social-login">
+                        <button className='btn social-btn' type='submit'>
+                            <i className='fas fa-sign-in-alt'></i> Sign In
+                        </button>
+                    </div>
 
                     <p>OR</p>
 
@@ -116,14 +149,14 @@ const Login = () => {
                     <hr />
                     <p>Don't have an account?</p>
                     <div className='button_tools'>
-                    <Link to="/forget-password">
-                        <button className='btn btn-primary' type='button' id='forgot_pswd'> Forgot password?</button>
-                    </Link>
-                    <Link to="/register">
-                        <button className='btn btn-primary' type='button' id='btn-signup'>
-                            <i className='fas fa-user-plus'></i> Sign Up New Account
-                        </button>
-                    </Link>
+                        <Link to="/forget-password">
+                            <button className='btn btn-primary' type='button' id='forgot_pswd'> Forgot password?</button>
+                        </Link>
+                        <Link to="/register">
+                            <button className='btn btn-primary' type='button' id='btn-signup'>
+                                <i className='fas fa-user-plus'></i> Sign Up New Account
+                            </button>
+                        </Link>
                     </div>
                 </form>
             </div>

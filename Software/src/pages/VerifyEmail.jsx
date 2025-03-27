@@ -8,12 +8,14 @@ import { logoutInitiate } from '../redux/actions';
 import { useDispatch } from 'react-redux';
 import '../components/assets/css/VerifyEmail.css'
 
-
-
-
 const VerifyEmail = () => {
     const { currentUser } = useSelector((state) => state.user);
     const [user, setUser] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
     const dispatch = useDispatch();
 
@@ -35,15 +37,41 @@ const VerifyEmail = () => {
 
     const handleAuth = () => {
         if (currentUser) {
-          dispatch(logoutInitiate());
-          toast.success("Logged out successfully!");
+            dispatch(logoutInitiate());
+            toast.success("Logged out successfully!");
         }
-      };
-    
+    };
+
     return (
         <div>
+            <header>
+                <nav className="navbar">
+                    <div className="navbar-container">
+                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="hamburger" onClick={toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+                            <ul className="navbar-nav">
+                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
             <ToastContainer position="bottom-right" />
-            <h1>Please verify your email</h1>
+            <h1 style={{marginTop: '100px'}}>Please verify your email</h1>
             <p>A verification email has been sent to your email address. Please check your inbox and verify your email.</p>
             <button onClick={resendVerificationEmail}>Resend Verification Email</button>
             <button onClick={handleAuth}>Logout</button>

@@ -14,6 +14,11 @@ const Register = () => {
         password: "",
         passwordConfirm: "",
     });
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
     const { currentUser } = useSelector((state) => state.user);
     const [captchaToken, setCaptchaToken] = useState(null);
@@ -53,6 +58,32 @@ const Register = () => {
 
     return (
         <div>
+            <header>
+                <nav className="navbar">
+                    <div className="navbar-container">
+                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="hamburger" onClick={toggleMenu}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+                            <ul className="navbar-nav">
+                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
             <ToastContainer position="bottom-right" />
             <div id="register-form">
                 <form className='form-signup' onSubmit={handleSubmit}>
@@ -93,15 +124,18 @@ const Register = () => {
                         onChange={handleChange}
                         value={passwordConfirm}
                         required />
-                        
-                    <HCaptcha
-                        sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY}
-                        onVerify={handleCaptchaChange}
-                    />
+
+                    <div className="captcha-wrapper">
+                        <HCaptcha
+                            sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY}
+                            onVerify={handleCaptchaChange}
+                        />
+                    </div>
+
                     <button className='btn btn-primary mx-auto ' type='submit' >
                         <i className='fas fa-user-plus'></i> Sign Up</button>
-                    <Link to="/login">
-                        <i className="fas fa-angle-left"></i> Back
+                    <Link to="/login" className="btn btn-secondary mx-auto">
+                        Back
                     </Link>
                 </form>
                 <br />
