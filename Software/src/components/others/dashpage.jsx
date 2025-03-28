@@ -2,9 +2,33 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
+import { SensorDataContext } from '../components/SensorDataContext';
+import { useContext } from 'react';
+import { auth } from '../firebase';
 
-const Dash = () => {
+const Feedback = () => {
     const location = useLocation();
+    const { alerts } = useContext(SensorDataContext);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        // Fetch the current user from Firebase Authentication
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            setUser(currentUser);
+            }
+        }, []);
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page to reset the state
+        } catch (error) {
+            console.error('Error logging out:', error);
+            alert('Failed to log out. Please try again.');
+        }
+    };
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -110,12 +134,24 @@ const Dash = () => {
                                 Settings
                             </Link>
                         </li>
+                        <li className={`nav-list-item ${location.pathname === '/settings' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/feedback">
+                                <svg aria-hidden="true" data-prefix="fal" data-icon="comment-alt-smile" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" class="svg-inline--fa fa-comment-alt-smile fa-w-16 fa-7x"><path fill="currentColor" d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm32 352c0 17.6-14.4 32-32 32H293.3l-8.5 6.4L192 460v-76H64c-17.6 0-32-14.4-32-32V64c0-17.6 14.4-32 32-32h384c17.6 0 32 14.4 32 32v288zM331.8 237.3C313 259.4 285.4 272 256 272s-57-12.6-75.8-34.6c-5.7-6.7-15.8-7.4-22.5-1.8-6.8 5.8-7.5 15.8-1.8 22.6C180.7 287.3 217.2 304 256 304s75.3-16.7 100.2-45.9c5.8-6.7 4.9-16.8-1.8-22.6-6.7-5.7-16.8-4.9-22.6 1.8zM192 184c13.3 0 24-10.7 24-24s-10.7-24-24-24-24 10.7-24 24 10.7 24 24 24zm128 0c13.3 0 24-10.7 24-24s-10.7-24-24-24-24 10.7-24 24 10.7 24 24 24z" class=""></path></svg>
+                                Feedback
+                            </Link>
+                        </li>
+                        <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/help">
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                Help
+                            </Link>
+                        </li>
                     </ul>
                 </div>
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Default Dashboard</h1>
+                            <h1></h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -129,12 +165,24 @@ const Dash = () => {
                     <button class="close-right">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </button>
-                    <div class="profile-box">
-                        <div class="profile-photo-wrapper">
-                            <img src="https://avatars.githubusercontent.com/u/100985347?v=4" alt="profile"></img>
-                        </div>
-                        <p class="profile-text">Saravanakumar R</p>
-                        <p class="profile-subtext">Velammal Engineering College</p>
+                    <div className="profile-box">
+                        {user ? (
+                            <>
+                                <div className="profile-photo-wrapper">
+                                    <img
+                                        src={user.photoURL || 'https://via.placeholder.com/150'}
+                                        alt="profile"
+                                    />
+                                </div>
+                                <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
+                                <p className="profile-subtext">User ID: {user.uid}</p>
+                                <button onClick={handleLogout} className="btn logout-btn">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <p>Loading user data...</p>
+                        )}
                     </div>
                     <div class="app-right-content">
                         <div class="app-right-section">
@@ -144,14 +192,20 @@ const Dash = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
                                 </span>
                             </div>
-                            <div class="activity-line">
-                                <span class="activity-icon warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                                </span>
-                                <div class="activity-text-wrapper">
-                                    <p class="activity-text">This is a test alert message, <strong>Alert!!</strong></p>
-                                </div>
-                            </div>
+                            {alerts.length > 0 ? (
+                                alerts.map((alert, index) => (
+                                    <div key={index} class="activity-line">
+                                        <span class="activity-icon warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                                        </span>
+                                        <div class="activity-text-wrapper">
+                                            <p class="activity-text">{alert}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No alerts at the moment.</p>
+                            )}
                         </div>
                         <div class="app-right-section">
                             <div class="app-right-section-header">
@@ -192,4 +246,4 @@ const Dash = () => {
     )
 }
 
-export default Dash 
+export default Feedback

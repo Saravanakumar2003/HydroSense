@@ -2,16 +2,38 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
-import jsPDF from 'jspdf';
-import * as XLSX from 'xlsx';
-import { auth } from '../firebase'; 
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useContext } from 'react';
+import { auth } from '../firebase';
 
-
-const Reports = () => {
+const Feedback = () => {
     const location = useLocation();
+    const { alerts } = useContext(SensorDataContext);
     const [user, setUser] = useState(null);
+    const [result, setResult] = React.useState("");
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        setResult("Sending....");
+        const formData = new FormData(event.target);
+
+        formData.append("access_key", "9574f9b9-9754-428f-9e69-de2a4386844f");
+
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            setResult("Form Submitted Successfully");
+            event.target.reset();
+        } else {
+            console.log("Error", data);
+            setResult(data.message);
+        }
+    };
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -21,7 +43,6 @@ const Reports = () => {
         }
     }, []);
 
-    const { alerts } = useContext(SensorDataContext);
     const handleLogout = async () => {
         try {
             await auth.signOut();
@@ -51,40 +72,6 @@ const Reports = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
-
-    const downloadPDF = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const doc = new jsPDF();
-        doc.text("Sensor Data Report", 10, 10);
-        storedData.forEach((data, index) => {
-            doc.text(`${index + 1}. Timestamp: ${data.timestamp}, pH: ${data.phValue}, TDS: ${data.tdsValue}, Temp: ${data.temperature}, Turbidity: ${data.turbidity}`, 10, 20 + index * 10);
-        });
-        doc.save("SensorDataReport.pdf");
-    };
-
-    const downloadExcel = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const worksheet = XLSX.utils.json_to_sheet(storedData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sensor Data");
-        XLSX.writeFile(workbook, "SensorDataReport.xlsx");
-    };
-
-    const downloadCSV = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const csvContent = [
-            ["Timestamp", "pH", "TDS", "Temperature", "Turbidity"],
-            ...storedData.map(data => [data.timestamp, data.phValue, data.tdsValue, data.temperature, data.turbidity])
-        ]
-            .map(e => e.join(","))
-            .join("\n");
-
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "SensorDataReport.csv";
-        link.click();
-    };
 
     return (
         <div>
@@ -179,7 +166,7 @@ const Reports = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -188,7 +175,6 @@ const Reports = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Reports</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -196,59 +182,17 @@ const Reports = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
-                        <div className="action-buttons">
-                            <button onClick={downloadPDF} className="btn">Download PDF</button>
-                            <button onClick={downloadExcel} className="btn">Download Excel</button>
-                            <button onClick={downloadCSV} className="btn">Download CSV</button>
-                        </div>
                     </div>
-                    <div className="report-section">
-                        {[
-                            {
-                                title: "Summary Report",
-                                description: "Provides an overview of water quality metrics over a selected period.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Trend Analysis Report",
-                                description: "Analyzes trends in water quality parameters over time.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Safe vs Unsafe Periods Report",
-                                description: "Highlights periods of safe and unsafe water quality based on thresholds.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Compliance Report",
-                                description: "Checks compliance with Bureau of Indian Standards and WHO standards.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Seasonal Impact Report",
-                                description: "Examines the impact of seasonal changes on water quality.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Sensor Calibration Report",
-                                description: "Details the calibration status and history of sensors.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Prediction Report",
-                                description: "Forecasts future water quality using AI models.",
-                                downloadHandler: downloadPDF,
-                            },
-                        ].map((report, index) => (
-                            <div key={index} className="report-card">
-                                <h2>{report.title}</h2>
-                                <p>{report.description}</p>
-                                <button onClick={report.downloadHandler} className="btn">
-                                    Download {report.title}
-                                </button>
-                            </div>
-                        ))}
-                    </div>
+                    <form onSubmit={onSubmit}>
+                        <h2>Hydrosense Feedback</h2>
+                        <p>We value your feedback! Please fill out the form below to get in touch with us.</p>
+                        <input type="text" name="name" required placeholder='Name'/>
+                        <input type="email" name="email" required placeholder='Email' />
+                        <textarea name="message" required placeholder='Write your message here!'></textarea>
+
+                        <button type="submit">Submit Form</button>
+                        <h3>{result}</h3>
+                    </form>
                 </div>
                 <div class="app-right">
                     <button class="close-right">
@@ -335,4 +279,4 @@ const Reports = () => {
     )
 }
 
-export default Reports
+export default Feedback

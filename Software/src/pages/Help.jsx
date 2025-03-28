@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
-import jsPDF from 'jspdf';
-import * as XLSX from 'xlsx';
-import { auth } from '../firebase'; 
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useContext } from 'react';
+import { auth } from '../firebase';
 
-
-const Reports = () => {
+const Help = () => {
     const location = useLocation();
+    const { alerts } = useContext(SensorDataContext);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -18,10 +16,9 @@ const Reports = () => {
         const currentUser = auth.currentUser;
         if (currentUser) {
             setUser(currentUser);
-        }
-    }, []);
+            }
+        }, []);
 
-    const { alerts } = useContext(SensorDataContext);
     const handleLogout = async () => {
         try {
             await auth.signOut();
@@ -51,40 +48,6 @@ const Reports = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
-
-    const downloadPDF = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const doc = new jsPDF();
-        doc.text("Sensor Data Report", 10, 10);
-        storedData.forEach((data, index) => {
-            doc.text(`${index + 1}. Timestamp: ${data.timestamp}, pH: ${data.phValue}, TDS: ${data.tdsValue}, Temp: ${data.temperature}, Turbidity: ${data.turbidity}`, 10, 20 + index * 10);
-        });
-        doc.save("SensorDataReport.pdf");
-    };
-
-    const downloadExcel = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const worksheet = XLSX.utils.json_to_sheet(storedData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sensor Data");
-        XLSX.writeFile(workbook, "SensorDataReport.xlsx");
-    };
-
-    const downloadCSV = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const csvContent = [
-            ["Timestamp", "pH", "TDS", "Temperature", "Turbidity"],
-            ...storedData.map(data => [data.timestamp, data.phValue, data.tdsValue, data.temperature, data.turbidity])
-        ]
-            .map(e => e.join(","))
-            .join("\n");
-
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "SensorDataReport.csv";
-        link.click();
-    };
 
     return (
         <div>
@@ -188,7 +151,6 @@ const Reports = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Reports</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -196,58 +158,30 @@ const Reports = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
-                        <div className="action-buttons">
-                            <button onClick={downloadPDF} className="btn">Download PDF</button>
-                            <button onClick={downloadExcel} className="btn">Download Excel</button>
-                            <button onClick={downloadCSV} className="btn">Download CSV</button>
-                        </div>
+                        <h1>Help & Documentation</h1>
                     </div>
-                    <div className="report-section">
-                        {[
-                            {
-                                title: "Summary Report",
-                                description: "Provides an overview of water quality metrics over a selected period.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Trend Analysis Report",
-                                description: "Analyzes trends in water quality parameters over time.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Safe vs Unsafe Periods Report",
-                                description: "Highlights periods of safe and unsafe water quality based on thresholds.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Compliance Report",
-                                description: "Checks compliance with Bureau of Indian Standards and WHO standards.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Seasonal Impact Report",
-                                description: "Examines the impact of seasonal changes on water quality.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Sensor Calibration Report",
-                                description: "Details the calibration status and history of sensors.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Prediction Report",
-                                description: "Forecasts future water quality using AI models.",
-                                downloadHandler: downloadPDF,
-                            },
-                        ].map((report, index) => (
-                            <div key={index} className="report-card">
-                                <h2>{report.title}</h2>
-                                <p>{report.description}</p>
-                                <button onClick={report.downloadHandler} className="btn">
-                                    Download {report.title}
-                                </button>
-                            </div>
-                        ))}
+                    <div className="help-content">
+                        <section>
+                            <h2>FAQs</h2>
+                            <ul>
+                                <li><strong>How do I use HydroSense?</strong> <br />Follow the user guide provided in the documentation.</li>
+                                <li><strong>How do I reset my password?</strong> <br /> Go to the settings page and click "Reset Password".</li>
+                                <li><strong>Where can I find the latest updates?</strong> <br /> Check the announcements section in the dashboard.</li>
+                            </ul>
+                        </section>
+                        <hr />
+                        <section>
+                            <p>Download the complete user guide for HydroSense:</p>
+                            <a href="/docs/user-guide.pdf" target="_blank" className="btn">Download User Guide</a>
+                        </section>
+                        <hr />
+                        <section>
+                            <h2>External Resources</h2>
+                            <ul>
+                                <li><a href="https://www.who.int/water_sanitation_health" target="_blank" rel="noopener noreferrer">WHO Guidelines on Drinking Water</a></li>
+                                <li><a href="https://github.com/Saravanakumar2003/Final-Year-Project" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+                            </ul>
+                        </section>
                     </div>
                 </div>
                 <div class="app-right">
@@ -335,4 +269,4 @@ const Reports = () => {
     )
 }
 
-export default Reports
+export default Help

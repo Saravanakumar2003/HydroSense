@@ -21,6 +21,8 @@ import FullPageChart from './pages/FullPageChart';
 import { SensorDataProvider } from './components/SensorDataContext';
 import Privacypolicy from './pages/Privacypolicy';
 import TermsAndCondition from './pages/TermsAndCondition';
+import Feedback from './pages/Feedback';
+import Help from './pages/Help';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -53,6 +55,9 @@ const App = () => {
           <UserRoute path="/reports" component={Reports} />
           <UserRoute path="/profile" component={Profile} />
           <UserRoute path="/settings" component={Settings} />
+          <UserRoute path="/feedback" component={Feedback} />
+          <UserRoute path="/help" component={Help} />
+          <Route path="/404" component={() => <div>404 Not Found</div>} />
           <Route path="/privacy-policy" component={Privacypolicy} />
           <Route path="/terms-and-condition" component={TermsAndCondition} />
         </Switch>
