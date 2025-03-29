@@ -109,7 +109,7 @@ const Chart = () => {
         chartInstance.current.setOption(option);
     }, [phValue, tdsValue, temperature, turbidity, count]); // Update chart when sensor data or count changes
 
-    return <div ref={chartRef} style={{ width: "100%", height: "450px" }} />;
+    return <div ref={chartRef} style={{ width: "100%", height: "430px" }} />;
 };
 
 export default Chart;

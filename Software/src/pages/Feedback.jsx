@@ -237,7 +237,7 @@ const Feedback = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p>No alerts at the moment.</p>
+                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">

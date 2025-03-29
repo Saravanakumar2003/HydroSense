@@ -4,9 +4,10 @@ import "../components/assets/css/Dashboard.css";
 import { Link, useLocation } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useContext } from 'react';
+import autoTable from "jspdf-autotable";
 
 
 const Reports = () => {
@@ -53,13 +54,33 @@ const Reports = () => {
     }, []);
 
     const downloadPDF = () => {
-        const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
         const doc = new jsPDF();
-        doc.text("Sensor Data Report", 10, 10);
-        storedData.forEach((data, index) => {
-            doc.text(`${index + 1}. Timestamp: ${data.timestamp}, pH: ${data.phValue}, TDS: ${data.tdsValue}, Temp: ${data.temperature}, Turbidity: ${data.turbidity}`, 10, 20 + index * 10);
+    
+        // Fetch sensor data from local storage
+        const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
+    
+        // Map the data into a table format
+        const tableData = sensorData.map((data, index) => [
+            index + 1, // Count
+            data.timestamp || "N/A", // Timestamp
+            data.phValue || "N/A", // pH Value
+            data.turbidity || "N/A", // Turbidity
+            data.temperature || "N/A", // Temperature
+            data.tdsValue || "N/A", // TDS Value
+        ]);
+    
+        // Add title and table to the PDF
+        doc.text("HydroSense Data Report", 14, 16);
+        doc.line(14, 18, 196, 18); // Add a line below the title
+    
+        autoTable(doc, {
+            margin: { top: 22 },
+            head: [["Count", "Timestamp", "pH", "Turbidity", "Temperature", "TDS"]],
+            body: tableData,
         });
-        doc.save("SensorDataReport.pdf");
+    
+        // Save the PDF
+        doc.save("HydroSense_Data_Report.pdf");
     };
 
     const downloadExcel = () => {
@@ -179,7 +200,7 @@ const Reports = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -196,12 +217,15 @@ const Reports = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
+                        <h3 style={{color: 'white'}}>Download Overall Report</h3>
                         <div className="action-buttons">
                             <button onClick={downloadPDF} className="btn">Download PDF</button>
                             <button onClick={downloadExcel} className="btn">Download Excel</button>
                             <button onClick={downloadCSV} className="btn">Download CSV</button>
                         </div>
                     </div>
+                    <hr />
+                    <h3 style={{color: 'white', textAlign: 'center'}}>Download Specific Reports</h3>
                     <div className="report-section">
                         {[
                             {
@@ -293,7 +317,7 @@ const Reports = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p>No alerts at the moment.</p>
+                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">

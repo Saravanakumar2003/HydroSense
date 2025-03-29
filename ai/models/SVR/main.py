@@ -35,24 +35,11 @@ def predict():
         
         features = np.array([[ph, turbidity, temperature]])
 
-        # Define acceptable ranges for potable water
-        acceptable_ph_range = (6.5, 8.5)
-        acceptable_turbidity_threshold = 80  # Example threshold
-        acceptable_temperature_range = (0, 35)  # Example range in Celsius
+        # Prepare input for AI model
+        features = np.array([[ph, turbidity, temperature]])
 
-        # Check if the values are within acceptable ranges
-        if (acceptable_ph_range[0] <= ph <= acceptable_ph_range[1] and
-            turbidity <= acceptable_turbidity_threshold and
-            acceptable_temperature_range[0] <= temperature <= acceptable_temperature_range[1]):
-            prediction = 1
-        else:
-            prediction = 0
-
-        # # Prepare input for AI model
-        # features = np.array([[ph, turbidity, temperature]])
-
-        # # Predict using the model
-        # prediction = model.predict(features)[0]
+        # Predict using the model
+        prediction = model.predict(features)[0]
 
         # Debug: Print model output
         print("Model prediction:", prediction)

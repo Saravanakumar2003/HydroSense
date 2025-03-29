@@ -1,17 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import "../components/assets/css/Dashboard.css";
-import jsPDF from 'jspdf';
-import { auth } from '../firebase'; 
+import { auth } from '../firebase';
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useContext } from 'react';
 
 
 const AI = () => {
     const location = useLocation();
-    const [aiReport, setAiReport] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(null);
+
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState("");
+    const [sensorData, setSensorData] = useState(null);
+
+    // Load data from localStorage on component mount
+    useEffect(() => {
+        const data = localStorage.getItem("sensorData");
+        if (data) {
+            setSensorData(JSON.parse(data));
+        }
+    }, []);
+
+    const sendMessage = async () => {
+        if (!input.trim()) return;
+
+        const userMessage = { sender: "user", text: input };
+        setMessages((prev) => [...prev, userMessage]);
+
+        try {
+            const response = await fetch("http://localhost:5000/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: input, data: sensorData || {} }),  // Ensure data is always sent
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const { answer } = await response.json();
+            const botMessage = { sender: "bot", text: answer };
+            setMessages((prev) => [...prev, botMessage]);
+
+        } catch (error) {
+            console.error("Error fetching response:", error);
+            setMessages((prev) => [...prev, { sender: "bot", text: "Error connecting to bot." }]);
+        }
+
+        setInput("");
+    };
+
 
     const { alerts } = useContext(SensorDataContext);
 
@@ -34,76 +73,15 @@ const AI = () => {
         }
     };
 
-    const huggingFaceAPI = "https://api-inference.huggingface.co/models/google/gemma-2-2b-it";
-    const huggingFaceKey = "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";
-
-    async function generateAIReport() {
-        setAiReport(null); // Clear the previous report
-        setLoading(true);
-        try {
-            // Retrieve sensor data from localStorage
-            const storedData = JSON.parse(localStorage.getItem("sensorData")) || [];
-    
-            // Format historical data for API
-            const historicalData = storedData.map((entry) => ({
-                timestamp: entry.timestamp,
-                pH: entry.phValue,
-                turbidity: entry.turbidity,
-                temperature: entry.temperature,
-            }));
-    
-            // API request to Hugging Face
-            const response = await fetch(huggingFaceAPI, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${huggingFaceKey}`,
-                },
-                body: JSON.stringify({
-                    inputs: `Analyze the following water quality data and provide a detailed report with characteristics, anomalies, and a final verdict on water quality:\n\n${JSON.stringify(historicalData)}`,
-                }),
-            });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const jsonResponse = await response.json();
-            const generatedText = jsonResponse[0]?.generated_text || "No report generated.";
-    
-            // Remove the input data section from the response
-            const cleanedResponse = generatedText.replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "").trim();
-    
-            // Set the formatted response
-            setAiReport(cleanedResponse);
-        } catch (error) {
-            console.error("Error generating AI report:", error);
-            setAiReport("Failed to generate report. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const downloadPDF = () => {
-        const doc = new jsPDF();
-        doc.text("AI Report", 10, 10);
-        doc.text(aiReport || "No report available.", 10, 20);
-        doc.save("AI_Report.pdf");
-    };
-
-    const shareReport = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: "AI Report",
-                    text: aiReport || "No report available.",
-                });
-            } catch (error) {
-                console.error("Error sharing report:", error);
-            }
-        } else {
-            alert("Sharing is not supported on this browser.");
-        }
+    const downloadConversation = () => {
+        const conversation = messages
+            .map((msg) => `${msg.sender === "user" ? "You" : "Bot"}: ${msg.text}`)
+            .join("\n");
+        const blob = new Blob([conversation], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "AI_Conversation.txt";
+        link.click();
     };
 
     useEffect(() => {
@@ -218,7 +196,7 @@ const AI = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -227,7 +205,7 @@ const AI = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Artificial Intelligence</h1>
+                            <h1>Talk with Data</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -236,76 +214,57 @@ const AI = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="ai-report-section">
+                    <div className="chatbot-section">
+                        <div className="chat-history" style={{ maxHeight: "400px", overflowY: "auto", padding: "10px", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#f9f9f9" }}>
+                            {messages.map((msg, index) => (
+                                <div
+                                    key={index}
+                                    className={`chat-message ${msg.sender === "user" ? "user-message" : "bot-message"}`}
+                                    style={{
+                                        textAlign: msg.sender === "user" ? "right" : "left",
+                                        margin: "10px 0",
+                                    }}
+                                >
+                                    <strong>{msg.sender === "user" ? "You" : "Bot"}:</strong> {msg.text}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="chat-input-section" style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Ask a question..."
+                                style={{ flex: 1, padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                            />
+                            <button
+                                onClick={sendMessage}
+                                style={{
+                                    padding: "10px 20px",
+                                    backgroundColor: "#007bff",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Send
+                            </button>
+                        </div>
                         <button
-                            className="generate-report-button"
-                            onClick={generateAIReport}
-                            disabled={loading}
+                            onClick={downloadConversation}
                             style={{
+                                marginTop: "10px",
                                 padding: "10px 20px",
-                                backgroundColor: loading ? "#ccc" : "#007bff",
+                                backgroundColor: "#28a745",
                                 color: "#fff",
                                 border: "none",
                                 borderRadius: "5px",
-                                cursor: loading ? "not-allowed" : "pointer",
+                                cursor: "pointer",
                             }}
                         >
-                            {loading ? "Generating Report..." : "Generate AI Report"}
+                            Download Conversation
                         </button>
-                        {aiReport && (
-                            <div className="ai-report-output" style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "5px", backgroundColor: "#f9f9f9" }}>
-                                <h3>AI Report:</h3>
-                                <div style={{
-                                    whiteSpace: "pre-wrap",
-                                    wordWrap: "break-word",
-                                    backgroundColor: "#f9f9f9",
-                                    padding: "20px",
-                                    borderRadius: "10px",
-                                    border: "1px solid #ddd",
-                                    fontSize: "16px",
-                                    lineHeight: "1.8",
-                                    color: "#333",
-                                    maxHeight: "400px",
-                                    overflowY: "auto"
-                                }}>
-                                    {aiReport
-                                        .replace(/Analyze the following water quality data.*?\[\{.*?\}\]\n+/s, "") // Remove the raw water data section
-                                        .replace(/##\s/g, "") // Remove markdown headers
-                                        .replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.toUpperCase()) // Convert bold text to uppercase
-                                        .replace(/\n\n/g, "\n") // Remove extra newlines
-                                        .replace(/^\*\s/gm, "• ") // Replace markdown list items with bullets
-                                    }
-                                </div>
-                                <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-                                    <button
-                                        onClick={downloadPDF}
-                                        style={{
-                                            padding: "10px 20px",
-                                            backgroundColor: "#28a745",
-                                            color: "#fff",
-                                            border: "none",
-                                            borderRadius: "5px",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        Download as PDF
-                                    </button>
-                                    <button
-                                        onClick={shareReport}
-                                        style={{
-                                            padding: "10px 20px",
-                                            backgroundColor: "#17a2b8",
-                                            color: "#fff",
-                                            border: "none",
-                                            borderRadius: "5px",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        Share
-                                    </button>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
                 <div class="app-right">
@@ -351,7 +310,7 @@ const AI = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p>No alerts at the moment.</p>
+                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">

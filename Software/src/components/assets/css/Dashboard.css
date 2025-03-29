@@ -1015,6 +1015,37 @@ html, body {
     background-color: #0056b3;
 }
 
+@media (max-width: 1024px) {
+    .report-card {
+        width: calc(50% - 20px); /* Adjust to two cards per row */
+    }
+}
+
+@media (max-width: 768px) {
+    .report-card {
+        width: 100%; /* Stack cards vertically */
+    }
+    .report-section {
+        gap: 15px; /* Reduce gap between cards */
+    }
+}
+
+@media (max-width: 480px) {
+    .report-card {
+        padding: 15px; /* Reduce padding for smaller screens */
+    }
+    .report-card h2 {
+        font-size: 16px; /* Adjust font size */
+    }
+    .report-card p {
+        font-size: 12px; /* Adjust font size */
+    }
+    .report-card .btn {
+        padding: 8px 12px; /* Adjust button size */
+        font-size: 12px; /* Adjust font size */
+    }
+}
+
 .profile-section {
     display: flex;
     justify-content: center;
@@ -1224,3 +1255,36 @@ form span {
         font-size: 14px;
     }
 }
+
+.btn2 {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Add padding */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    margin-right: 10px; /* Add spacing between buttons */
+}
+
+/* Hover effect */
+.btn2:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Active effect */
+.btn2:active {
+    background-color: #003f7f; /* Even darker blue when clicked */
+    transform: scale(0.95); /* Slightly shrink the button */
+}
+
+/* Disabled state */
+.btn2:disabled {
+    background-color: #ccc; /* Gray background */
+    color: #666; /* Gray text */
+    cursor: not-allowed; /* Not-allowed cursor */
+    transform: none; /* No scaling */
+}
+
