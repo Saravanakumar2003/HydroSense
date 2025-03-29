@@ -50,6 +50,30 @@ const Profile = () => {
         }
     }, []);
 
+    const handleChangePassword = async () => {
+        try {
+            const email = Muser.email;
+            await auth.sendPasswordResetEmail(email);
+            alert('Password reset email sent! Check your inbox.');
+        } catch (error) {
+            console.error('Error sending password reset email:', error);
+            alert('Failed to send password reset email. Please try again.');
+        }
+    };
+    
+    const handleDeleteAccount = async () => {
+        try {
+            if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                await auth.currentUser.delete();
+                alert('Account deleted successfully.');
+                window.location.reload(); // Redirect or reset the state
+            }
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            alert('Failed to delete account. Please try again.');
+        }
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -247,11 +271,13 @@ const Profile = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="profile-details">
-                                            <h2>{Muser.displayName || 'No Name Provided'}</h2>
-                                            <p>User ID: {Muser.uid}</p>
-                                            <button onClick={handleEdit} className="btn">Edit Profile</button>
-                                        </div>
+                                    <div className="profile-details">
+                                        <h2>{Muser.displayName || 'No Name Provided'}</h2>
+                                        <p>User ID: {Muser.uid}</p>
+                                        <button onClick={handleEdit} className="btn">Edit Profile</button>
+                                        <button onClick={handleChangePassword} className="btn">Change Password</button>
+                                        <button onClick={handleDeleteAccount} className="btn danger">Delete Account</button>
+                                    </div>
                                     )}
                                 </div>
                             ) : (
