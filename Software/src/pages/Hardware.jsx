@@ -11,6 +11,32 @@ const Hardware = () => {
     const location = useLocation();
     const [user, setUser] = useState(null);
 
+    const [status, setStatus] = useState("");
+
+    const triggerBuzzer = async () => {
+        try {
+          // Retrieve the URL from local storage
+          const sensorDataUrl = localStorage.getItem("sensorDataUrl");
+          if (!sensorDataUrl) {
+            setStatus("Sensor data URL not found in local storage");
+            return;
+          }
+      
+          // Use the retrieved URL to make the request
+          const response = await fetch(`${sensorDataUrl}/buzzer`);
+          console.log("Response:", response);
+          if (response.ok) {
+            setStatus("Buzzer Activated!");
+            console.log("Buzzer activated successfully");
+          } else {
+            setStatus("Failed to activate buzzer");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          setStatus("Network error");
+        }
+      };
+
     const {
         ambientLightValue,
         gasValue,
@@ -174,11 +200,11 @@ const Hardware = () => {
                             </button>
                         </div>
                         <div className="action-buttons">
-                            <button className="buttons">
-                                Test LED
+                            <button className="buttons" onClick={triggerBuzzer}>
+                                Test Buzzer
                             </button>
                             <button className="buttons">
-                                Test Buzzer
+                                Test LED
                             </button>
                         </div>
                     </div>

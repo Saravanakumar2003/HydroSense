@@ -82,8 +82,15 @@ const Settings = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Setup Data:', formData);
-        localStorage.setItem('sensorDataUrl', formData.wifiGateway);
+        let wifiGateway = formData.wifiGateway.trim();
+    
+        // Ensure the URL includes the protocol
+        if (!wifiGateway.startsWith("http://") && !wifiGateway.startsWith("https://")) {
+            wifiGateway = `http://${wifiGateway}`;
+        }
+    
+        console.log('Setup Data:', { ...formData, wifiGateway });
+        localStorage.setItem('sensorDataUrl', wifiGateway);
         alert('Device setup completed successfully!');
         setIsModalOpen(false);
     };
