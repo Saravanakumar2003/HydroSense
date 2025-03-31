@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 # Load the trained ML model
-model = joblib.load("fine_tuned_svm_model.pkl")  # Ensure the file exists in the same directory
+model = joblib.load("scaler.pkl")  # Ensure the file exists in the same directory
 
 @app.route('/predict', methods=['POST'])
 

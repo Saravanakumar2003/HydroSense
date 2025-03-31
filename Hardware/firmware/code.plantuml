@@ -1,0 +1,48 @@
+@startuml
+class WiFiServer {
+    + begin()
+    + available() : WiFiClient
+}
+
+class WiFiClient {
+    + connected() : bool
+    + available() : bool
+    + read() : char
+    + println(data : String)
+    + stop()
+}
+
+class Sensor {
+    + readPH() : float
+    + readTemperature() : float
+    + readTDS(temp : float) : float
+    + readAmbientLight() : float
+    + readGas() : float
+    + readHumidity() : float
+    + readIR() : int
+    + readPressure() : float
+    + readProximity() : int
+}
+
+class Buzzer {
+    + activateBuzzer()
+}
+
+class WiFiAP {
+    + beginAP(ssid : String, pass : String) : int
+    + printWifiStatus()
+}
+
+class WebServer {
+    + handleClient(client : WiFiClient)
+    + sendJSONResponse(client : WiFiClient, data : String)
+    + checkWaterQuality(pH : float, turbidity : float, tds : float)
+}
+
+WiFiServer --> WiFiClient : "Manages client connections"
+WiFiAP --> WiFiServer : "Starts the server"
+WebServer --> WiFiClient : "Handles HTTP requests"
+WebServer --> Sensor : "Reads sensor data"
+WebServer --> Buzzer : "Activates buzzer if needed"
+Sensor --> WiFiAP : "Uses I2C/Analog for data"
+@enduml
