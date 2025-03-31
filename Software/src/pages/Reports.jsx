@@ -8,11 +8,14 @@ import { auth } from '../firebase';
 import { SensorDataContext } from '../components/SensorDataContext';
 import { useContext } from 'react';
 import autoTable from "jspdf-autotable";
+import OpenAI from 'openai';
 
 
 const Reports = () => {
     const location = useLocation();
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -52,6 +55,77 @@ const Reports = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
+
+    const openai = new OpenAI({
+        baseURL: 'https://openrouter.ai/api/v1',
+        apiKey: process.env.REACT_APP_OPENAI_KEY, // Replace with your OpenRouter API key
+        dangerouslyAllowBrowser: true,
+        defaultHeaders: {
+          'HTTP-Referer': '<YOUR_SITE_URL>', // Optional. Replace with your site URL.
+          'X-Title': '<YOUR_SITE_NAME>', // Optional. Replace with your site name.
+        },
+      });
+
+
+      const generateAIReport = async (title, AIprompt, index) => {
+        setLoading((prevLoading) => ({ ...prevLoading, [index]: true })); // Set loading for the specific button
+        try {
+            // Prepare the prompt for the OpenRouter API
+            const prompt = AIprompt;
+
+            // Fetch sensor data from local storage
+            const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
+    
+            // OpenRouter API call
+            const completion = await openai.chat.completions.create({
+                model: 'mistralai/mistral-7b-instruct:free', // Specify the model
+                messages: [
+                    {
+                        role: 'user',
+                        content: `${prompt}\n\n${JSON.stringify(sensorData)}`,
+                    },
+                ],
+            });
+            
+            console.log("AI Report:", completion);
+            const summary = completion.choices[0]?.message?.content || "No summary generated.";
+    
+            // Generate PDF using jsPDF
+            const doc = new jsPDF();
+            const pageHeight = doc.internal.pageSize.height;
+            const margin = 10;
+            let cursorY = margin;
+    
+            // Add title
+            doc.setFont("Arial", "bold");
+            doc.setFontSize(16);
+            doc.text(`${title}`, margin, cursorY);
+            cursorY += 10;
+    
+            // Add summary (output only)
+            doc.setFont("Arial", "normal");
+            doc.setFontSize(12);
+            const lines = doc.splitTextToSize(summary, doc.internal.pageSize.width - 2 * margin);
+    
+            lines.forEach((line) => {
+                if (cursorY + 10 > pageHeight - margin) {
+                    doc.addPage(); // Add a new page if the content exceeds the page height
+                    cursorY = margin; // Reset cursor to the top margin
+                }
+                doc.text(line, margin, cursorY);
+                cursorY += 10; // Move cursor down for the next line
+            });
+    
+            // Save the PDF
+            doc.save(`${title.replace(/\s+/g, "_")}.pdf`);
+        } catch (error) {
+            console.error("Error generating AI report:", error);
+            alert("Failed to generate report. Please try again.");
+        } finally {
+            setLoading((prevLoading) => ({ ...prevLoading, [index]: false })); // Reset loading for the specific button
+        }
+    };
+
 
     const downloadPDF = () => {
         const doc = new jsPDF();
@@ -106,6 +180,34 @@ const Reports = () => {
         link.download = "SensorDataReport.csv";
         link.click();
     };
+
+    const reportOptions = [
+        {
+            title: "Summary Report",
+            description: "Provides an overview of water quality metrics over a selected period.",
+            AIpromt: "Analyze the following water quality data and provide a detailed report with characteristics, anomalies, and a final verdict on water quality on the following data",
+        },
+        {
+            title: "Trend Analysis Report",
+            description: "Analyzes trends in water quality parameters over time.",
+            AIpromt: "Analyze trends in water quality parameters over this data",
+        },
+        {
+            title: "Safe vs Unsafe Periods Report",
+            description: "Highlights periods of safe and unsafe water quality based on thresholds.",
+            AIpromt: "Identify safe and unsafe periods based on water quality thresholds in this data",
+        },
+        {
+            title: "Compliance Report",
+            description: "Checks compliance with Bureau of Indian Standards and WHO standards.",
+            AIpromt: "Check compliance with Bureau of Indian Standards and WHO standards based on this data",
+        },
+        {
+            title: "Seasonal Impact Report",
+            description: "Examines the impact of seasonal changes on water quality.",
+            AIpromt: "Examine the impact of seasonal changes on water quality based on this data",
+        },
+    ];
 
     return (
         <div>
@@ -227,48 +329,16 @@ const Reports = () => {
                     <hr />
                     <h3 style={{color: 'white', textAlign: 'center'}}>Download Specific Reports</h3>
                     <div className="report-section">
-                        {[
-                            {
-                                title: "Summary Report",
-                                description: "Provides an overview of water quality metrics over a selected period.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Trend Analysis Report",
-                                description: "Analyzes trends in water quality parameters over time.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Safe vs Unsafe Periods Report",
-                                description: "Highlights periods of safe and unsafe water quality based on thresholds.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Compliance Report",
-                                description: "Checks compliance with Bureau of Indian Standards and WHO standards.",
-                                downloadHandler: downloadPDF,
-                            },
-                            {
-                                title: "Seasonal Impact Report",
-                                description: "Examines the impact of seasonal changes on water quality.",
-                                downloadHandler: downloadExcel,
-                            },
-                            {
-                                title: "Sensor Calibration Report",
-                                description: "Details the calibration status and history of sensors.",
-                                downloadHandler: downloadCSV,
-                            },
-                            {
-                                title: "Prediction Report",
-                                description: "Forecasts future water quality using AI models.",
-                                downloadHandler: downloadPDF,
-                            },
-                        ].map((report, index) => (
+                        {reportOptions.map((report, index) => (
                             <div key={index} className="report-card">
                                 <h2>{report.title}</h2>
                                 <p>{report.description}</p>
-                                <button onClick={report.downloadHandler} className="btn">
-                                    Download {report.title}
+                                <button
+                                    onClick={() => generateAIReport(report.title, report.AIpromt, index)}
+                                    className="btn"
+                                    disabled={loading[index]} // Disable only the specific button
+                                >
+                                    {loading[index] ? "Generating..." : `Download ${report.title}`}
                                 </button>
                             </div>
                         ))}

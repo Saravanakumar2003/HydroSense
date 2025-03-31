@@ -1,16 +1,33 @@
-from flask import Flask, jsonify
-from flask_cors import CORS  # Import CORS
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import random
+import datetime
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+# Allow requests from localhost and any other origins you need
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000", "https://hydrosense-app.vercel.app/"]}})
+
+@app.route('/test', methods=['GET'])
+def test_endpoint():
+    return jsonify({"message": "API is working fine"}), 200
+
+# Sensor data simulation
 def generate_sensor_data():
     return {
-        "phValue": round(random.uniform(6.0, 8.0), 1),  # pH range: 6-8
-        "tdsValue": random.randint(0, 500),             # TDS range: 0-500
-        "turbidity": random.randint(85, 100),           # Turbidity range: 85-100 NTU
-        "temperature": round(random.uniform(15, 35), 1) # Temp range: 15-35°C
+        "phValue": round(random.uniform(6.0, 8.0), 1),
+        "tdsValue": random.randint(200, 500),
+        "turbidity": random.randint(0,5),
+        "temperature": round(random.uniform(20, 35), 1),
+        "gasValue": round(random.uniform(0, 10), 2),  # Gas sensor (arbitrary range 0-10 ppm)
+        "pressureValue": round(random.uniform(950, 1050), 2),  # Pressure (hPa)
+        "humidityValue": round(random.uniform(20, 90), 1),  # Humidity (%)
+        "temperatureValue": round(random.uniform(20, 35), 1),  # Temperature (°C)
+        "proximityValue": random.randint(0, 10),  # Proximity (arbitrary range, 0-10)
+        "ambientLightValue": random.randint(100, 10000),  # Ambient light (lux)
+        "irValue": random.randint(0, 1),  # IR sensor (0 = no IR, 1 = IR detected)
+        "timestamp": datetime.datetime.now().isoformat()  # Current timestamp
     }
 
 @app.route("/", methods=["GET"])
