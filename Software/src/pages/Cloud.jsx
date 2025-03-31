@@ -236,6 +236,7 @@ const Cloud = () => {
                             </button>
                         </div>
                         <h1>Cloud Backups</h1>
+                        <p style={{color: '#fff'}}>Note: Once the data is uploaded to the cloud, it will be removed from local storage.</p>
                         <div className="action-buttons">
                             <input
                                 type="text"
@@ -244,15 +245,19 @@ const Cloud = () => {
                                 onChange={(e) => setBackupName(e.target.value)}
                                 className="backup-name-input"
                             />
-                            <button onClick={handleUploadData} className="btn">Upload Data</button>
+                            <button onClick={handleUploadData} className="btn2">Upload</button>
                             {/* <button className="btn">Auto Upload (Coming Soon)</button> */}
                         </div>
                     </div>
                     <div className="backup-list">
+                        <h2>Available Backups</h2>
+                        {backups.length === 0 ? (
+                            <p style={{color: 'white', textAlign: 'center'}}>No backups available. Please upload data.</p>
+                        ) : null}
                         {backups.map((backup) => (
                             <div key={backup.id} className="backup-item">
                                 <p>
-                                    <strong>{backup.name}</strong> - {new Date(backup.timestamp).toLocaleString()}
+                                    <strong>{backup.name}</strong> <br/>Time: {new Date(backup.timestamp).toLocaleString()}
                                 </p>
                                 <button onClick={() => handleLoadBackup(backup)} className="btn2">Load This Data</button>
                                 <button onClick={() => handleDeleteBackup(backup.id)} className="btn2">Delete</button>

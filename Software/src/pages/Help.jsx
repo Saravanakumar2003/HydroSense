@@ -162,21 +162,21 @@ const Help = () => {
                     </div>
                     <div className="help-content">
                         <section>
-                            <h2>FAQs</h2>
+                            <h3>FAQs</h3>
                             <ul>
                                 <li><strong>How do I use HydroSense?</strong> <br />Follow the user guide provided in the documentation.</li>
-                                <li><strong>How do I reset my password?</strong> <br /> Go to the settings page and click "Reset Password".</li>
+                                <li><strong>How do I reset my password?</strong> <br /> Go to the settings page and click "Change Password".</li>
                                 <li><strong>Where can I find the latest updates?</strong> <br /> Check the announcements section in the dashboard.</li>
                             </ul>
                         </section>
                         <hr />
                         <section>
-                            <p>Download the complete user guide for HydroSense:</p>
-                            <a href="/docs/user-guide.pdf" target="_blank" className="btn">Download User Guide</a>
+                            <h3>Download the complete user guide for HydroSense</h3>
+                            <button href="/docs/user-guide.pdf" target="_blank" className="btn3">Download User Guide</button>
                         </section>
                         <hr />
                         <section>
-                            <h2>External Resources</h2>
+                            <h3>External Resources</h3>
                             <ul>
                                 <li><a href="https://www.who.int/water_sanitation_health" target="_blank" rel="noopener noreferrer">WHO Guidelines on Drinking Water</a></li>
                                 <li><a href="https://github.com/Saravanakumar2003/Final-Year-Project" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>

@@ -136,7 +136,7 @@ const Login = () => {
                     <p>OR</p>
 
                     <div className="social-login">
-                        <button className='btn btn-primary github-btn' type='button' onClick={handleGoogleSignIn}>Sign in with Google</button>
+                        <button className='btn btn-primary github-btn' type='button' onClick={handleGithubSignIn}>Sign in with Github</button>
                     </div>
                     <div className="social-login">
                         <button className='btn btn-primary google-btn' type='button' onClick={handleGoogleSignIn}>Sign in with Google</button>

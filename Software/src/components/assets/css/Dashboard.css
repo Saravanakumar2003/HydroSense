@@ -1131,8 +1131,7 @@ html, body {
 /* Backup list styling */
 .backup-list {
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+	color: #fff;
     border-radius: 5px;
     margin-top: 20px;
 }
@@ -1268,6 +1267,24 @@ form span {
     margin-right: 10px; /* Add spacing between buttons */
 }
 
+.btn {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Add padding */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    margin-right: 10px; /* Add spacing between buttons */
+	margin-top: 10px; /* Add spacing above the button */
+}
+
+.action-buttons input{
+	margin-right: 15px;
+	border: 1px solid #ccc;
+}
+
 /* Hover effect */
 .btn2:hover {
     background-color: #0056b3; /* Darker blue on hover */
@@ -1287,4 +1304,39 @@ form span {
     cursor: not-allowed; /* Not-allowed cursor */
     transform: none; /* No scaling */
 }
+
+.help-content section {
+	color: #fff;
+	margin-bottom: 20px;
+}
+
+.btn3{
+	align-items: center;
+	align-self: center;
+	align-content: center;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	padding: 10px 15px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.help-content {
+	align-items: center;
+	align-self: center;
+	align-content: center;
+	text-align: center;
+	justify-content: center;
+}
+
+.help-content a{
+	text-decoration: underline;
+	color: #007bff;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+
 
