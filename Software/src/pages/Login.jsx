@@ -5,8 +5,8 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../components/assets/css/Login.css";
+import '../components/assets/css/Home.css'
 import { googleSignInInitiate, loginInitiate, githubSignInInitiate } from '../redux/actions';
-// import { googleSignInInitiate, loginInitiate, fbSignInInitiate, githubSignInInitiate } from '../redux/actions';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -73,8 +73,10 @@ const Login = () => {
             <header>
                 <nav className="navbar">
                     <div className="navbar-container">
-                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
-                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="logo-brand">
+                            <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                            <a className="navbar-brand" href="#">Hydro Sense</a>
+                        </div>
                         <div className="hamburger" onClick={toggleMenu}>
                             <span></span>
                             <span></span>
@@ -134,21 +136,15 @@ const Login = () => {
                     <p>OR</p>
 
                     <div className="social-login">
-                        <button className='btn google-btn social-btn' type='button' onClick={handleGoogleSignIn}>
-                            <span>
-                                <i className='fab fa-google-plus-g f'></i> <h6>Sign in with Google</h6>
-                            </span>
-                        </button>
-
-                        <button className='btn github-btn social-btn' type='button' onClick={handleGithubSignIn}>
-                            <span>
-                                <i className='fab fa-github f'></i> <h6>Sign in with Github</h6>
-                            </span>
-                        </button>
+                        <button className='btn btn-primary github-btn' type='button' onClick={handleGoogleSignIn}>Sign in with Google</button>
                     </div>
+                    <div className="social-login">
+                        <button className='btn btn-primary google-btn' type='button' onClick={handleGoogleSignIn}>Sign in with Google</button>
+                    </div>
+
                     <hr />
                     <p>Don't have an account?</p>
-                    <div className='button_tools'>
+                    <div className="social-login">
                         <Link to="/forget-password">
                             <button className='btn btn-primary' type='button' id='forgot_pswd'> Forgot password?</button>
                         </Link>

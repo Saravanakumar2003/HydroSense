@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import '../components/assets/css/Home.css'
+import '../components/assets/css/Policy.css';
 
 const Privacypolicy = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,33 +12,35 @@ const Privacypolicy = () => {
     };
 
     return (
-        <div className="container">
-            <header>
-                <nav className="navbar">
-                    <div className="navbar-container">
-                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
-                        <a className="navbar-brand" href="#">Hydro Sense</a>
-                        <div className="hamburger" onClick={toggleMenu}>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div className={`menu ${isMenuOpen ? "open" : ""}`}>
-                            <ul className="navbar-nav">
-                                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </header>
+        <div className='policy'>
+      <header>
+        <nav className="navbar">
+          <div className="navbar-container">
+          <div className="logo-brand">
+              <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+              <a className="navbar-brand" href="#">Hydro Sense</a>
+            </div>
+            <div className="hamburger" onClick={toggleMenu}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div className={`menu ${isMenuOpen ? "open" : ""}`}>
+              <ul className="navbar-nav">
+                <li className="nav-item"><a className="nav-link" href="/#home">Home</a></li>
+                <li className="nav-item"><a className="nav-link" href="/#about">About</a></li>
+                <li className="nav-item"><a className="nav-link" href="/#services">Features</a></li>
+                <li className="nav-item"><a className="nav-link" href="/#showcase">Screenshots</a></li>
+                <li className="nav-item"><a className="nav-link" href="/#download">Download</a></li>
+                <li className="nav-item"><a className="nav-link" href="/#contact">Contact</a></li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
             <h1 style={{marginTop: '100px'}}>Privacy Policy</h1>
             <p>Last updated: October 30, 2024</p>
             <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -182,9 +186,11 @@ const Privacypolicy = () => {
             <h2>Contact Us</h2>
             <p>If you have any questions about this Privacy Policy, You can contact us:</p>
             <ul>
-                <li>By visiting this page on our website: <a href="https://hydrosense.onrender.com" rel="external nofollow noopener" target="_blank">https://hydrosense.onrender.com</a></li>
+                <li>By visiting this page on our website: <a href="https://hydrosense-app.vercel.app" rel="external nofollow noopener" target="_blank">https://hydrosense-app.vercel.app</a></li>
             </ul>
-            <Link to="/">Back to Home</Link>
+            <Link to="/">
+                <button>Back to Home</button>
+            </Link>
         </div>
     );
 }

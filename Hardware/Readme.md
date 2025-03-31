@@ -26,9 +26,12 @@ Example firmware snippet:
 ```c
 #include <SPI.h>
 #include <WiFiNINA.h>
-void setup() {
-    Serial.begin(9600);
-}
+#include <Wire.h>
+#include <Arduino_APDS9960.h>
+
+char ssid[] = "MyVegaAP";        // AP name
+char pass[] = "myAPpassword";    // AP password (min. 8 characters)
+int status = WL_IDLE_STATUS;
 ```
 
 ---
@@ -38,7 +41,7 @@ void setup() {
 This folder contains wiring diagrams and circuit schematics for the hardware setup. Key components include:
 - **Vega Aries IoT v2.0** (Microcontroller)
 - **pH Sensor** (Analog input)
-- **Turbidity Sensor** (Digital input)
+- **Turbidity Sensor** (Analog input)
 - **TDS Sensor** (Analog input)
 - **Temperature Sensor** (I2C communication)
 

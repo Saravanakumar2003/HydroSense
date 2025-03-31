@@ -81,16 +81,14 @@ h1, p {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin: 5px 0;
+
 }
 
 #logreg-forms .social-btn {
   color: white;
   text-align: center;
-  display: inline-flex;
   justify-content: center;
-  align-items: center;
-  align-self: center;
-  align-items: center;
 }
 
 #logreg-forms .social-btn:hover {
@@ -110,6 +108,8 @@ h1, p {
   padding-top: 10px;
   color: #007bff;
   text-align: center;
+  font-size: 14px;
+  font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease;
 }

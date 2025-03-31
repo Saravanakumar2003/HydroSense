@@ -10,12 +10,14 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className="homepage">
       <header>
         <nav className="navbar">
           <div className="navbar-container">
-            <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
-            <a className="navbar-brand" href="#">Hydro Sense</a>
+          <div className="logo-brand">
+              <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+              <a className="navbar-brand" href="#">Hydro Sense</a>
+            </div>
             <div className="hamburger" onClick={toggleMenu}>
               <span></span>
               <span></span>
@@ -46,9 +48,9 @@ const HomePage = () => {
         </p>
 
         <div className="home_buttons">
-          <a href="#download" class="btn">Download Now</a>
-          <a href="">
-          <Link className="btn" to="/dashboard">Dashboard</Link>
+          <a href="#download" className="btn">Download Now</a>
+          <a className="btn" href="">
+          <Link to="/dashboard">Dashboard</Link>
           </a>
         </div>
       </section>

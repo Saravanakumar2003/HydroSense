@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import '../components/assets/css/Home.css'
+import '../components/assets/css/Policy.css';
 
 const TermsAndCondition = () => {
 
@@ -11,12 +13,14 @@ const TermsAndCondition = () => {
     };
 
     return (
-        <div className="container">
+        <div>
             <header>
                 <nav className="navbar">
                     <div className="navbar-container">
-                        <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
-                        <a className="navbar-brand" href="#">Hydro Sense</a>
+                        <div className="logo-brand">
+                            <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
+                            <a className="navbar-brand" href="#">Hydro Sense</a>
+                        </div>
                         <div className="hamburger" onClick={toggleMenu}>
                             <span></span>
                             <span></span>
@@ -38,7 +42,7 @@ const TermsAndCondition = () => {
                     </div>
                 </nav>
             </header>
-            <h3 style={{marginTop: '100px'}}>TERMS OF SERVICES</h3>
+            <h1 style={{ marginTop: '100px' }}>TERMS OF SERVICES</h1>
             <div  >
                 PLEASE READ THIS TERMS OF SERVICE AGREEMENT CAREFULLY, AS IT CONTAINS
                 IMPORTANT INFORMATION REGARDING YOUR LEGAL RIGHTS AND REMEDIES.
@@ -549,7 +553,9 @@ const TermsAndCondition = () => {
                 <div >Chennai</div>
                 <div >IN</div>
             </div>
-            <Link to="/">Back to Home</Link>
+            <Link to="/">
+                <button className="btn btn-primary" style={{ marginTop: '20px', marginBottom: '20px' }}>Back to Home</button>
+            </Link>
         </div>
     );
 };
