@@ -74,3 +74,11 @@ If running as an API service, use the following endpoints:
 ## Conclusion
 The AI module enhances Hydrosense by integrating predictive analytics and automated insights, helping users make informed decisions about water safety.
 
+## Deployment Notes
+
+https://dev.to/mihaiandrei97/building-a-fastapi-application-and-deploying-it-with-vercel-ho7
+
+For powershell, use the following command to activate the virtual environment:
+```powershell
+env\Scripts\Activate
+```

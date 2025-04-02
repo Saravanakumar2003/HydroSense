@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 from fastapi.testclient import TestClient
-from ai.bot.app import app  # Import your FastAPI app
+from ai.bot.main import app  # Import your FastAPI app
 
 class TestChatbotAPI(unittest.TestCase):
     @classmethod
