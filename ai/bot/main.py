@@ -8,9 +8,9 @@ app = FastAPI()
 # ✅ CORS Middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000, https://hydrosense-app.vercel.app/"],  # Replace with frontend URL if needed
+    allow_origins=["*"],  # Allows requests from any domain
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, OPTIONS, etc.)
     allow_headers=["*"],  # Allows all headers
 )
 
