@@ -29,7 +29,7 @@ const AI = () => {
         setMessages((prev) => [...prev, userMessage]);
 
         try {
-            const response = await fetch("http://localhost:5000/ask", {
+            const response = await fetch("https://hydrosenseai.vercel.app/ask", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ question: input, data: sensorData || {} }),  // Ensure data is always sent
