@@ -2,6 +2,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import requests
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the API key from the environment
+HF_API_KEY = os.getenv("HF_API_KEY")
 
 app = FastAPI()
 
@@ -31,8 +39,6 @@ async def ask_question(request: Request):
         "inputs": f"Sensor Data: {sensor_data}\nQuestion: {question}",
         "parameters": {"max_new_tokens": 200}  # Adjust response length
     }
-    
-    HF_API_KEY = "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"
 
     # ✅ Make a request to Hugging Face's Free AI API
     response = requests.post(HF_API_URL, headers={

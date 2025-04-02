@@ -58,7 +58,7 @@ const Reports = () => {
 
     const openai = new OpenAI({
         baseURL: 'https://openrouter.ai/api/v1',
-        apiKey: process.env.REACT_APP_OPENAI_KEY, // Replace with your OpenRouter API key
+        apiKey: process.env.REACT_APP_OPENAI_KEY,
         dangerouslyAllowBrowser: true,
         defaultHeaders: {
           'HTTP-Referer': '<YOUR_SITE_URL>', // Optional. Replace with your site URL.
