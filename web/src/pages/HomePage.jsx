@@ -48,10 +48,12 @@ const HomePage = () => {
         </p>
 
         <div className="home_buttons">
+          <a href="#about" className="btn">Learn More</a>
           <a href="#download" className="btn">Download Now</a>
-          <a className="btn" href="">
-          <Link to="/dashboard">Dashboard</Link>
-          </a>
+        </div>
+
+        <div className="home_buttons">
+          <Link to="/dashboard"><a className="btn">Dashboard</a></Link>
         </div>
       </section>
 
