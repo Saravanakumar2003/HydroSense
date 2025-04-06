@@ -4,8 +4,10 @@ import json
 import requests
 import os
 from dotenv import load_dotenv
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from fastapi.responses import JSONResponse
+from slowapi.errors import RateLimitExceeded
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,16 +26,21 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["100 per day", "50 per hour", "1 per second"],  # Test mode limits (adjust as needed for production)
-)
+# Rate limiting
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, lambda request, exc: JSONResponse(
+    status_code=429,
+    content={"detail": "Rate limit exceeded. Try again later."}
+))
+
 
 #  Free AI API URL (Hugging Face Mistral 7B)
 HF_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1"
 
 @app.post("/ask")
+@limiter.limit("1/second")  # Limit to 1 request per second
 async def ask_question(request: Request):
     data = await request.json()
     question = data.get("question", "")
