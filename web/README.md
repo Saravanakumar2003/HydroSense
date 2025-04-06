@@ -109,6 +109,7 @@ Software/
 - The FastAPI backend runs on http://localhost:8000.
 
 - Key endpoints:
-  - /api/sensor-data: Fetch or upload sensor data.
-  - /api/reports: Generate reports.
+  - / : To retrieve all sensor data.
+  - /ask : To interact with the AI chatbot.
+  - /predict : To get water quality predictions.
 

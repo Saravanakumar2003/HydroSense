@@ -8,7 +8,6 @@ The `ai/` directory in Hydrosense contains artificial intelligence models and fu
 ai/
 ├── bot/
 ├── models/
-└── summarize/
 ```
 
 ### 1. `bot/` - AI Chatbot
@@ -20,7 +19,7 @@ This folder contains an AI-driven chatbot that answers user queries regarding wa
 #### Running the Chatbot
 ```bash
 cd ai/bot
-python chatbot.py
+python main.py
 ```
 
 ---
@@ -31,8 +30,8 @@ This folder contains machine learning models used for water quality prediction. 
 
 #### Training the Model
 ```bash
-cd ai/models
-python train_model.py
+cd ai/models/SVR
+python main.py
 ```
 
 #### Using the Model for Prediction
@@ -41,22 +40,6 @@ from predict import predict_quality
 result = predict_quality(ph=7.2, turbidity=1.5, tds=350)
 print(result)  # Output: "Safe to Drink"
 ```
-
----
-
-### 3. `summarize/` - Data Summarization
-
-This module processes large water quality datasets and extracts meaningful insights. It includes:
-- Data cleaning scripts.
-- Statistical summary generation.
-- Graphical trend plotting.
-
-#### Running Summarization
-```bash
-cd ai/summarize
-python summarize_data.py
-```
-
 ---
 
 ## Dependencies
@@ -68,17 +51,24 @@ pip install -r requirements.txt
 ## API Endpoints
 If running as an API service, use the following endpoints:
 - `/predict` - Accepts sensor data and returns water quality predictions.
-- `/chat` - Handles chatbot queries.
-- `/summarize` - Provides summarized insights from datasets.
+- `/ask` - Handles chatbot queries.
+
+## Security Measures
+
+The API enpoints has security measures in place:
+
+- **Rate Limiting**: To prevent abuse, rate limiting is implemented on the API endpoints.
+- **CORS**: Cross-Origin Resource Sharing (CORS) is configured to allow only trusted domains.
+- **HTTPS**: Ensure the API is served over HTTPS to encrypt data in transit.
+- **Environment Variables**: Sensitive information is stored in environment variables and not hardcoded in the codebase.
+- **Logging**: All API requests and responses are logged for monitoring and debugging purposes.
 
 ## Conclusion
 The AI module enhances Hydrosense by integrating predictive analytics and automated insights, helping users make informed decisions about water safety.
 
 ## Deployment Notes
 
+Follow this guide to deploy the AI module in a production environment:
+
 https://dev.to/mihaiandrei97/building-a-fastapi-application-and-deploying-it-with-vercel-ho7
 
-For powershell, use the following command to activate the virtual environment:
-```powershell
-env\Scripts\Activate
-```

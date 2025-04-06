@@ -39,11 +39,11 @@ Hydrosense is a portable water contamination detection system designed for real-
 ## Folder Structure
 ```
 ├── ai/                 # AI and data processing modules
-├── data/               # Logs and simulated datasets
 ├── docs/               # Documentation and presentations
-├── Hardware/           # Arduino code and simulations
-├── Software/           # Frontend and backend source code
+├── device/           # Arduino code and simulations
+├── web/           # Frontend and backend source code
 ├── tests/              # Unit tests and test reports
+├── README.md           # Project overview and instructions
 ```
 
 ## Hardware Components
@@ -64,6 +64,8 @@ Hydrosense is a portable water contamination detection system designed for real-
 | `/` | Fetches all sensor data in JSON format |
 | `/buzzer` | Triggers buzzer for testing |
 | `/ask` | AI chatbot for querying sensor data |
+| `/predict` | Predicts water quality using AI model |
+| `/report` | Generates PDF/Excel reports |
 
 ## How It Works
 1. **Sensor Data Collection:** Vega board collects real-time water parameters and transmits via Wi-Fi.

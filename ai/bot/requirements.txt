@@ -4,5 +4,6 @@ requests
 websockets
 dotenv
 python-dotenv
+flask-limiter
 
 

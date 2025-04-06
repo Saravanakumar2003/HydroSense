@@ -46,8 +46,9 @@ This folder contains wiring diagrams and circuit schematics for the hardware set
 - **Temperature Sensor** (I2C communication)
 
 #### Viewing Schematics
-- Use **Fritzing** or **KiCad** to open circuit design files.
-- PDF versions are available for quick reference.
+- The schematics are provided in **PNG** format for easy viewing and printing.
+- The circuit diagrams are designed to be clear and easy to follow, ensuring correct connections between the sensors and the Vega Aries board.
+- The software used for creating the schematics is **Circuit Designer**. The ckt files are also included for users who wish to modify the designs.
 
 ---
 
