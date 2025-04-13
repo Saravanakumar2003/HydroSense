@@ -14,7 +14,7 @@ const HomePage = () => {
       <header>
         <nav className="navbar">
           <div className="navbar-container">
-          <div className="logo-brand">
+            <div className="logo-brand">
               <img src="/assets/img/icon.png" alt="Hydro Sense Logo" className="logo" />
               <a className="navbar-brand" href="#">Hydro Sense</a>
             </div>
@@ -60,71 +60,27 @@ const HomePage = () => {
       <section id="about">
         <h2>About Hydro Sense</h2>
         <p>
-          Hydro Sense is crafted with precision, ensuring reliability, durability,
-          and accurate water contamination detection.
+          Hydrosense is a real-time water quality monitoring system powered by IoT and AI technologies. The software module plays a central role in acquiring data from sensors, processing it using machine learning models, and delivering insights through a user-friendly web interface. Designed with modularity, scalability, and usability in mind, the software seamlessly bridges the hardware components and the end-users via a robust backend, intuitive frontend, and well-documented API services.
         </p>
         <ul>
           <li>
-            <strong>Real-Time Monitoring:</strong> Continuous monitoring and instant alerts.
+            Real-time monitoring and anomaly detection of water quality parameters such as turbidity, TDS, and temperature.
           </li>
           <li>
-            <strong>Contaminant Detection:</strong> Detects 4 key parameters with high accuracy.
+            Data visualization and interactive dashboard for both administrators and end-users.
           </li>
           <li>
-            <strong>User-Friendly Design:</strong> Sleek and portable, suitable for various users.
+            Integration with cloud storage (Firebase) for persistent and secure data logging.
           </li>
           <li>
-            <strong>Cloud-Based Storage:</strong> Secure data storage and accessibility.
+            Secure user authentication with support for Google/GitHub sign-ins.
           </li>
           <li>
-            <strong>Multi-Platform Support:</strong> Available on Windows and Android.
-          </li>
-        </ul>
-      </section>
-
-      <section id="services">
-        <h2>Software Key Features</h2>
-        <ul>
-          <li>
-            <strong>Easy Installation:</strong> Simple setup and user-friendly
-            interface.
+            AI-driven chatbot support using Hugging Face APIs for interpreting data trends and providing recommendations.
           </li>
           <li>
-            <strong>Data Logging & Analysis:</strong> Cloud-based storage and
-            analysis.
+            Offline testing mode for simulation-based validation without the need for connected hardware.
           </li>
-          <li>
-            <strong>Report Generation:</strong> Download a complete report of each
-            test.
-          </li>
-          <li>
-            <strong>Trend Analysis:</strong> See trends graph of each contaminant
-            with 5, 10, 50 tests.
-          </li>
-          <li>
-            <strong>Graph Sharing:</strong> Download and share trends graph.
-          </li>
-          <li>
-            <strong>Threshold Alerts:</strong> Alert if the value goes beyond the
-            threshold with country specified.
-          </li>
-          <li>
-            <strong>Real-Time Alerts:</strong> Immediate notifications for unsafe
-            contamination levels.
-          </li>
-          <li>
-            <strong>Customizable Settings:</strong> Personalize alerts and
-            monitoring.
-          </li>
-          <li>
-            <strong>Continuous Updates:</strong> Regular updates for enhanced
-            detection capabilities.
-          </li>
-          <li>
-            <strong>Comprehensive Support:</strong> Full support for optimal
-            performance.
-          </li>
-          <li></li>
         </ul>
       </section>
 
@@ -143,7 +99,7 @@ const HomePage = () => {
           <div class="row justify-content-center">
             <div class="col-md-8">
               <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/3dN2HjRxj_I"
+                <iframe class="embed-responsive-item" src="https://youtu.be/j9XmubUFrgQ"
                   allowfullscreen></iframe>
               </div>
             </div>
@@ -157,10 +113,10 @@ const HomePage = () => {
               <h2 class="section-title">Download Our App</h2>
               <p>Get the Hydro Sense app for your preferred platform.</p>
               <div class="download-buttons">
-                <a href="https://github.com/Saravanakumar2003/Final-Year-Project/releases/download/v1.0.1/HydroSense-1_0_1-windows.exe"
-                  class="btn btn-primary">Download for Windows</a>
-                <a href="https://github.com/Saravanakumar2003/Final-Year-Project/releases/download/v1.0.1/HydroSense-1_0_1.apk"
+                <a href="https://github.com/Saravanakumar2003/HydroSense/releases/download/v1.0.1/Hydrosense-apk.zip"
                   class="btn btn-primary">Download for Android</a>
+                <a href="https://github.com/Saravanakumar2003/HydroSense/releases/download/v1.0.1/HydroSense-win-x64.zip"
+                  class="btn btn-primary">Download for Windows</a>
               </div>
             </div>
           </div>
@@ -205,6 +161,7 @@ const HomePage = () => {
       </div>
     </div>
   </section>  */}
+
       <section id="contact">
         <h2>Contact Us</h2>
         <p>Reach out to our team for support and inquiries about Hydro Sense.</p>
@@ -220,8 +177,8 @@ const HomePage = () => {
 
       <footer>
         <p>Crafted by Hydro Sense, © 2024 All Rights Reserved</p>
-            <Link className='tos' to="/privacy-policy">Privacy Policy</Link>
-            <Link className='tos' to="/terms-and-condition"> Terms and Condition </Link>
+        <Link className='tos' to="/privacy-policy">Privacy Policy</Link>
+        <Link className='tos' to="/terms-and-condition"> Terms and Condition </Link>
       </footer>
     </div>
   );
