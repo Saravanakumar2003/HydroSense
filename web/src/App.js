@@ -23,6 +23,7 @@ import Privacypolicy from './pages/Privacypolicy';
 import TermsAndCondition from './pages/TermsAndCondition';
 import Feedback from './pages/Feedback';
 import Help from './pages/Help';
+import Pressure from './pages/Pressure';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/forget-password" component={ForgetPassword} />
           <UserRoute path="/dashboard" component={Dashboard} />
           <UserRoute path="/chart" component={FullPageChart} />
+          <UserRoute path="/pressure" component={Pressure} />
           <UserRoute path="/hardware" component={Hardware} />
           <UserRoute path="/ai" component={AI} />
           <UserRoute path="/cloud" component={Cloud} />

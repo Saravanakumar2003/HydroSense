@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import "../components/assets/css/Dashboard.css";
-import Chart from "../components/Dashboard/Chart";
-import Battery from "../components/Dashboard/Battery";
-import TemperatureMeter from '../components/Dashboard/Meter/Temperature';
-import TurbidityMeter from '../components/Dashboard/Meter/Turbidity';
-import TDSMeter from '../components/Dashboard/Meter/TDS';
-import PHMeter from '../components/Dashboard/Meter/pH';
+import { Link, useLocation } from 'react-router-dom';
 import { SensorDataContext } from '../components/SensorDataContext';
 import { auth } from '../firebase';
+import ReactECharts from 'echarts-for-react';
+import { color } from 'echarts';
 
-const Dash = () => {
-    const { phValue, turbidity, tdsValue, temperature, isMonitoring, setIsMonitoring, timer, setTimer, count, timestamp, alerts, waterQuality } = useContext(SensorDataContext);
+const Pressure = () => {
     const location = useLocation();
-    const [geolocation, setGeolocation] = useState("Fetching...");
+    const { alerts } = useContext(SensorDataContext);
     const [user, setUser] = useState(null);
+    const [theoreticalPressure, setTheoreticalPressure] = useState(50); // Default theoretical value
+    const [sensorPressure, setSensorPressure] = useState(0); // Simulated sensor value
+    const [pressureHistory, setPressureHistory] = useState([]); // For graph data
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -25,6 +21,20 @@ const Dash = () => {
             setUser(currentUser);
         }
     }, []);
+
+    useEffect(() => {
+        // Simulate fetching sensor pressure data
+        const interval = setInterval(() => {
+            const newSensorPressure = 44 + Math.random() * (56 - 44); // Generates a value between 44 and 56
+            setSensorPressure(newSensorPressure);
+            setPressureHistory((prev) => [
+                ...prev.slice(-19), // Keep only the last 20 data points
+                { time: new Date().toLocaleTimeString(), sensor: newSensorPressure, theoretical: theoreticalPressure },
+            ]);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [theoreticalPressure]);
 
     const handleLogout = async () => {
         try {
@@ -37,13 +47,51 @@ const Dash = () => {
         }
     };
 
-    const handleStartMonitoring = () => {
-        setIsMonitoring(true);
-    };
-
-    const handleStopMonitoring = () => {
-        setIsMonitoring(false);
-    };
+    // const getChartOptions = () => ({
+    //     tooltip: {
+    //         trigger: 'axis',
+    //         axisPointer: {
+    //             type: 'cross',
+    //             crossStyle: {
+    //                 color: '#999',
+    //             },
+    //         },
+    //     },
+    //     legend: {
+    //         data: ['Sensor Pressure', 'Theoretical Pressure'],
+    //         textStyle: {
+    //             color: 'white', // Legend text color
+    //         },
+    //         itemStyle: {
+    //             color: 'white', // Legend item color
+    //         },
+    //     },
+    //     xAxis: {
+    //         type: 'category',
+    //         data: pressureHistory.map((entry) => entry.time),
+    //     },
+    //     yAxis: {
+    //         type: 'value',
+    //         name: 'Pressure (PSI)',
+    //     },
+    //     series: [
+    //         {
+    //             name: 'Sensor Pressure',
+    //             type: 'line',
+    //             textStyle: { color: 'white' },
+    //             data: pressureHistory.map((entry) => entry.sensor),
+    //             smooth: true,
+    //             lineStyle: { color: 'blue' },
+    //         },
+    //         {
+    //             name: 'Theoretical Pressure',
+    //             type: 'line',
+    //             data: pressureHistory.map((entry) => entry.theoretical),
+    //             smooth: true,
+    //             lineStyle: { color: 'red', type: 'dashed' },
+    //         },
+    //     ],
+    // });
 
     useEffect(() => {
         const openRightArea = () => document.querySelector('.app-right').classList.add('show');
@@ -63,78 +111,6 @@ const Dash = () => {
             document.querySelector('.close-menu').removeEventListener('click', closeMenu);
         };
     }, []);
-
-    useEffect(() => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setGeolocation(`Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)}`);
-                },
-                (error) => {
-                    console.error("Error fetching location:", error);
-                    setGeolocation("Location unavailable");
-                }
-            );
-        } else {
-            setGeolocation("Geolocation not supported");
-        }
-    }, []);
-
-    const saveDataToLocalStorage = () => {
-        const sensorData = JSON.parse(localStorage.getItem("sensorData")) || [];
-        const updatedData = {
-            ...sensorData[sensorData.length - 1], // Use the latest sensor data
-            timer,
-            isMonitoring,
-        };
-        sensorData.push(updatedData);
-        localStorage.setItem("sensorData", JSON.stringify(sensorData));
-    
-        const blob = new Blob([JSON.stringify(sensorData, null, 2)], { type: "application/json" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "sensorData.json";
-        link.click();
-    };
-    
-    const loadDataToLocalStorage = () => {
-        if (localStorage.getItem("sensorData")) {
-            const confirmOverwrite = window.confirm(
-                "There is already data in local storage. Do you want to overwrite it?"
-            );
-            if (!confirmOverwrite) return;
-        }
-    
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "application/json";
-        input.onchange = (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const data = JSON.parse(e.target.result);
-                        localStorage.setItem("sensorData", JSON.stringify(data));
-    
-                        // Restore the latest timer and isMonitoring values
-                        const latestData = data[data.length - 1];
-                        if (latestData) {
-                            setIsMonitoring(latestData.isMonitoring || false);
-                            setTimer(latestData.timer || 0);
-                        }
-    
-                        alert("Data loaded successfully!");
-                    } catch (error) {
-                        alert("Invalid file format. Please upload a valid JSON file.");
-                    }
-                };
-                reader.readAsText(file);
-            }
-        };
-        input.click();
-    };
 
     return (
         <div>
@@ -166,7 +142,7 @@ const Dash = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/pressure">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
                                 Pressure
                             </Link>
                         </li>
@@ -235,7 +211,7 @@ const Dash = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -244,7 +220,7 @@ const Dash = () => {
                 <div class="app-main">
                     <div class="main-header-line">
                         <div className="action-buttons">
-                            <h1>Default Dashboard</h1>
+                            <h1>Equitable Distribution</h1>
                             <button className="open-right-area">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </button>
@@ -252,156 +228,65 @@ const Dash = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
                             </button>
                         </div>
-                        <div className="action-buttons">
-                            <button className="buttons" onClick={handleStartMonitoring}>
-                                Start Monitoring
-                            </button>
-                            <button className="buttons" onClick={handleStopMonitoring}>
-                                Stop Monitoring
-                            </button>
-                            <button className="buttons" onClick={loadDataToLocalStorage}>
-                                Load Data
-                            </button>
-                            <button className="buttons" onClick={saveDataToLocalStorage}>
-                                Save Data
-                            </button>
-                        </div>
-                        <div className="action-buttons">
-                            <p
-                                style={{
-                                    textAlign: 'left',
-                                    border: '1px solid #ccc',
-                                    padding: '5px',
-                                    borderRadius: '5px',
-                                    backgroundColor: '#fff',
-                                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                    color: 'black',
-                                }}
-                            >
-                                Status: <strong>{isMonitoring ? 'Active' : 'Stopped'}</strong>
-                            </p>
-                            <div>......</div>
-                            <p
-                                style={{
-                                    textAlign: 'left',
-                                    border: '1px solid #ccc',
-                                    padding: '5px',
-                                    borderRadius: '5px',
-                                    backgroundColor: '#fff',
-                                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                    color: 'black',
-                                }}
-                            >
-                                Timer: {timer} seconds
-                            </p>
-                        </div>
-                    </div>
-                    <div class="chart-row three">
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>pH Value</h2>
-                                    <span>{phValue}</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 6-8</h2>
+                        <div className="pressure-container">
+                            <div className="pressure-header">
+                                <h2>Theoretical vs Sensor Pressure </h2>
+                                <div className="pressure-box">
+                                    <div className="pressure-box-left">
+                                        <h3>Theoretical Pressure</h3>
+                                        <p>{theoreticalPressure} PSI</p>
+                                        <button
+                                            className="btn edit-btn"
+                                            onClick={() => {
+                                                const newValue = prompt("Enter new theoretical pressure value:", theoreticalPressure);
+                                                if (newValue !== null) {
+                                                    setTheoreticalPressure(Number(newValue));
+                                                }
+                                            }}
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div className="pressure-line"></div>
+                                    <div className="pressure-box-right">
+                                        <h3>Sensor Pressure</h3>
+                                        <p>{sensorPressure.toFixed(2)} PSI</p>
+                                        <button
+                                            className="btn calibrate-btn"
+                                            onClick={() => alert("Calibrate sensor functionality coming soon!")}
+                                        >
+                                            Calibrate
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="chart-svg">
-                                    <PHMeter ph={phValue} maxPH={14} />
+                                <div className="pressure-status">
+                                    {Math.abs(sensorPressure - theoreticalPressure) <= 5 ? (
+                                        <p className="status-equitable">Equitable Distribution</p>
+                                    ) : (
+                                        <p className="status-problem">
+                                            Not a Equitable Distribution
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>Turbidity Value</h2>
-                                    <span>{turbidity} NTU</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 0-5</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <TurbidityMeter turbidity={turbidity} maxLimit={10} />
-                                </div>
+                            <div>
+                                <strong>Note: </strong>
+                                <ul>
+                                    <li>Theoretical pressure is set to {theoreticalPressure} PSI. Sensor pressure is simulated and updates every 5 seconds.</li>
+                                    <li>Click "Edit" to change the theoretical pressure value.</li>
+                                    <li>Click "Calibrate" to simulate sensor calibration.</li>
+                                    <li>If the sensor pressure deviates from the theoretical pressure by more or less than 5 PSI, it indicates a problem.</li>
+                                </ul>
                             </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>TDS Value</h2>
-                                    <span>{tdsValue} ppm</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 0-500</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <TDSMeter tds={tdsValue} maxLimit={2000} />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper">
-                            <div class="chart">
-                                <div class="chart-info-wrapper">
-                                    <h2>Temp Value</h2>
-                                    <span>{temperature} C</span>
-                                    <br /><br />
-                                    <h2><strong>Limits:</strong> 25 - 30 C</h2>
-                                </div>
-                                <div class="chart-svg">
-                                    <TemperatureMeter temperature={temperature} maxLimit={35} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-row two">
-                        <div class="chart-container-wrapper big">
-                            <div class="chart-container">
-                                <div class="chart-container-header">
-                                    <h2>Real Time Sensor Data</h2>
-                                    <span>Last 30 days</span>
-                                </div>
-                                {/* Sensor Data Starts */}
-                                <Chart />
-                                {/* Sensor Data Ends */}
-                            </div>
-                        </div>
-                        <div class="chart-container-wrapper small">
-                            <div class="chart-container">
-                                <div class="chart-container-header">
-                                    <h2>Test Details</h2>
-                                    <span href="#">D-0001</span>
-                                </div>
-                                <div class="acquisitions-bar">
-                                    <span class="bar-progress rejected"></span>
-                                    <span class="bar-progress on-hold"></span>
-                                    <span class="bar-progress shortlisted"></span>
-                                    <span class="bar-progress applications"></span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color applications"></span>
-                                    <span class="progress-type">Total Test Conducted</span>
-                                    <span class="progress-amount">{count}</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color shortlisted"></span>
-                                    <span class="progress-type">Last Tested</span>
-                                    <span class="progress-amount">{timestamp ? new Date(timestamp).toLocaleString() : "N/A"}</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color on-hold"></span>
-                                    <span class="progress-type">Test Location</span>
-                                    <span class="progress-amount">{geolocation}</span>
-                                </div>
-                                <div class="progress-bar-info">
-                                    <span class="progress-color rejected"></span>
-                                    <span class="progress-type">Water Quality</span>
-                                    <span class="progress-amount">{waterQuality}</span>
-                                </div>
-                            </div>
-                            <div class="chart-container applicants">
-                                <div class="chart-container-header">
-                                    <h2>Battery Level</h2>
-                                    <span>3000 MaH</span>
-                                </div>
-                                <Battery />
-                            </div>
+                            {/* <div className="pressure-graph">
+                            <ReactECharts
+                                option={getChartOptions()}
+                                style={{ width: "100%", height: "100%" }} // Use percentages for responsiveness
+                                opts={{ renderer: 'svg' }} // Optional: Use SVG for better scaling
+                                notMerge={true}
+                                lazyUpdate={true}
+                            />
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -448,7 +333,7 @@ const Dash = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
+                                <p style={{ color: 'white', textAlign: 'center' }}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">
@@ -490,4 +375,4 @@ const Dash = () => {
     )
 }
 
-export default Dash 
+export default Pressure

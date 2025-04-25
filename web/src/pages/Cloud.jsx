@@ -154,8 +154,14 @@ const Cloud = () => {
                                 Charts
                             </Link>
                         </li>
+                        <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/chart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                Pressure
+                            </Link>
+                        </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
-                            <Link className="nav-list-link" to="/hardware">
+                            <Link className="nav-list-link" to="/pressure">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
                                     <rect height="16" rx="2" ry="2" width="16" x="4" y="4" />
                                     <rect height="6" width="6" x="9" y="9" />

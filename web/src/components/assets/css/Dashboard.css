@@ -1338,5 +1338,99 @@ form span {
 	font-size: 14px;
 }
 
+.pressure-container {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	color: #fff;
+	align-items: center;
+	
+}
+.pressure-header{
+	text-align: center;
+	width: 100%;
+	max-width: 1000px;
+	margin: 10px 0;
+	padding: 20px;
+	border-radius: 8px;
+	color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.pressure-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 
+.pressure-box-left,
+.pressure-box-right {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+	color: #fff;
+}
 
+.pressure-line {
+    width: 5px;
+    height: 200px;
+    background-color: #fff;
+}
+
+.pressure-box h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+	color: #fff;
+}
+
+.pressure-box p {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+	color: #fff;
+}
+
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.calibrate-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+.pressure-status {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.status-equitable {
+    color: green;
+}
+
+.status-problem {
+    color: red;
+}
+
+.pressure-graph {
+    width: 100%;
+    height: 400px; /* Set a default height */
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

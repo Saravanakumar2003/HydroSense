@@ -117,6 +117,12 @@ const Hardware = () => {
                                 Charts
                             </Link>
                         </li>
+                         <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
+                             <Link className="nav-list-link" to="/pressure">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                 Pressure
+                             </Link>
+                         </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/hardware">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">

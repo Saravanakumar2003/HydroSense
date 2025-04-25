@@ -92,13 +92,19 @@ const Feedback = () => {
                             </Link>
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/chart' ? 'active' : ''}`}>
-                            <Link className="nav-list-link" to="/chart">
+                            <Link className="nav-list-link" to="/pressure">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
                                     <line x1="12" x2="12" y1="20" y2="10" />
                                     <line x1="18" x2="18" y1="20" y2="4" />
                                     <line x1="6" x2="6" y1="20" y2="16" />
                                 </svg>
                                 Charts
+                            </Link>
+                        </li>
+                        <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
+                            <Link className="nav-list-link" to="/chart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                Pressure
                             </Link>
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
