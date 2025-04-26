@@ -30,23 +30,25 @@ const Settings = () => {
         if (window.confirm("Are you sure you want to clear all local data? This action cannot be undone.")) {
             localStorage.clear();
             alert("All local data has been cleared.");
+            window.location.reload();
         }
     };
 
     const handleClearCookies = () => {
         if (window.confirm("Are you sure you want to clear all cookies except login-related ones?")) {
             const cookies = document.cookie.split(";");
-    
+
             cookies.forEach((cookie) => {
                 const cookieName = cookie.split("=")[0].trim();
-    
+
                 // Skip login-related cookies (e.g., "auth" or "session")
                 if (!cookieName.includes("auth") && !cookieName.includes("session")) {
                     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
                 }
             });
-    
+
             alert("All cookies except login-related ones have been cleared.");
+            window.location.reload();
         }
     };
 
@@ -83,12 +85,12 @@ const Settings = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let wifiGateway = formData.wifiGateway.trim();
-    
+
         // Ensure the URL includes the protocol
         if (!wifiGateway.startsWith("http://") && !wifiGateway.startsWith("https://")) {
             wifiGateway = `http://${wifiGateway}`;
         }
-    
+
         console.log('Setup Data:', { ...formData, wifiGateway });
         localStorage.setItem('sensorDataUrl', wifiGateway);
         alert('Device setup completed successfully!');
@@ -144,8 +146,8 @@ const Settings = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/chart">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-                                Pressure
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                Water Distribution
                             </Link>
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
@@ -213,7 +215,7 @@ const Settings = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -234,9 +236,6 @@ const Settings = () => {
                             <button className="buttons" onClick={handleEnableTestMode}>
                                 Enable test mode
                             </button>
-                            <button className="buttons" onClick={handleOpenModal}>
-                                Set-up Vega Board
-                            </button>
                         </div>
                         <div className="action-buttons">
                             <button className="buttons" onClick={handleClearLocalData}>
@@ -247,23 +246,44 @@ const Settings = () => {
                             </button>
                         </div>
                     </div>
+                    <div className="device-status">
+                        <h3 className="device-status-header">Device Status</h3>
+                        <div className="device-status-content">
+                            <div className="device-status-item">
+                                <h4>WiFi Gateway</h4>
+                                <p>{formData.wifiGateway || "Not configured"}</p>
+                            </div>
+                            <div className="device-status-item">
+                                <h4>Device Name</h4>
+                                <p>{formData.deviceName || "Not configured"}</p>
+                            </div>
+                            <div className="device-status-item">
+                                <h4>Device ID</h4>
+                                <p>{formData.deviceId || "Not configured"}</p>
+                            </div>
+                        </div>
+                        <button className="btn setup-btn" onClick={handleOpenModal}>
+                            Set-up the Device
+                        </button>
+                    </div>
                     {/* Modal for Vega Board Setup */}
                     {isModalOpen && (
-                        <div className="profile-section">
-                            <div className="profile-card">
-                                <h2 style={{color: 'white', textAlign: 'center'}}>Set-up Vega Board</h2>
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <h2 className="modal-title">Set-up Device</h2>
                                 <form onSubmit={handleSubmit}>
-                                    <label>
-                                        WiFi Gateway Url:
+                                    <label className="modal-label">
+                                        WiFi Gateway URL:
                                         <input
                                             type="text"
                                             name="wifiGateway"
                                             value={formData.wifiGateway}
                                             onChange={handleInputChange}
                                             required
+                                            className="modal-input"
                                         />
                                     </label>
-                                    <label>
+                                    <label className="modal-label">
                                         Device Name:
                                         <input
                                             type="text"
@@ -271,9 +291,10 @@ const Settings = () => {
                                             value={formData.deviceName}
                                             onChange={handleInputChange}
                                             required
+                                            className="modal-input"
                                         />
                                     </label>
-                                    <label>
+                                    <label className="modal-label">
                                         Device ID:
                                         <input
                                             type="text"
@@ -281,11 +302,12 @@ const Settings = () => {
                                             value={formData.deviceId}
                                             onChange={handleInputChange}
                                             required
+                                            className="modal-input"
                                         />
                                     </label>
-                                    <div>
-                                        <button type="submit" className="btn2">Submit</button>
-                                        <button type="button" className="btn2" onClick={handleCloseModal}>
+                                    <div className="modal-buttons">
+                                        <button type="submit" className="btn modal-submit-btn">Submit</button>
+                                        <button type="button" className="btn modal-cancel-btn" onClick={handleCloseModal}>
                                             Cancel
                                         </button>
                                     </div>
@@ -337,7 +359,7 @@ const Settings = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
+                                <p style={{ color: 'white', textAlign: 'center' }}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">

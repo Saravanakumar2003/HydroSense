@@ -143,7 +143,7 @@ const Pressure = () => {
                         <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/pressure">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-                                Pressure
+                                Water Distribution
                             </Link>
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
@@ -231,6 +231,9 @@ const Pressure = () => {
                         <div className="pressure-container">
                             <div className="pressure-header">
                                 <h2>Theoretical vs Sensor Pressure </h2>
+                                <h3 style={{color: 'yellow'}}>
+                                    Last Updated: {pressureHistory.length > 0 ? pressureHistory[pressureHistory.length - 1].time : "No data available"}
+                                </h3>
                                 <div className="pressure-box">
                                     <div className="pressure-box-left">
                                         <h3>Theoretical Pressure</h3>
@@ -269,13 +272,13 @@ const Pressure = () => {
                                     )}
                                 </div>
                             </div>
-                            <div>
+                            <div style={{textAlign: 'justify'}}>
                                 <strong>Note: </strong>
                                 <ul>
-                                    <li>Theoretical pressure is set to {theoreticalPressure} PSI. Sensor pressure is simulated and updates every 5 seconds.</li>
-                                    <li>Click "Edit" to change the theoretical pressure value.</li>
-                                    <li>Click "Calibrate" to simulate sensor calibration.</li>
-                                    <li>If the sensor pressure deviates from the theoretical pressure by more or less than 5 PSI, it indicates a problem.</li>
+                                    <li>➤ Theoretical pressure is set to {theoreticalPressure} PSI. Sensor pressure is simulated and updates every 5 seconds.</li>
+                                    <li>➤ Click "Edit" to change the theoretical pressure value.</li>
+                                    <li>➤ Click "Calibrate" to simulate sensor calibration.</li>
+                                    <li>➤ If the sensor pressure deviates from the theoretical pressure by more or less than 5 PSI, it indicates a problem.</li>
                                 </ul>
                             </div>
                             {/* <div className="pressure-graph">
