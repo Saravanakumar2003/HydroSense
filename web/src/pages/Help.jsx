@@ -205,6 +205,7 @@ const Help = () => {
                                 </div>
                                 <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
                                 <p className="profile-subtext">User ID: {user.uid}</p>
+                                <p className="profile-subtext">Last Login: {user?.metadata?.lastSignInTime || "N/A"}</p>
                                 <button onClick={handleLogout} className="btn logout-btn">
                                     Logout
                                 </button>

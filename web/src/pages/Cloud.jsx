@@ -263,7 +263,7 @@ const Cloud = () => {
                         {backups.map((backup) => (
                             <div key={backup.id} className="backup-item">
                                 <p>
-                                    <strong>{backup.name}</strong> <br/>Time: {new Date(backup.timestamp).toLocaleString()}
+                                    <strong>{backup.name}</strong> <br/><strong>Uploaded Time:</strong> {new Date(backup.timestamp).toLocaleString()}
                                 </p>
                                 <button onClick={() => handleLoadBackup(backup)} className="btn2">Load This Data</button>
                                 <button onClick={() => handleDeleteBackup(backup.id)} className="btn2">Delete</button>
@@ -286,6 +286,7 @@ const Cloud = () => {
                                 </div>
                                 <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
                                 <p className="profile-subtext">User ID: {user.uid}</p>
+                                <p className="profile-subtext">Last Login: {user?.metadata?.lastSignInTime || "N/A"}</p>
                                 <button onClick={handleLogout} className="btn logout-btn">
                                     Logout
                                 </button>

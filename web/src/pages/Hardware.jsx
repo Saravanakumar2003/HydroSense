@@ -13,6 +13,18 @@ const Hardware = () => {
 
     const [status, setStatus] = useState("");
 
+    const { hardwareData, alerts } = useContext(SensorDataContext);
+
+    const {
+        ambientLightValue,
+        gasValue,
+        humidityValue,
+        pressureValue,
+        proximityValue,
+        irValue,
+        temperatureValue,
+    } = hardwareData;
+
     const triggerBuzzer = async () => {
         try {
           // Retrieve the URL from local storage
@@ -38,15 +50,7 @@ const Hardware = () => {
       };
 
     const {
-        ambientLightValue,
-        gasValue,
-        humidityValue,
-        irValue,
-        pressureValue,
-        proximityValue,
-        temperatureValue,
         timestamp,
-        alerts,
     } = useContext(SensorDataContext);
 
     const formattedTimestamp = new Date(timestamp).toLocaleString();
@@ -286,6 +290,7 @@ const Hardware = () => {
                                 </div>
                                 <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
                                 <p className="profile-subtext">User ID: {user.uid}</p>
+                                <p className="profile-subtext">Last Login: {user?.metadata?.lastSignInTime || "N/A"}</p>
                                 <button onClick={handleLogout} className="btn logout-btn">
                                     Logout
                                 </button>

@@ -60,7 +60,7 @@ const Profile = () => {
             alert('Failed to send password reset email. Please try again.');
         }
     };
-    
+
     const handleDeleteAccount = async () => {
         try {
             if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
@@ -106,6 +106,10 @@ const Profile = () => {
             displayName: user?.displayName || '',
             photoURL: user?.photoURL || '',
         });
+    };
+
+    const handleEnable2FA = () => {
+        alert("Coming Soon!!! Hang Tight");
     };
 
     useEffect(() => {
@@ -157,8 +161,8 @@ const Profile = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/pressure' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/pressure">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-                            Water Distribution
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="main-grid-item-icon" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" ><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                Water Distribution
                             </Link>
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/hardware' ? 'active' : ''}`}>
@@ -226,7 +230,7 @@ const Profile = () => {
                         </li>
                         <li className={`nav-list-item ${location.pathname === '/help' ? 'active' : ''}`}>
                             <Link className="nav-list-link" to="/help">
-                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>                                
+                                <svg xmlns="http://www.w3.org/2000/svg" color='' width="24" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z" /></svg>
                                 Help
                             </Link>
                         </li>
@@ -277,13 +281,14 @@ const Profile = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                    <div className="profile-details">
-                                        <h2>{Muser.displayName || 'No Name Provided'}</h2>
-                                        <p>User ID: {Muser.uid}</p>
-                                        <button onClick={handleEdit} className="btn">Edit Profile</button>
-                                        <button onClick={handleChangePassword} className="btn">Change Password</button>
-                                        <button onClick={handleDeleteAccount} className="btn danger">Delete Account</button>
-                                    </div>
+                                        <div className="profile-details">
+                                            <h2>{Muser.displayName || 'No Name Provided'}</h2>
+                                            <p>User ID: {Muser.uid}</p>
+                                            <button onClick={handleEdit} className="btn">Edit Profile</button>
+                                            <button onClick={handleChangePassword} className="btn">Change Password</button>
+                                            <button onClick={handleDeleteAccount} className="btn danger">Delete Account</button>
+                                            <button className="btn" onClick={handleEnable2FA}> Enable Two-Factor Authentication</button>
+                                        </div>
                                     )}
                                 </div>
                             ) : (
@@ -307,6 +312,7 @@ const Profile = () => {
                                 </div>
                                 <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
                                 <p className="profile-subtext">User ID: {user.uid}</p>
+                                <p className="profile-subtext">Last Login: {user?.metadata?.lastSignInTime || "N/A"}</p>
                                 <button onClick={handleLogout} className="btn logout-btn">
                                     Logout
                                 </button>
@@ -335,7 +341,7 @@ const Profile = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p style={{color: 'white', textAlign: 'center'}}>No alerts at the moment.</p>
+                                <p style={{ color: 'white', textAlign: 'center' }}>No alerts at the moment.</p>
                             )}
                         </div>
                         <div class="app-right-section">

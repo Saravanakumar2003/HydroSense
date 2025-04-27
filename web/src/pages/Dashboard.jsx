@@ -19,6 +19,7 @@ const Dash = () => {
     const [user, setUser] = useState(null);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [calibrationTime, setCalibrationTime] = useState(300);
+    const [isTestMode, setIsTestMode] = useState(false); // State to track test mode
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -26,6 +27,10 @@ const Dash = () => {
         if (currentUser) {
             setUser(currentUser);
         }
+
+        // Check if test mode is enabled
+        const sensorDataUrl = localStorage.getItem('sensorDataUrl');
+        setIsTestMode(sensorDataUrl === 'https://hydrosense.pythonanywhere.com/');
     }, []);
 
     const handleLogout = async () => {
@@ -350,6 +355,17 @@ const Dash = () => {
                             >
                                 Timer: {timer} seconds
                             </p>
+                            <div>......</div>
+                            <p style={{
+                                color: isTestMode ? 'green' : 'red', textAlign: 'left',
+                                border: '1px solid #ccc',
+                                padding: '5px',
+                                borderRadius: '5px',
+                                backgroundColor: '#fff',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                            }}>
+                                {isTestMode ? 'Test Mode is Enabled' : 'Connected to Sensor Endpoint'}
+                            </p>
                         </div>
                     </div>
                     <div class="chart-row three">
@@ -477,6 +493,7 @@ const Dash = () => {
                                 </div>
                                 <p className="profile-text">{user.displayName || 'No Name Provided'}</p>
                                 <p className="profile-subtext">User ID: {user.uid}</p>
+                                <p className="profile-subtext">Last Login: {user?.metadata?.lastSignInTime || "N/A"}</p>
                                 <button onClick={handleLogout} className="btn logout-btn">
                                     Logout
                                 </button>
