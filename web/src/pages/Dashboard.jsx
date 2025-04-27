@@ -18,7 +18,7 @@ const Dash = () => {
     const [geolocation, setGeolocation] = useState("Fetching...");
     const [user, setUser] = useState(null);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [calibrationTime, setCalibrationTime] = useState(120); // 2 minutes in seconds
+    const [calibrationTime, setCalibrationTime] = useState(300);
 
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
@@ -40,21 +40,25 @@ const Dash = () => {
     };
 
     const handleStartMonitoring = () => {
-        setIsPopupVisible(true); // Show the popup
-        setCalibrationTime(120); // Reset the timer to 2 minutes
-    
+        setIsPopupVisible(true);
+        setCalibrationTime(300);
+
         // Start the calibration timer
         const calibrationInterval = setInterval(() => {
             setCalibrationTime((prevTime) => {
                 if (prevTime <= 1) {
-                    clearInterval(calibrationInterval); // Stop the timer when it reaches 0
-                    setIsPopupVisible(false); // Hide the popup
-                    setIsMonitoring(true); // Start monitoring
+                    clearInterval(calibrationInterval);
+                    setIsPopupVisible(false);
+                    setIsMonitoring(true);
                     return 0;
                 }
-                return prevTime - 1; // Decrease the timer
+                return prevTime - 1;
             });
-        }, 1000); // Update every second
+        }, 1000);
+    };
+
+    const handleCalibrationStop = () => {
+        setIsPopupVisible(false);
     };
 
     const handleStopMonitoring = () => {
@@ -273,34 +277,41 @@ const Dash = () => {
                                 Start Monitoring
                             </button>
                             {isPopupVisible && (
-    <div className="popup-overlay">
-        <div className="popup-content">
-            <h2>Calibration in Progress</h2>
-            <p>Please wait while the system calibrates...</p>
-            <div className="progress-bar">
-                <div
-                    className="progress-bar-fill"
-                    style={{ width: `${((120 - calibrationTime) / 120) * 100}%` }}
-                ></div>
-            </div>
-            <p>Time Remaining: {Math.floor(calibrationTime / 60)}:{String(calibrationTime % 60).padStart(2, '0')}</p>
-            <button
-                className="btn skip-btn"
-                onClick={() => {
-                    const confirmSkip = window.confirm(
-                        "Are you sure you want to skip the calibration process?"
-                    );
-                    if (confirmSkip) {
-                        setIsPopupVisible(false); // Hide the popup
-                        setIsMonitoring(true); // Start monitoring immediately
-                    }
-                }}
-            >
-                Skip Calibration
-            </button>
-        </div>
-    </div>
-)}
+                                <div className="popup-overlay">
+                                    <div className="popup-content">
+                                        <h2>Calibration in Progress</h2>
+                                        <p>Please wait while the system calibrates...</p>
+                                        <div className="progress-bar">
+                                            <div
+                                                className="progress-bar-fill"
+                                                style={{ width: `${((300 - calibrationTime) / 300) * 100}%` }}
+                                            ></div>
+                                        </div>
+                                        <p>Time Remaining: {Math.floor(calibrationTime / 60)}:{String(calibrationTime % 60).padStart(2, '0')}</p>
+                                        <button
+                                            className="btn skip-btn"
+                                            onClick={() => {
+                                                const confirmSkip = window.confirm(
+                                                    "Are you sure you want to skip the calibration process?"
+                                                );
+                                                if (confirmSkip) {
+                                                    setIsPopupVisible(false); // Hide the popup
+                                                    setIsMonitoring(true); // Start monitoring immediately
+                                                }
+                                            }}
+                                        >
+                                            Skip Calibration
+                                        </button>
+                                        <button
+                                            className="btn stop-btn"
+                                            onClick={handleCalibrationStop}
+                                        >
+                                            Stop Calibration
+                                        </button>
+                                        <h5>This calibration process is important for accurate readings <br /> as sensors takes some time warmup.</h5>
+                                    </div>
+                                </div>
+                            )}
                             <button className="buttons" onClick={handleStopMonitoring}>
                                 Stop Monitoring
                             </button>
@@ -407,6 +418,7 @@ const Dash = () => {
                                 {/* Sensor Data Ends */}
                             </div>
                         </div>
+
                         <div class="chart-container-wrapper small">
                             <div class="chart-container">
                                 <div class="chart-container-header">

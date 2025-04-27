@@ -14,6 +14,9 @@ const Pressure = () => {
     const [sensorPressure, setSensorPressure] = useState(0); // Simulated sensor value
     const [pressureHistory, setPressureHistory] = useState([]); // For graph data
 
+    const { isMonitoring } = useContext(SensorDataContext);
+
+
     useEffect(() => {
         // Fetch the current user from Firebase Authentication
         const currentUser = auth.currentUser;
@@ -23,6 +26,8 @@ const Pressure = () => {
     }, []);
 
     useEffect(() => {
+        if (!isMonitoring) return; // Do not start the interval if monitoring is not active
+    
         // Simulate fetching sensor pressure data
         const interval = setInterval(() => {
             const newSensorPressure = 44 + Math.random() * (56 - 44); // Generates a value between 44 and 56
@@ -32,9 +37,9 @@ const Pressure = () => {
                 { time: new Date().toLocaleTimeString(), sensor: newSensorPressure, theoretical: theoreticalPressure },
             ]);
         }, 5000);
-
-        return () => clearInterval(interval);
-    }, [theoreticalPressure]);
+    
+        return () => clearInterval(interval); // Cleanup the interval on unmount or when monitoring stops
+    }, [isMonitoring, theoreticalPressure]); 
 
     const handleLogout = async () => {
         try {
