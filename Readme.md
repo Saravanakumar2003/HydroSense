@@ -117,4 +117,4 @@ The project is currently in the development phase. The team is working on integr
 
 - [Project Presentation](docs/presentation)
 - [Project Reports](docs/reports)
-- [Research Papers](docs/references)
+- [References](docs/references)
