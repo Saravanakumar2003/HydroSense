@@ -4,16 +4,17 @@
 #include <Arduino_APDS9960.h>
 
 // Wi-Fi AP credentials (the network the board creates)
-char ssid[] = "MyVegaAP";        // AP name
-char pass[] = "myAPpassword";    // AP password (min. 8 characters)
+char ssid[] = "HydroSense"; // AP name
+char pass[] = "test1234";   // AP password (min. 8 characters)
 int status = WL_IDLE_STATUS;
 
 // Sensor Pins
-#define PH_SENSOR A1
-#define TDS_SENSOR A0
-#define TURBIDITY_SENSOR A3
+#define PH_SENSOR A0
+#define TDS_SENSOR A2
+#define TURBIDITY_SENSOR A1
 #define THERMISTOR A7
-#define BUZZER 7  
+#define PRESSURE_SENSOR A4
+#define BUZZER 7
 
 TwoWire Wire(8);    //I2C connection  
 
@@ -45,8 +46,8 @@ void setup() {
   
   // Start the web server
   server.begin();
-  printWifiStatus();
 }
+
 void loop() {
   WiFiClient client = server.available();
   if (client) {
@@ -68,6 +69,7 @@ void loop() {
             float temperature = readTemperature();
             float phValue = readPH();
             float tdsValue = readTDS(temperature);
+            float pressureSensorValue = readSensorPressure();
 
             checkWaterQuality(phValue, turbidity, tdsValue);
 
@@ -93,6 +95,7 @@ void loop() {
             client.print("\"irValue\":"); client.print(irValue); client.print(",");
             client.print("\"phValue\":"); client.print(phValue, 2); client.print(",");
             client.print("\"pressureValue\":"); client.print(pressureValue, 2); client.print(",");
+            client.print("\"pressureSensorValue\":"); client.print(pressureSensorValue, 2); client.print(",");
             client.print("\"proximityValue\":"); client.print(proximityValue); client.print(",");
             client.print("\"tdsValue\":"); client.print(tdsValue, 2); client.print(",");
             client.print("\"temperature\":"); client.print(temperature, 2); client.print(",");
@@ -163,6 +166,30 @@ float readTDS(float temp) {
   return tdsValue;
 }
 
+float readSensorPressure(){
+  int sensorValue = analogRead(PRESSURE_SENSOR);
+  // Convert the analog value (0-1023) to a voltage (0-5V)
+  float voltage = sensorValue * (5.0 / 1023.0);
+  // Example conversion: Voltage to Pressure (depends on sensor)
+  // For example, if 0.5V = 0 kPa and 4.5V = full scale (say 100 kPa)
+  float pressure_kPa = (voltage - 0.5) * (100.0 / (4.0)); 
+  return pressure_kPa;
+}
+
+int readProximity() {
+  if (APDS.proximityAvailable()) {
+    // read the proximity
+    // - 0   => close
+    // - 255 => far
+    // - -1  => error
+    return APDS.readProximity();
+  } else {
+    return -1; // Return a default error value if no proximity available
+  }
+}
+
+// Placeholder functions (to be replaced with real sensor readings)
+
 float readAmbientLight() {
   return 6660;
 }
@@ -183,17 +210,6 @@ float readPressure() {
   return 1037.48;
 }
 
-int readProximity() {
-  if (APDS.proximityAvailable()) {
-    // read the proximity
-    // - 0   => close
-    // - 255 => far
-    // - -1  => error
-    int proximity = APDS.readProximity();
-
-  return proximity
-}
-
 float readTemperatureValue() {
   return 24.0;
 }
@@ -208,3 +224,4 @@ void printWifiStatus() {
   Serial.print("IP Address: "); Serial.println(WiFi.localIP());
   Serial.print("Signal strength (RSSI): "); Serial.print(WiFi.RSSI()); Serial.println(" dBm");
 }
+

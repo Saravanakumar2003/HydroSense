@@ -12,7 +12,6 @@
     - [Steps](#steps)
   - [Usage](#usage)
     - [Frontend](#frontend)
-    - [Backend](#backend)
 
 ---
 
@@ -71,7 +70,7 @@ Software/
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/hydrosense.git
+   git clone https://github.com/Saravanakumar2003/hydrosense.git
    cd Software
 
     ```
@@ -80,19 +79,15 @@ Software/
 
     ```sh
     cd Software
-    npm install  # For frontend
-    pip install -r requirements.txt  # For backend
+    npm install
     ```
 
 3. Configure environment variables:
     - Create a `.env.local` file in the `Software` directory and add your Firebase configuration.
-    - Create a `.env` file in the `Software` directory for FastAPI backend configuration.
-    - Example `.env` file:
     
 4. Start the servers:
     ```sh
-    npm start  # Start frontend
-    python main.py  # Start backend
+    npm start 
     ```
 5. Access the application at `http://localhost:3000`.
 
@@ -104,12 +99,4 @@ Software/
     - Dashboard for real-time monitoring.
     - Report generation and download.
     - User profile and settings.
-
-### Backend
-- The FastAPI backend runs on http://localhost:8000.
-
-- Key endpoints:
-  - / : To retrieve all sensor data.
-  - /ask : To interact with the AI chatbot.
-  - /predict : To get water quality predictions.
 

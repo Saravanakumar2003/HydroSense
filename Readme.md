@@ -1,8 +1,8 @@
-# Portable Water Conatmination Detection Device
+# Hydrosense - Ensuring clean and safe water for all through IoT
 
 ## Table of Contents
 
-- [Portable Water Conatmination Detection Device](#portable-water-conatmination-detection-device)
+- [Hydrosense - Ensuring clean and safe water for all through IoT](#hydrosense---ensuring-clean-and-safe-water-for-all-through-iot)
   - [Table of Contents](#table-of-contents)
 - [Hydrosense](#hydrosense)
   - [Overview](#overview)
@@ -24,14 +24,14 @@
 # Hydrosense
 
 ## Overview
-Hydrosense is a portable water contamination detection system designed for real-time monitoring of water quality. It utilizes IoT-enabled sensors and AI-driven analytics to provide actionable insights about water conditions.
+Hydrosense is an IoT-based water distribution system designed to ensure clean and safe drinking water. It utilizes a Vega Aries IoT V2.0 microcontroller to collect real-time data from various sensors, including preesure, pH, turbidity, TDS, and temperature. The data is processed using machine learning algorithms to detect anomalies and predict water quality. The system features a web dashboard for visualization, cloud storage for data backup, and an AI chatbot for insights.
 
 ## Features
 - **Real-Time Monitoring:** Continuously tracks water parameters like pH, turbidity, TDS, and temperature.
 - **AI-Powered Analysis:** Uses machine learning to detect anomalies and predict water quality.
 - **Web Dashboard:** Interactive UI for viewing sensor data, charts, and reports.
 - **Cloud Backups:** Stores data securely on Firebase.
-- **Offline Mode:** Enables testing with simulated data when hardware is unavailable.
+- **Test Mode:** Enables testing with simulated data when hardware is unavailable.
 - **User Authentication:** Secure login via Firebase with Google/GitHub authentication.
 - **AI Chatbot:** Provides insights on collected data using Hugging Face API.
 - **Custom Alerts:** Notifies users when water quality exceeds safe limits.
@@ -69,7 +69,7 @@ Hydrosense is a portable water contamination detection system designed for real-
 
 ## How It Works
 1. **Sensor Data Collection:** Vega board collects real-time water parameters and transmits via Wi-Fi.
-2. **Data Processing:** The backend processes and stores data in local storage and Firebase.
+2. **Data Processing:** The backend processes and stores data in local storage or Firebase.
 3. **Visualization:** The web app displays sensor readings, trends, and AI-driven insights.
 4. **Alerts & Reports:** If a parameter exceeds thresholds, alerts are triggered, and users can download reports in PDF/Excel.
 
@@ -82,7 +82,7 @@ Hydrosense is a portable water contamination detection system designed for real-
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/hydrosense.git
+   git clone https://github.com/Saravanakumar2003/hydrosense.git
    cd hydrosense
    ```
 2. Install dependencies:
@@ -106,6 +106,9 @@ Hydrosense is a portable water contamination detection system designed for real-
 ## Security Measures
 - **Authentication:** Email verification and CAPTCHA for added security.
 - **Data Privacy:** Cloud data is stored per user ID, ensuring restricted access.
+- **Secure Communication:** HTTPS for all API requests.
+- **Environment Variables:** Sensitive data is stored in environment variables, not hardcoded.
+
 
 ## Contribution
 Contributions are welcome! Fork the repo, create a branch, and submit a pull request.
