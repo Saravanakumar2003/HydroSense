@@ -178,13 +178,20 @@ const Help = () => {
                         <hr />
                         <section>
                             <h3>Download the complete user guide for HydroSense</h3>
-                            <button href="/docs/user-guide.pdf" target="_blank" className="btn3">Download User Guide</button>
+                            <a 
+                                href="../../assets/pdf/HydroSense_Guide.pdf" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="btn3"
+                            >
+                                Download User Guide
+                            </a>
                         </section>
                         <hr />
                         <section>
                             <h3>External Resources</h3>
                             <ul>
-                                <li><a href="https://www.who.int/water_sanitation_health" target="_blank" rel="noopener noreferrer">WHO Guidelines on Drinking Water</a></li>
+                                <li><a href="https://www.who.int/" target="_blank" rel="noopener noreferrer">WHO Guidelines on Drinking Water</a></li>
                                 <li><a href="https://github.com/Saravanakumar2003/Final-Year-Project" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
                             </ul>
                         </section>

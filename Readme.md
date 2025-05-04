@@ -114,7 +114,9 @@ Hydrosense is an IoT-based water distribution system designed to ensure clean an
 Contributions are welcome! Fork the repo, create a branch, and submit a pull request.
 
 ## Status
-The project is currently in the development phase. The team is working on integrating the hardware components with the software and cloud services. 
+The project is currently in the early stages of development. The hardware and software is fully functional, but further testing and optimization are needed. 
+
+The device is undergoing testing in real-world conditions, and the AI model is being fine-tuned for better accuracy. The web app is also fully functional, but additional features and improvements are planned.
 
 ## References
 
