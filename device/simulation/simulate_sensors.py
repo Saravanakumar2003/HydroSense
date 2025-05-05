@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import joblib  # For loading the trained ML model
 import numpy as np
 import random
 import datetime
@@ -20,14 +19,6 @@ limiter = Limiter(
     app=app,
     default_limits=["5000 per day", "500 per hour", "1 per second"],
 )
-
-# Load the trained ML model
-try:
-    model = joblib.load("fine_tuned_svm_model.pkl")
-    print("Model loaded successfully.")
-except Exception as e:
-    model = None
-    print("Error loading model:", str(e))
 
 @app.route('/test', methods=['GET'])
 def test_endpoint():

@@ -65,7 +65,6 @@ Hydrosense is an IoT-based water distribution system designed to ensure clean an
 | `/buzzer` | Triggers buzzer for testing |
 | `/ask` | AI chatbot for querying sensor data |
 | `/predict` | Predicts water quality using AI model |
-| `/report` | Generates PDF/Excel reports |
 
 ## How It Works
 1. **Sensor Data Collection:** Vega board collects real-time water parameters and transmits via Wi-Fi.
