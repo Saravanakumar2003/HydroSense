@@ -91,6 +91,8 @@ const Settings = () => {
             wifiGateway = `http://${wifiGateway}`;
         }
 
+        const updatedFormData = { ...formData, wifiGateway };
+        setFormData(updatedFormData);
         console.log('Setup Data:', { ...formData, wifiGateway });
         localStorage.setItem('sensorDataUrl', wifiGateway);
         alert('Device setup completed successfully!');
@@ -271,7 +273,7 @@ const Settings = () => {
                         <div className="modal-overlay">
                             <div className="modal-content">
                                 <h2 className="modal-title">Set-up Device</h2>
-                                <form onSubmit={handleSubmit}>
+                                <form>
                                     <label className="modal-label">
                                         WiFi Gateway URL:
                                         <input
@@ -306,7 +308,7 @@ const Settings = () => {
                                         />
                                     </label>
                                     <div className="modal-buttons">
-                                        <button type="submit" className="btn modal-submit-btn">Submit</button>
+                                        <button type="submit" className="btn modal-submit-btn" onSubmit={handleSubmit} >Submit</button>
                                         <button type="button" className="btn modal-cancel-btn" onClick={handleCloseModal}>
                                             Cancel
                                         </button>

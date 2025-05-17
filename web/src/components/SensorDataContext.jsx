@@ -89,6 +89,12 @@ export const SensorDataProvider = ({ children }) => {
         }
 
         if (newAlerts.length > 0) {
+            // Save alerts to localStorage
+            const storedAlerts = JSON.parse(localStorage.getItem("alerts")) || [];
+            const updatedAlerts = [...newAlerts, ...storedAlerts];
+            localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+
+            // Update state with new alerts
             setAlerts((prevAlerts) => {
                 const updatedAlerts = [...newAlerts, ...prevAlerts];
                 return updatedAlerts.slice(0, 3); // Keep only the last 3 alerts

@@ -181,6 +181,21 @@ const Reports = () => {
         link.click();
     };
 
+    const downloadLogs = () => {
+        const storedLogs = JSON.parse(localStorage.getItem("alerts")) || [];
+        const csvContent = [
+            ["Timestamp", "Alert"],
+            ...storedLogs.map(log => [log.timestamp, log.alert])
+        ]
+            .map(e => e.join(","))
+            .join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "SensorLogs.csv";
+        link.click();
+    };
+
     const reportOptions = [
         {
             title: "Summary Report",
@@ -330,6 +345,9 @@ const Reports = () => {
                             <button onClick={downloadPDF} className="btn">Download PDF</button>
                             <button onClick={downloadExcel} className="btn">Download Excel</button>
                             <button onClick={downloadCSV} className="btn">Download CSV</button>
+                        </div>
+                        <div className="action-buttons">
+                            <button  onClick={downloadLogs} className="btn">Download Logs</button>
                         </div>
                     </div>
                     <hr />
